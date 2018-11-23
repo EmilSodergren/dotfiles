@@ -1,0 +1,27 @@
+[user]
+    name = Emil Sodergren
+    email = EmilSodergren@users.noreply.github.com
+[push]
+    default = simple
+[http]
+    sslcapath = /etc/ldap/certs/
+[credential "https://ninelv.vdc.saab.se"]
+    user = u009893
+[credential]
+    helper = cache --timeout=3600
+[branch]
+    autosetuprebase = always
+[alias]
+    st = status
+    br = branch
+    ci = commit -v
+    co = checkout
+    god = log --graph --oneline --decorate --all
+    findlarge = rev-list --objects --all | grep \"\"
+
+[core]
+    editor = vim
+[merge]
+    tool = kdiff3
+[color "diff"]
+    whitespace = red reverse
