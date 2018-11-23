@@ -31,6 +31,10 @@ inoremap <esc>[1;5C <nop>
 nnoremap <lt> <nop>
 nnoremap > <nop>
 
+" Delete current selection to the black hole registry before pasting, 
+" keeping the currently pasted text instead of overwriting it.
+vnoremap p "_dP
+
 " key-mappings for comment line in normal mode
 noremap  <silent> gc :call CommentLine()<cr>
 " key-mappings for range comment lines in visual <shift-v> mode
@@ -57,7 +61,6 @@ set rtp+=~/.vim/bundle/Vundle.vim
 
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
-Plugin 'SirVer/ultisnips'
 Plugin 'bitfield/vim-gitgo'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'elzr/vim-json'
@@ -69,7 +72,9 @@ Plugin 'davidhalter/jedi-vim'
 Plugin 'nsf/gocode',{'rtp':'vim/'}
 Plugin 'plasticboy/vim-markdown'
 Plugin 'racer-rust/vim-racer'
+Plugin 'rust-lang/rust.vim'
 Plugin 'scrooloose/nerdtree'
+Plugin 'timonv/vim-cargo'
 Plugin 'tpope/vim-fugitive'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
@@ -109,6 +114,9 @@ let g:vim_markdown_folding_disabled = 1
 let g:tex_conceal = ""
 let g:vim_markdown_math = 1
 let g:vim_markdown_json_frontmatter = 1
+" }}}
+" Rust Plugin (vim-rust) {{{
+let g:rustfmt_autosave = 1
 " }}}
 " }}}
 " Basic settings and status line {{{
@@ -162,6 +170,14 @@ augroup FT_go
     autocmd FileType go nnoremap <leader>gr :GoReferrers <cr>
     " Set GOPATH to the folder above /src/ in full filepath
     autocmd FileType go nnoremap <leader>sgp :exe ":GoPath".split(expand("%:p"), "/src/")[0] <cr>
+augroup END
+" }}}
+" Rust file settings {{{
+augroup FT_rust
+    au!
+    autocmd FileType rust nnoremap <leader>cb :CargoBuild <cr>
+    autocmd FileType rust nnoremap <leader>ci :CargoInstall <cr>
+    autocmd FileType rust nnoremap <leader>ct :CargoTest <cr>
 augroup END
 " }}}
 " Python file settings {{{
