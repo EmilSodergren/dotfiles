@@ -6,7 +6,7 @@ from argparse import ArgumentParser
 dotfilespath = dirname(realpath(__file__))
 homefolder = expanduser("~")
 
-settingsfiles = [".vim", ".bashrc", ".tmux.conf", ".gitconfig", ".bash_git"]
+settingsfiles = [".vim", ".bashrc", ".tmux.conf", ".gitconfig", ".bash_git", ".profile"]
 
 parser = ArgumentParser(description='Setup the machine')
 
@@ -21,10 +21,11 @@ for stuff in settingsfiles:
     symlink(sourcepath, linkpath)
 
 if args.internet:
+    call(["git", "clone", "https://github.com/VundleVim/Vundle.vim.git", homefolder+"/.dotfiles/.vim/bundle/Vundle.vim"])
     call(["vim","+VundleInstall","+qall"])
     call(["vim", "+GoInstallBinaries", "+qall"])
     
     ps = Popen(["curl", "https://sh.rustup.rs", "-sSf"], stdout=PIPE)
-    call(["sh"], stdin=ps.stdout)
+    call(["sh", "-s", "--", "-y"], stdin=ps.stdout)
     ps.wait()
     call(["rustup", "install", "nightly"])
