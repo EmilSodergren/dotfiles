@@ -29,3 +29,6 @@ if args.internet:
     call(["sh", "-s", "--", "-y"], stdin=ps.stdout)
     ps.wait()
     call(["rustup", "install", "nightly"])
+    call(["rustup", "install", "racer"])
+    call(["rustup", "component", "add", "rust-src"])
+    call(["rustup", "component", "add", "rustfmt-preview", "--toolchain", "nightly"])

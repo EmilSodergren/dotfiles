@@ -124,8 +124,3 @@ if ! shopt -oq posix; then
   fi
 fi
 
-export TERM=screen-256color
-export GOPATH=~/go
-export GOBIN=~/go/bin
-#export PATH=$PATH:$GOBIN:/usr/local/go/bin
-#export PATH=$PATH:$HOME/.cargo/bin

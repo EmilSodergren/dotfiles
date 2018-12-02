@@ -117,6 +117,7 @@ let g:vim_markdown_json_frontmatter = 1
 " }}}
 " Rust Plugin (vim-rust) {{{
 let g:rustfmt_autosave = 1
+let g:rustfmt_command = 'rustup run nightly rustfmt'
 " }}}
 " }}}
 " Basic settings and status line {{{

@@ -21,6 +21,9 @@ if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
 
+export TERM="screen-256color"
 export GOPATH="$HOME/go"
 export GOBIN="$GOPATH/bin"
-export PATH="$HOME/.cargo/bin:/usr/local/go/bin:$GOBIN:$PATH"
+
+export PATH="/usr/local/go/bin:$GOBIN:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
