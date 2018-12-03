@@ -32,3 +32,4 @@ if args.internet:
     call(["cargo", "+nightly", "install", "racer"])
     call(["rustup", "component", "add", "rust-src"])
     call(["rustup", "component", "add", "rustfmt-preview", "--toolchain", "nightly"])
+    call(["cargo", "install", "cargo-watch"])
