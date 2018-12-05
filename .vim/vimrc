@@ -30,6 +30,7 @@ inoremap <esc>[1;5D <nop>
 inoremap <esc>[1;5C <nop>
 nnoremap <lt> <nop>
 nnoremap > <nop>
+nnoremap <c-r> <c-r>
 
 " Delete current selection to the black hole registry before pasting, 
 " keeping the currently pasted text instead of overwriting it.
@@ -61,14 +62,13 @@ set rtp+=~/.vim/bundle/Vundle.vim
 
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
-Plugin 'bitfield/vim-gitgo'
+Plugin 'airblade/vim-gitgutter'
 Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'davidhalter/jedi-vim'
 Plugin 'elzr/vim-json'
 Plugin 'fatih/vim-go'
 Plugin 'godlygeek/tabular'
 Plugin 'junegunn/fzf', {'dir': '~/.fzf', 'do': './install --bin'}
-Plugin 'vim-scripts/VimCompletesMe'
-Plugin 'davidhalter/jedi-vim'
 Plugin 'nsf/gocode',{'rtp':'vim/'}
 Plugin 'plasticboy/vim-markdown'
 Plugin 'racer-rust/vim-racer'
@@ -79,9 +79,8 @@ Plugin 'timonv/vim-cargo'
 Plugin 'tpope/vim-fugitive'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
+Plugin 'vim-scripts/VimCompletesMe'
 Plugin 'vim-syntastic/syntastic'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'xolox/vim-misc'
 
 call vundle#end()
 
