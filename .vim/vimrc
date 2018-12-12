@@ -117,7 +117,6 @@ let g:vim_markdown_json_frontmatter = 1
 " }}}
 " Rust Plugin (vim-rust) {{{
 let g:rustfmt_autosave = 1
-let g:rustfmt_command = 'rustup run nightly rustfmt'
 " }}}
 " }}}
 " Basic settings and status line {{{
@@ -176,6 +175,7 @@ augroup END
 " Rust file settings {{{
 augroup FT_rust
     au!
+    autocmd FileType rust nnoremap <leader>cr :CargoRun <cr>
     autocmd FileType rust nnoremap <leader>cb :CargoBuild <cr>
     autocmd FileType rust nnoremap <leader>ci :CargoInstall <cr>
     autocmd FileType rust nnoremap <leader>ct :CargoTest <cr>
