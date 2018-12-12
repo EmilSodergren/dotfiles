@@ -68,7 +68,8 @@ Plugin 'davidhalter/jedi-vim'
 Plugin 'elzr/vim-json'
 Plugin 'fatih/vim-go'
 Plugin 'godlygeek/tabular'
-Plugin 'junegunn/fzf', {'dir': '~/.fzf', 'do': './install --bin'}
+Plugin 'junegunn/fzf'
+Plugin 'junegunn/fzf.vim'
 Plugin 'nsf/gocode',{'rtp':'vim/'}
 Plugin 'plasticboy/vim-markdown'
 Plugin 'racer-rust/vim-racer'
@@ -99,6 +100,9 @@ let g:airline_detect_modified=1
 " }}}
 " Fuzzy Finder Plugin {{{
 nnoremap <leader>p :FZF<cr>
+nnoremap <leader>sf :FZF<cr> " Search Files
+nnoremap <leader>sg :GFiles<cr> " Search Git
+nnoremap <leader>sl :Lines<cr> " Search Lines
 " }}}
 " Git Gutter {{{
 set updatetime=100
