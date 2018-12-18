@@ -181,10 +181,11 @@ augroup END
 " Rust file settings {{{
 augroup FT_rust
     au!
-    autocmd FileType rust nnoremap <leader>cr :CargoRun <cr>
-    autocmd FileType rust nnoremap <leader>cb :CargoBuild <cr>
-    autocmd FileType rust nnoremap <leader>ci :CargoInstall <cr>
-    autocmd FileType rust nnoremap <leader>ct :CargoTest <cr>
+    autocmd FileType rust nnoremap <leader>cr :Cargo run <cr>
+    autocmd FileType rust nnoremap <leader>cb :Cargo build <cr>
+    autocmd FileType rust nnoremap <leader>ci :Cargo install <cr>
+    autocmd FileType rust nnoremap <leader>ct :Cargo test <cr>
+    autocmd FileType rust nnoremap gd :execute "normal \<Plug>(rust-def)" <cr>
 augroup END
 " }}}
 " Python file settings {{{
