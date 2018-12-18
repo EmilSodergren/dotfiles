@@ -119,8 +119,9 @@ let g:tex_conceal = ""
 let g:vim_markdown_math = 1
 let g:vim_markdown_json_frontmatter = 1
 " }}}
-" Rust Plugin (vim-rust) {{{
+" Rust Plugins {{{
 let g:rustfmt_autosave = 1
+let g:racer_experimental_completer = 1
 " }}}
 " }}}
 " Basic settings and status line {{{
@@ -134,6 +135,7 @@ set encoding=UTF-8
 set expandtab
 set fileformat=unix
 set formatoptions-=t
+set hidden
 set hlsearch
 set incsearch
 set laststatus=2
