@@ -56,7 +56,7 @@ vnoremap <space> za
 " }}}
 " Plugins {{{
 " Vundle {{{
-set nocompatible 
+set nocompatible
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 
@@ -530,6 +530,9 @@ hi Type		ctermfg=77	guifg=#5fd75f	gui=NONE
 hi vimCommentString ctermfg=147	guifg=#afafff	gui=italic
 hi Visual	ctermfg=248	guifg=#a8a8a8	ctermbg=237 guibg=#3a3a3a
 hi WarningMsg	ctermfg=196
+hi EndingWhiteSpace ctermbg=52
+
+match EndingWhiteSpace /\s\+$/
 
 " html
 hi htmlLink			cterm=UNDERLINE	ctermfg=105	gui=UNDERLINE	guifg=#8787ff
