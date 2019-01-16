@@ -23,7 +23,7 @@ nnoremap <s-l> :bn<cr>
 
 inoremap jk <esc>
 
-" Disable ctrl + Left/Right which deletes stuff 
+" Disable ctrl + Left/Right which deletes stuff
 nnoremap <esc>[1;5D <nop>
 nnoremap <esc>[1;5C <nop>
 inoremap <esc>[1;5D <nop>
@@ -32,7 +32,7 @@ nnoremap <lt> <nop>
 nnoremap > <nop>
 nnoremap <c-r> <c-r>
 
-" Delete current selection to the black hole registry before pasting, 
+" Delete current selection to the black hole registry before pasting,
 " keeping the currently pasted text instead of overwriting it.
 vnoremap p "_dP
 
@@ -232,7 +232,7 @@ function! CommentLine()
             execute ":silent! normal ^i(*\<ESC>$a*)\<ESC>==\<down>^"
         endif
         " .html,.xml,.xthml,.htm
-    elseif file_name =~ '\.html$' || file_name =~ '\.htm$' || file_name =~ '\.xml$' || file_name =~ '\.xhtml$' 
+    elseif file_name =~ '\.html$' || file_name =~ '\.htm$' || file_name =~ '\.xml$' || file_name =~ '\.xhtml$'
         if stridx( getline("."), "\<!--" ) != -1 && stridx( getline("."), "--\>" ) != -1
         elseif stridx( getline("."), "\<!--" ) != -1 && stridx( getline("."), "--\>" ) == -1
             "  open, but a close "
@@ -254,16 +254,16 @@ function! CommentLine()
         " for .tex files use %
     elseif file_name =~ '\.tex$' || file_name =~ '\.nw$'
         execute ":silent! normal ^i%\<ESC>\<down>^"
-        " for fortran 77 files use C on first column 
+        " for fortran 77 files use C on first column
     elseif file_name =~ '\.f$' || file_name =~ '\.F$'
         execute ":silent! normal ^gIC\<ESC>\<down>^"
         " for fortran 90/95 files use !
     elseif file_name =~ '\.f90$' || file_name =~ '\.F90$' || file_name =~ '\.f95$' || file_name =~ '\.F95$'
         execute ":silent! normal ^i!\<ESC>\<down>^"
-        " for VHDL and Haskell files use -- 
+        " for VHDL and Haskell files use --
     elseif file_name =~ '\.vhd$' || file_name =~ '\.vhdl$' || file_name =~ '\.hs$'
         execute ":silent! normal ^gI-- \<ESC>\<down>^"
-        " for all other files use # 
+        " for all other files use #
     else
         execute ":silent! normal ^i#\<ESC>\<down>^"
     endif
@@ -293,13 +293,13 @@ function! UnCommentLine()
     elseif file_name =~ '\.[kc]\?sh$' || file_name =~ '\.pl$' || file_name =~ '\.pm$'
         execute ":silent! normal :nohlsearch\<CR>:s/\\#//\<CR>:nohlsearch\<CR>"
         " for .xml .html .xhtml .htm use <!-- -->
-    elseif file_name =~ '\.html$' || file_name =~ '\.htm$' || file_name =~ '\.xml$' || file_name =~ '\.xhtml$' 
+    elseif file_name =~ '\.html$' || file_name =~ '\.htm$' || file_name =~ '\.xml$' || file_name =~ '\.xhtml$'
         execute ":silent! normal :nohlsearch\<CR>:s/<!--//\<CR>=="
         execute ":silent! normal :nohlsearch\<CR>:s/-->//\<CR>=="
         " for .tex use %
     elseif file_name =~ '\.tex$' || file_name =~ '\.nw$'
         execute ":silent! normal :nohlsearch\<CR>:s/%/\<CR>:nohlsearch\<CR>"
-        " for fortran 77 files use C on first column 
+        " for fortran 77 files use C on first column
     elseif file_name =~ '\.f$' || file_name =~ '\.F$'
         execute ":silent! normal ^x\<ESC>\<down>^"
         " for fortran 90/95 files use !
@@ -308,7 +308,7 @@ function! UnCommentLine()
         " for VHDL and Haskell files use --
     elseif file_name =~ '\.vhd$' || file_name =~ '\.vhdl$' || file_name =~ '\.hs$'
         execute ":silent! normal :nohlsearch\<CR>:s/-- //\<CR>:nohlsearch\<CR>"
-        " for all other files use # 
+        " for all other files use #
     else
         execute ":silent! normal :nohlsearch\<CR>:s/\\#//\<CR>:nohlsearch\<CR>"
     endif
@@ -337,7 +337,7 @@ function! RangeCommentLine()
             execute ":silent! normal :s/\\(\\S.*$\\)/\\/\\*\\1\\*\\//\<CR>:nohlsearch\<CR>=="
         endif
         " .html,.xml,.xthml,.htm
-    elseif file_name =~ '\.html$' || file_name =~ '\.htm$' || file_name =~ '\.xml$' || file_name =~ '\.xhtml$' 
+    elseif file_name =~ '\.html$' || file_name =~ '\.htm$' || file_name =~ '\.xml$' || file_name =~ '\.xhtml$'
         if stridx( getline("."), "\<!--" ) != -1 && stridx( getline("."), "--\>" ) != -1
         elseif stridx( getline("."), "\<!--" ) != -1 && stridx( getline("."), "--\>" ) == -1
             "  open, but a close "
@@ -364,7 +364,7 @@ function! RangeCommentLine()
         " for .tex use %
     elseif file_name =~ '\.tex$' || file_name =~ '\.nw$'
         execute ":silent! normal :s/\\S/\\%\\0/\<CR>:nohlsearch<CR>"
-        " for fortran 77 files use C on first column 
+        " for fortran 77 files use C on first column
     elseif file_name =~ '\.f$' || file_name =~ '\.F$'
         execute ":silent! normal ^gIC\<ESC>\<down>^"
         " for fortran 90/95 files use !
@@ -373,7 +373,7 @@ function! RangeCommentLine()
         " for VHDL and Haskell files use --
     elseif file_name =~ '\.vhd$' || file_name =~ '\.vhdl$' || file_name =~ '\.hs$'
         execute ":silent! normal ^gI-- \<ESC>\<down>^"
-        " for all other files use #  
+        " for all other files use #
     else
         execute ":silent! normal :s/\\S/\\#\\0/\<CR>:nohlsearch<CR>"
     endif
@@ -389,10 +389,10 @@ function! RangeUnCommentLine()
         " for .c or .h or .pc or .css files use /* */
     elseif file_name =~ '\.c$' || file_name =~ '\.h$' || file_name =~ '\.pc$' || file_name =~ '\.css$' || file_name =~ '\.js$'
         execute ":silent! normal :nohlsearch\<CR>:s/\\/\\*//\<CR>:s/\\*\\///\<CR>:nohlsearch\<CR>=="
-        " for .vim files use " 
+        " for .vim files use "
     elseif file_name =~ '\.vim$' || file_name =~ 'vimrc$'
         execute ":silent! normal :s/\\\"//\<CR>:nohlsearch\<CR>"
-        " for .sql files use -- 
+        " for .sql files use --
     elseif file_name =~ '\.sql$'
         execute ":silent! normal :s/\\-\\-//\<CR>:nohlsearch\<CR>"
         " for .ml .mli
@@ -400,7 +400,7 @@ function! RangeUnCommentLine()
         execute ":silent! normal :nohlsearch\<CR>:s/(\\*//\<CR>=="
         execute ":silent! normal :nohlsearch\<CR>:s/\\*)//\<CR>=="
         " for .xml .html .xhtml .htm use <!-- -->
-    elseif file_name =~ '\.html$' || file_name =~ '\.htm$' || file_name =~ '\.xml$' || file_name =~ '\.xhtml$' 
+    elseif file_name =~ '\.html$' || file_name =~ '\.htm$' || file_name =~ '\.xml$' || file_name =~ '\.xhtml$'
         execute ":silent! normal :nohlsearch\<CR>:s/<!--//\<CR>=="
         execute ":silent! normal :nohlsearch\<CR>:s/-->//\<CR>=="
     elseif file_name =~ '\.[kc]\?sh$' || file_name =~ '\.pl$' || file_name =~ '\.pm$'
@@ -408,7 +408,7 @@ function! RangeUnCommentLine()
         " for .tex use %
     elseif file_name =~ '\.tex$' || file_name =~ '\.nw$'
         execute ":silent! normal :s/%/\<CR>:nohlsearch\<CR>"
-        " for fortran 77 files use C on first column 
+        " for fortran 77 files use C on first column
     elseif file_name =~ '\.f$' || file_name =~ '\.F$'
         execute ":silent! normal ^x\<ESC>\<down>^"
         " for fortran 90/95 files use !
@@ -417,7 +417,7 @@ function! RangeUnCommentLine()
         " for VHDL and Haskell files use --
     elseif file_name =~ '\.vhd$' || file_name =~ '\.vhdl$' || file_name =~ '\.hs$'
         execute ":silent! normal :s/-- //\<CR>:nohlsearch\<CR>"
-        " for all other files use # 
+        " for all other files use #
     else
         execute ":silent! normal :s/\\#//\<CR>:nohlsearch\<CR>"
     endif
@@ -524,7 +524,7 @@ hi VertSplit   	ctermfg=16	ctermbg=239	guifg=black	guibg=gray30 gui=none cterm=n
 hi TabLineSel	ctermfg=16	ctermbg=244	cterm=NONE	guifg=black	guibg=#808080 gui=NONE
 hi TabLine     	ctermfg=16	ctermbg=240	cterm=NONE	guifg=black	guibg=#585858 gui=NONE
 hi TabLineFill  ctermfg=16	ctermbg=235	cterm=NONE	guifg=black	guibg=#262626 gui=NONE
-hi String	ctermfg=229	guifg=#ffffaf 
+hi String	ctermfg=229	guifg=#ffffaf
 hi Title	cterm=bold	ctermfg=201	gui=bold	guifg=Magenta
 hi Type		ctermfg=77	guifg=#5fd75f	gui=NONE
 hi vimCommentString ctermfg=147	guifg=#afafff	gui=italic
@@ -532,7 +532,7 @@ hi Visual	ctermfg=248	guifg=#a8a8a8	ctermbg=237 guibg=#3a3a3a
 hi WarningMsg	ctermfg=196
 hi EndingWhiteSpace ctermbg=52
 
-match EndingWhiteSpace /\s\+$/
+match EndingWhiteSpace /\s\+\%#\@<!$/
 
 " html
 hi htmlLink			cterm=UNDERLINE	ctermfg=105	gui=UNDERLINE	guifg=#8787ff
