@@ -68,8 +68,10 @@ Plugin 'davidhalter/jedi-vim'
 Plugin 'elzr/vim-json'
 Plugin 'fatih/vim-go'
 Plugin 'godlygeek/tabular'
+Plugin 'honza/vim-snippets'
 Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
+Plugin 'lepture/vim-jinja'
 Plugin 'nsf/gocode',{'rtp':'vim/'}
 Plugin 'plasticboy/vim-markdown'
 Plugin 'racer-rust/vim-racer'
@@ -123,6 +125,14 @@ let g:vim_markdown_json_frontmatter = 1
 let g:rustfmt_autosave = 1
 let g:racer_experimental_completer = 1
 " }}}
+" Ultisnips {{{
+let g:UltiSnipsSnippetDirectories = ['~/.vim/bundle/vim-snippets/UltiSnips/','~/.vim/bundle/vim-snippets/snippets/', '~/.vim/UltiSnips']
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsListSnippets="<c-l>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+let g:UltiSnipsEditSplit="context"
+" }}}
 " }}}
 " Basic settings and status line {{{
 set autoindent
@@ -169,11 +179,11 @@ augroup END
 " Go file settings {{{
 augroup FT_go
     au!
-    autocmd FileType go nnoremap <leader>gb :GoBuild <cr>
-    autocmd FileType go nnoremap <leader>gi :GoInstall <cr>
-    autocmd FileType go nnoremap <leader>gt :GoTest <cr>
-    autocmd FileType go nnoremap <leader>gc :GoCallers <cr>
-    autocmd FileType go nnoremap <leader>gr :GoReferrers <cr>
+    autocmd FileType go nnoremap <leader>b :GoBuild <cr>
+    autocmd FileType go nnoremap <leader>i :GoInstall <cr>
+    autocmd FileType go nnoremap <leader>t :GoTest <cr>
+    autocmd FileType go nnoremap <leader>c :GoCallers <cr>
+    autocmd FileType go nnoremap <leader>r :GoReferrers <cr>
     " Set GOPATH to the folder above /src/ in full filepath
     autocmd FileType go nnoremap <leader>sgp :exe ":GoPath".split(expand("%:p"), "/src/")[0] <cr>
 augroup END
@@ -181,10 +191,10 @@ augroup END
 " Rust file settings {{{
 augroup FT_rust
     au!
-    autocmd FileType rust nnoremap <leader>cr :Cargo run <cr>
-    autocmd FileType rust nnoremap <leader>cb :Cargo build <cr>
-    autocmd FileType rust nnoremap <leader>ci :Cargo install <cr>
-    autocmd FileType rust nnoremap <leader>ct :Cargo test <cr>
+    autocmd FileType rust nnoremap <leader>r :Cargo run <cr>
+    autocmd FileType rust nnoremap <leader>b :Cargo build <cr>
+    autocmd FileType rust nnoremap <leader>i :Cargo install <cr>
+    autocmd FileType rust nnoremap <leader>t :Cargo test <cr>
     autocmd FileType rust nnoremap gd :execute "normal \<Plug>(rust-def)" <cr>
     autocmd FileType rust nnoremap <leader>gd :execute "normal \<Plug>(rust-doc)" <cr>
 augroup END
