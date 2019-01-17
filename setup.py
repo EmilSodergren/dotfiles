@@ -25,7 +25,7 @@ if args.internet:
     call(["git", "clone", "https://github.com/VundleVim/Vundle.vim.git", homefolder+"/.dotfiles/.vim/bundle/Vundle.vim"])
     call(["vim","+VundleInstall","+qall"])
     call(["vim", "+GoInstallBinaries", "+qall"])
-    
+
     ps = Popen(["curl", "https://sh.rustup.rs", "-sSf"], stdout=PIPE)
     call(["sh", "-s", "--", "-y"], stdin=ps.stdout)
     ps.wait()
