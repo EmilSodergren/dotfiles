@@ -69,7 +69,7 @@ Plugin 'elzr/vim-json'
 Plugin 'fatih/vim-go'
 Plugin 'godlygeek/tabular'
 Plugin 'honza/vim-snippets'
-Plugin 'iamcco/markdown-preview.nvim' " { run .vim/bundle/markdown-preview.nvim/app/install.sh after VundleInstall }
+Plugin 'iamcco/markdown-preview.nvim', { 'do': 'cd app && bash -c \"install.sh\"' }
 Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
 Plugin 'lepture/vim-jinja'
@@ -116,11 +116,14 @@ let g:go_fmt_command = "goimports"
 let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
 let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
 " }}}
-" Markdown Plugin {{{
+" Markdown Plugins {{{
 let g:vim_markdown_folding_disabled = 1
 let g:tex_conceal = ""
 let g:vim_markdown_math = 1
 let g:vim_markdown_json_frontmatter = 1
+
+let g:mkdp_browser = 'chromium'
+let g:mkdp_auto_close = 0
 " }}}
 " Rust Plugins {{{
 let g:rustfmt_autosave = 1
