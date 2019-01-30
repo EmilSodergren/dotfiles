@@ -199,6 +199,7 @@ augroup FT_rust
     autocmd FileType rust nnoremap <leader>b :Cargo build <cr>
     autocmd FileType rust nnoremap <leader>i :Cargo install <cr>
     autocmd FileType rust nnoremap <leader>t :Cargo test <cr>
+    autocmd FileType rust nnoremap <leader>bt :! RUST_BACKTRACE=1 cargo test <cr>
     autocmd FileType rust nnoremap gd :execute "normal \<Plug>(rust-def)" <cr>
     autocmd FileType rust nnoremap <leader>gd :execute "normal \<Plug>(rust-doc)" <cr>
 augroup END
