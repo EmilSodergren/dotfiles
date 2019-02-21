@@ -2,6 +2,7 @@ from os.path import dirname, realpath, expanduser, join, exists
 from os import symlink, remove
 from subprocess import call, Popen, PIPE
 from argparse import ArgumentParser
+import re
 
 dotfilespath = dirname(realpath(__file__))
 homefolder = expanduser("~")
@@ -21,9 +22,27 @@ for stuff in settingsfiles:
         remove(linkpath)
     symlink(sourcepath, linkpath)
 
+gitconfig_path = join(dotfilespath, ".gitconfig")
+regex = re.compile("email = (.*$)")
+old_email = ""
+new_email = ""
+with open(gitconfig_path, "rt") as f:
+    for line in f:
+        result = regex.search(line)
+        if result:
+            old_email = result.group(1)
+            new_email = raw_input("Give mail ({}):".format(old_email)) or old_email
+
+file_content = ""
+with open(gitconfig_path, "rt") as f:
+    file_content = f.read().replace(old_email, new_email)
+
+with open(gitconfig_path, "wt") as fout:
+    fout.write(file_content)
+
 if args.internet:
     call(["git", "clone", "https://github.com/VundleVim/Vundle.vim.git", homefolder+"/.dotfiles/.vim/bundle/Vundle.vim"])
-    call(["vim","+VundleInstall","+qall"])
+    call(["vim","+VundleUpdate","+qall"])
     call(["vim", "+GoInstallBinaries", "+qall"])
 
     ps = Popen(["curl", "https://sh.rustup.rs", "-sSf"], stdout=PIPE)
