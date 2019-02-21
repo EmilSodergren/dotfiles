@@ -1,5 +1,5 @@
 from os.path import dirname, realpath, expanduser, join, exists
-from os import symlink, remove
+from os import symlink, remove, chdir, getcwd
 from subprocess import call, Popen, PIPE
 from argparse import ArgumentParser
 import re
@@ -41,8 +41,15 @@ with open(gitconfig_path, "wt") as fout:
     fout.write(file_content)
 
 if args.internet:
-    call(["git", "clone", "https://github.com/VundleVim/Vundle.vim.git", homefolder+"/.dotfiles/.vim/bundle/Vundle.vim"])
-    call(["vim","+VundleUpdate","+qall"])
+    if (not exists(homefolder+"/.dotfiles/.vim/bundle/Vundle.vim")):
+        call(["git", "clone", "https://github.com/VundleVim/Vundle.vim.git", homefolder+"/.dotfiles/.vim/bundle/Vundle.vim"])
+    #call(["vim","+VundleUpdate","+qall"])
+    # Ugly fix to install markdown dependencies
+    current = getcwd()
+    chdir(homefolder+"/.vim/bundle/markdown-preview.nvim/app/")
+    call(["bash", "install.sh"])
+    chdir(current)
+    # End of ugly fix
     call(["vim", "+GoInstallBinaries", "+qall"])
 
     ps = Popen(["curl", "https://sh.rustup.rs", "-sSf"], stdout=PIPE)
