@@ -43,7 +43,7 @@ with open(gitconfig_path, "wt") as fout:
 if args.internet:
     if (not exists(homefolder+"/.dotfiles/.vim/bundle/Vundle.vim")):
         call(["git", "clone", "https://github.com/VundleVim/Vundle.vim.git", homefolder+"/.dotfiles/.vim/bundle/Vundle.vim"])
-    #call(["vim","+VundleUpdate","+qall"])
+    call(["vim","+VundleUpdate","+qall"])
     # Ugly fix to install markdown dependencies
     current = getcwd()
     chdir(homefolder+"/.vim/bundle/markdown-preview.nvim/app/")
