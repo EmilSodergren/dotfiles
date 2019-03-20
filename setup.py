@@ -31,7 +31,10 @@ with open(gitconfig_path, "rt") as f:
         result = regex.search(line)
         if result:
             old_email = result.group(1)
-            new_email = raw_input("Give mail ({}):".format(old_email)) or old_email
+            # Rename raw_input to input on python3
+            try: input = raw_input
+            except NameError: pass
+            new_email = input("Give mail ({}):".format(old_email)) or old_email
 
 file_content = ""
 with open(gitconfig_path, "rt") as f:
