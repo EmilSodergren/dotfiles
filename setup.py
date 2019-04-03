@@ -24,13 +24,15 @@ for stuff in settingsfiles:
 
 gitconfig_path = join(dotfilespath, ".gitconfig")
 regex = re.compile("email = (.*$)")
+replace_line = ""
 old_email = ""
 new_email = ""
 with open(gitconfig_path, "rt") as f:
     for line in f:
         result = regex.search(line)
         if result:
-            old_email = result.group(1)
+            replace_line = result.group(0)
+            old_email = result.group(1) or "EmilSodergren@users.noreply.github.com"
             # Rename raw_input to input on python3
             try: input = raw_input
             except NameError: pass
@@ -38,7 +40,7 @@ with open(gitconfig_path, "rt") as f:
 
 file_content = ""
 with open(gitconfig_path, "rt") as f:
-    file_content = f.read().replace(old_email, new_email)
+    file_content = f.read().replace(replace_line, "email = "+new_email)
 
 with open(gitconfig_path, "wt") as fout:
     fout.write(file_content)
