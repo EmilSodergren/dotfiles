@@ -56,6 +56,7 @@ if args.internet:
     chdir(current)
     # End of ugly fix
     call(["vim", "+GoInstallBinaries", "+qall"])
+    call(["vim", "+FZF", "+qall"])
 
     ps = Popen(["curl", "https://sh.rustup.rs", "-sSf"], stdout=PIPE)
     call(["sh", "-s", "--", "-y"], stdin=ps.stdout)
