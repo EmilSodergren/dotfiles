@@ -99,7 +99,7 @@ alias clock='date'
 alias g='git'
 alias 9g='9lvgit'
 alias tmux='tmux -2'
-alias grep='rg'
+#alias grep='rg'
 #alias l='ls -CF'
 
 # Alias definitions.
