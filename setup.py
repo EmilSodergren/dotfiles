@@ -64,10 +64,11 @@ if args.internet:
     ps = Popen(["curl", "https://sh.rustup.rs", "-sSf"], stdout=PIPE)
     call(["sh", "-s", "--", "-y"], stdin=ps.stdout)
     ps.wait()
+    call(["rustup", "update", "stable"])
     call(["rustup", "component", "add", "rustfmt"])
     call(["rustup", "component", "add", "rust-src"])
     call(["cargo", "install", "cargo-watch"])
 
     if args.nightly:
-        call(["rustup", "install", "nightly"])
+        call(["rustup", "update", "nightly"])
         call(["cargo", "+nightly", "install", "racer"])
