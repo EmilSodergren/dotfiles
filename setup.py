@@ -59,7 +59,6 @@ if args.internet:
     chdir(current)
     # End of ugly fix
     call(["vim", "+GoInstallBinaries", "+qall"])
-    call(["vim", "+FZF", "+qall"])
 
     ps = Popen(["curl", "https://sh.rustup.rs", "-sSf"], stdout=PIPE)
     call(["sh", "-s", "--", "-y"], stdin=ps.stdout)
@@ -68,6 +67,11 @@ if args.internet:
     call(["rustup", "component", "add", "rustfmt"])
     call(["rustup", "component", "add", "rust-src"])
     call(["cargo", "install", "cargo-watch"])
+    call(["cargo", "install", "ripgrep"])
+    call(["cargo", "install", "fd-find"])
+    call(["cargo", "install", "tokei"])
+    call(["cargo", "install", "exa"])
+    call(["vim", "+FZF", "+qall"])
 
     if args.nightly:
         call(["rustup", "update", "nightly"])
