@@ -7,7 +7,7 @@ import re
 dotfilespath = dirname(realpath(__file__))
 homefolder = expanduser("~")
 
-settingsfiles = [".vim", ".bashrc", ".tmux.conf", ".gitconfig", ".bash_git", ".profile", ".bash_completion", ".bash_completion.d"]
+settingsfiles = [".vim", ".bashrc", ".tmux.conf", ".gitconfig", ".bash_git", ".profile", ".bash_completion", ".bash_completion.d", join("bin", "diff-so-fancy")]
 
 parser = ArgumentParser(description='Setup the machine')
 
@@ -23,7 +23,7 @@ for stuff in settingsfiles:
     symlink(sourcepath, linkpath)
 
 gitconfig_path = join(dotfilespath, ".gitconfig")
-regex = re.compile("email = (.*$)")
+regex = re.compile(r"email =\s*(.*)$")
 replace_line = ""
 old_email = ""
 new_email = ""
@@ -63,6 +63,8 @@ if args.internet:
     ps = Popen(["curl", "https://sh.rustup.rs", "-sSf"], stdout=PIPE)
     call(["sh", "-s", "--", "-y"], stdin=ps.stdout)
     ps.wait()
+    call(["wget", "-P", "bin", "https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy"])
+    call(["chmod", "+x", join("bin", "diff-so-fancy")])
     call(["rustup", "update", "stable"])
     call(["rustup", "component", "add", "rustfmt"])
     call(["rustup", "component", "add", "rust-src"])
