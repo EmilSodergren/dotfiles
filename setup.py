@@ -13,6 +13,7 @@ parser = ArgumentParser(description='Setup the machine')
 
 parser.add_argument('-i', '--internet', action='store_true', help='Download stuff from the internet')
 parser.add_argument('-n', '--nightly', action='store_true', help='Download the latest nightly build')
+parser.add_argument('-p', '--pack', action='store_true', help='Pack everything in dotfiles.tar.gz')
 args = parser.parse_args()
 
 for stuff in settingsfiles:
@@ -78,3 +79,7 @@ if args.internet:
     if args.nightly:
         call(["rustup", "update", "nightly"])
         call(["cargo", "+nightly", "install", "racer"])
+
+if args.pack:
+    chdir(homefolder)
+    call(["tar", "cfz", "dotfile.tar.gz", ".dotfiles/", "go/bin/", ".cargo/bin/"])
