@@ -1,6 +1,6 @@
 [user]
     name = Emil Sodergren
-    email = EmilSodergren@users.noreply.github.com
+    email =
 [push]
     default = simple
 [http]
@@ -21,7 +21,22 @@
 
 [core]
     editor = vim
+    pager = diff-so-fancy | less --tabs=4 -RFX
 [merge]
     tool = kdiff3
 [color "diff"]
     whitespace = red reverse
+    meta = yellow
+    frag = magenta bold
+    commit = yellow bold
+    old = red bold
+    new = green bold
+[color]
+    ui = true
+[color "diff-highlight"]
+    oldNormal = red bold
+    oldHighlight = red bold 52
+    newNormal = green bold
+    newHighlight = green bold 22
+[diff-so-fancy]
+    first-run = false
