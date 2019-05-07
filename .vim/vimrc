@@ -15,8 +15,8 @@ nnoremap <c-r> <c-w>r
 
 nnoremap j gj
 nnoremap k gk
-nnoremap <down> jzz
-nnoremap <up> kzz
+nnoremap <down> 3jzz
+nnoremap <up> 3kzz
 nnoremap <leader>f gg=g
 nnoremap <s-h> :bp<cr>
 nnoremap <s-l> :bn<cr>

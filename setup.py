@@ -1,5 +1,5 @@
 from os.path import dirname, realpath, expanduser, join, exists
-from os import symlink, remove, chdir, getcwd
+from os import symlink, remove, chdir, getcwd, remove
 from subprocess import call, Popen, PIPE
 from argparse import ArgumentParser
 import re
@@ -64,6 +64,7 @@ if args.internet:
     ps = Popen(["curl", "https://sh.rustup.rs", "-sSf"], stdout=PIPE)
     call(["sh", "-s", "--", "-y"], stdin=ps.stdout)
     ps.wait()
+    remove(join("bin", "diff-so-fancy"))
     call(["wget", "-P", "bin", "https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy"])
     call(["chmod", "+x", join("bin", "diff-so-fancy")])
     call(["rustup", "update", "stable"])
@@ -82,4 +83,4 @@ if args.internet:
 
 if args.pack:
     chdir(homefolder)
-    call(["tar", "cfz", "dotfile.tar.gz", ".dotfiles/", "go/bin/", ".cargo/bin/"])
+    call(["tar", "cfz", "dotfiles.tar.gz", ".dotfiles/", "go/bin/", ".cargo/bin/"])
