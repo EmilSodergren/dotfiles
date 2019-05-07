@@ -14,6 +14,7 @@ parser = ArgumentParser(description='Setup the machine')
 parser.add_argument('-i', '--internet', action='store_true', help='Download stuff from the internet')
 parser.add_argument('-n', '--nightly', action='store_true', help='Download the latest nightly build')
 parser.add_argument('-p', '--pack', action='store_true', help='Pack everything in dotfiles.tar.gz')
+parser.add_argument('-m', '--installmarkdown', action='store_true', help='Install markdown plugin dependencies')
 args = parser.parse_args()
 
 for stuff in settingsfiles:
@@ -24,7 +25,7 @@ for stuff in settingsfiles:
     symlink(sourcepath, linkpath)
 
 gitconfig_path = join(dotfilespath, ".gitconfig")
-regex = re.compile(r"email =\s*(.*)$")
+regex = re.compile(r"email = *(.*)$")
 replace_line = ""
 old_email = ""
 new_email = ""
@@ -52,13 +53,6 @@ if args.internet:
     if (not exists(homefolder+"/.dotfiles/tmux-resurrect")):
         call(["git", "clone", "https://github.com/tmux-plugins/tmux-resurrect", homefolder+"/.dotfiles/tmux-resurrect"])
     call(["vim","+VundleUpdate","+qall"])
-    # Ugly fix to install markdown dependencies
-    current = getcwd()
-    chdir(homefolder+"/.vim/bundle/markdown-preview.nvim/app/")
-    print("Installing markdown-preview.nvim!")
-    call(["bash", "install.sh"])
-    chdir(current)
-    # End of ugly fix
     call(["vim", "+GoInstallBinaries", "+qall"])
 
     ps = Popen(["curl", "https://sh.rustup.rs", "-sSf"], stdout=PIPE)
@@ -80,6 +74,14 @@ if args.internet:
     if args.nightly:
         call(["rustup", "update", "nightly"])
         call(["cargo", "+nightly", "install", "racer"])
+    if args.installmarkdown:
+        # Ugly fix to install markdown dependencies
+        current = getcwd()
+        chdir(homefolder+"/.vim/bundle/markdown-preview.nvim/app/")
+        print("Installing markdown-preview.nvim!")
+        call(["bash", "install.sh"])
+        chdir(current)
+        # End of ugly fix
 
 if args.pack:
     chdir(homefolder)
