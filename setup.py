@@ -1,6 +1,6 @@
 from os.path import dirname, realpath, expanduser, join, exists
 from os import symlink, remove, chdir, getcwd, remove
-from subprocess import call, Popen, PIPE
+from subprocess import call, check_output, Popen, PIPE
 from argparse import ArgumentParser
 import re
 
@@ -8,11 +8,12 @@ dotfilespath = dirname(realpath(__file__))
 homefolder = expanduser("~")
 
 settingsfiles = [".vim", ".bashrc", ".tmux.conf", ".gitconfig", ".bash_git", ".profile", ".bash_completion", ".bash_completion.d", join("bin", "diff-so-fancy")]
+rust_binaries = ["cargo", "install-update", "-i", "cargo-update", "cargo-watch", "ripgrep", "fd-find", "tokei", "exa"]
+rust_nightly_binaries = ["cargo", "+nightly", "install-update", "-i", "racer"]
 
 parser = ArgumentParser(description='Setup the machine')
 
 parser.add_argument('-i', '--internet', action='store_true', help='Download stuff from the internet')
-parser.add_argument('-n', '--nightly', action='store_true', help='Download the latest nightly build')
 parser.add_argument('-p', '--pack', action='store_true', help='Pack everything in dotfiles.tar.gz')
 parser.add_argument('-m', '--installmarkdown', action='store_true', help='Install markdown plugin dependencies')
 args = parser.parse_args()
@@ -64,16 +65,17 @@ if args.internet:
     call(["rustup", "update", "stable"])
     call(["rustup", "component", "add", "rustfmt"])
     call(["rustup", "component", "add", "rust-src"])
-    call(["cargo", "install", "cargo-watch"])
-    call(["cargo", "install", "ripgrep"])
-    call(["cargo", "install", "fd-find"])
-    call(["cargo", "install", "tokei"])
-    call(["cargo", "install", "exa"])
+    test = call(rust_binaries)
+    test2 = call(rust_nightly_binaries)
+    if test != 0:
+        call(["cargo", "install", "cargo-update"])
+        call(rust_binaries)
+    if test2 != 0:
+        call(["rustup", "update", "nightly"])
+        call(rust_nightly_binaries)
+
     call(["vim", "+FZF", "+qall"])
 
-    if args.nightly:
-        call(["rustup", "update", "nightly"])
-        call(["cargo", "+nightly", "install", "racer"])
     if args.installmarkdown:
         # Ugly fix to install markdown dependencies
         current = getcwd()
