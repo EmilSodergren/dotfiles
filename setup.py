@@ -74,16 +74,11 @@ if args.internet:
         call(["rustup", "update", "nightly"])
         call(rust_nightly_binaries)
 
+    print("Installing markdown-preview.nvim!")
+    call(["vim", "+call mkdp#util#install()", "+qall"])
+
     call(["vim", "+FZF", "+qall"])
 
-    if args.installmarkdown:
-        # Ugly fix to install markdown dependencies
-        current = getcwd()
-        chdir(homefolder+"/.vim/bundle/markdown-preview.nvim/app/")
-        print("Installing markdown-preview.nvim!")
-        call(["bash", "install.sh"])
-        chdir(current)
-        # End of ugly fix
 
 if args.pack:
     chdir(homefolder)

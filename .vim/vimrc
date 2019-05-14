@@ -69,7 +69,7 @@ Plugin 'elzr/vim-json'
 Plugin 'fatih/vim-go'
 Plugin 'godlygeek/tabular'
 Plugin 'honza/vim-snippets'
-Plugin 'iamcco/markdown-preview.nvim', { 'do': 'cd app && bash -c \"install.sh\"' }
+Plugin 'iamcco/markdown-preview.nvim'
 Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
 Plugin 'lepture/vim-jinja'
