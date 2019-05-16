@@ -1,4 +1,4 @@
-from os.path import dirname, realpath, expanduser, join, exists
+from os.path import dirname, realpath, expanduser, join, exists, islink
 from os import symlink, remove, chdir, getcwd, remove
 from subprocess import call, check_output, Popen, PIPE
 from argparse import ArgumentParser
@@ -6,9 +6,9 @@ import re
 
 dotfilespath = dirname(realpath(__file__))
 homefolder = expanduser("~")
-
-settingsfiles = [".vim", ".bashrc", ".tmux.conf", ".gitconfig", ".bash_git", ".profile", ".bash_completion", ".bash_completion.d", join("bin", "diff-so-fancy")]
-rust_binaries = ["cargo", "install-update", "-i", "cargo-update", "cargo-watch", "ripgrep", "fd-find", "tokei", "exa"]
+diff_so_fancy = join("bin", "diff-so-fancy")
+settingsfiles = [".vim", ".bashrc", ".tmux.conf", ".gitconfig", ".bash_git", ".profile", ".bash_completion", ".bash_completion.d", diff_so_fancy]
+rust_binaries = ["cargo", "install-update", "-i", "cargo-update", "cargo-watch", "ripgrep", "fd-find", "tokei", "exa", "bat"]
 rust_nightly_binaries = ["cargo", "+nightly", "install-update", "-i", "racer"]
 
 parser = ArgumentParser(description='Setup the machine')
@@ -21,7 +21,7 @@ args = parser.parse_args()
 for stuff in settingsfiles:
     linkpath = join(homefolder, stuff)
     sourcepath = join(dotfilespath, stuff)
-    if exists(linkpath):
+    if islink(linkpath):
         remove(linkpath)
     symlink(sourcepath, linkpath)
 
@@ -59,9 +59,8 @@ if args.internet:
     ps = Popen(["curl", "https://sh.rustup.rs", "-sSf"], stdout=PIPE)
     call(["sh", "-s", "--", "-y"], stdin=ps.stdout)
     ps.wait()
-    remove(join("bin", "diff-so-fancy"))
-    call(["wget", "-P", "bin", "https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy"])
-    call(["chmod", "+x", join("bin", "diff-so-fancy")])
+    call(["wget", "-N", "-P", "bin", "https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy"])
+    call(["chmod", "+x", diff_so_fancy])
     call(["rustup", "update", "stable"])
     call(["rustup", "component", "add", "rustfmt"])
     call(["rustup", "component", "add", "rust-src"])
