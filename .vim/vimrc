@@ -1,92 +1,52 @@
-" leaders {{{
-let mapleader=","
-let maplocalleader="\\"
-" }}}
-" maps {{{
-let g:bash_ctrl_j='off'
-
-" open and source the vimrc file ev=edit vimrc sv=source vimrc
-nnoremap <leader>ev :e $MYVIMRC<cr>
-nnoremap <leader>sv :source $MYVIMRC<cr>
-nnoremap <leader>q :bp\|bd #<cr>
-
-nnoremap <c-l> <c-w>l
-nnoremap <c-r> <c-w>r
-
-nnoremap j gj
-nnoremap k gk
-nnoremap <down> 3jzz
-nnoremap <up> 3kzz
-nnoremap <leader>f gg=g
-nnoremap <s-h> :bp<cr>
-nnoremap <s-l> :bn<cr>
-
-inoremap jk <esc>
-
-" Disable ctrl + Left/Right which deletes stuff
-nnoremap <esc>[1;5D <nop>
-nnoremap <esc>[1;5C <nop>
-inoremap <esc>[1;5D <nop>
-inoremap <esc>[1;5C <nop>
-nnoremap <lt> <nop>
-nnoremap > <nop>
-nnoremap <c-r> <c-r>
-
-" Delete current selection to the black hole registry before pasting,
-" keeping the currently pasted text instead of overwriting it.
-vnoremap p "_dP
-
-" key-mappings for comment line in normal mode
-noremap  <silent> gc :call CommentLine()<cr>
-" key-mappings for range comment lines in visual <shift-v> mode
-vnoremap <silent> gc :call RangeCommentLine()<cr>
-
-" key-mappings for un-comment line in normal mode
-noremap  <silent> gC :call UnCommentLine()<cr>
-" key-mappings for range un-comment lines in visual <shift-v> mode
-vnoremap <silent> gC :call RangeUnCommentLine()<cr>
-
-" save file with sudo permissions
-:cmap w!! w !sudo tee %
-
-" space to toggle folds.
-nnoremap <space> za
-vnoremap <space> za
-
-" }}}
 " Plugins {{{
-" Vundle {{{
-set nocompatible
-filetype off
-set rtp+=~/.vim/bundle/Vundle.vim
+" Vim-plug {{{
+let vimplug_exists=expand('~/.vim/autoload/plug.vim')
+if !filereadable(vimplug_exists)
+  if !executable("curl")
+    echoerr "You have to install curl or first install vim-plug yourself!"
+    execute "q!"
+  endif
+  echo "Installing Vim-Plug..."
+  echo ""
+  silent exec "!\curl -fLo " . vimplug_exists . " --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+  let g:not_finish_vimplug = "yes"
 
-call vundle#begin()
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'davidhalter/jedi-vim'
-Plugin 'elzr/vim-json'
-Plugin 'fatih/vim-go'
-Plugin 'godlygeek/tabular'
-Plugin 'honza/vim-snippets'
-Plugin 'iamcco/markdown-preview.nvim'
-Plugin 'junegunn/fzf'
-Plugin 'junegunn/fzf.vim'
-Plugin 'lepture/vim-jinja'
-Plugin 'nsf/gocode',{'rtp':'vim/'}
-Plugin 'plasticboy/vim-markdown'
-Plugin 'racer-rust/vim-racer'
-Plugin 'rust-lang/rust.vim'
-Plugin 'scrooloose/nerdtree'
-Plugin 'sirver/ultisnips'
-Plugin 'timonv/vim-cargo'
-Plugin 'tpope/vim-fugitive'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'vim-scripts/VimCompletesMe'
-Plugin 'vim-syntastic/syntastic'
+  autocmd VimEnter * PlugInstall
+endif
 
-call vundle#end()
+call plug#begin(expand('~/.vim/plugged'))
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+
+Plug 'airblade/vim-gitgutter'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'davidhalter/jedi-vim'
+Plug 'elzr/vim-json'
+Plug 'fatih/vim-go', {'do': ':GoInstallBinaries'}
+Plug 'godlygeek/tabular'
+Plug 'iamcco/markdown-preview.nvim'
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
+Plug 'lepture/vim-jinja'
+Plug 'plasticboy/vim-markdown'
+Plug 'racer-rust/vim-racer'
+Plug 'rust-lang/rust.vim'
+Plug 'scrooloose/nerdtree'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+Plug 'timonv/vim-cargo'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'vim-scripts/VimCompletesMe'
+Plug 'vim-syntastic/syntastic'
+
+call plug#end()
 
 filetype plugin indent on
 " }}}
@@ -137,6 +97,62 @@ let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 let g:UltiSnipsEditSplit="context"
 " }}}
+" }}}
+" leaders {{{
+let mapleader=","
+let maplocalleader="\\"
+" }}}
+" maps {{{
+let g:bash_ctrl_j='off'
+
+" open and source the vimrc file ev=edit vimrc sv=source vimrc
+nnoremap <leader>ev :e ~/.dotfiles/.vim/vimrc<cr>
+nnoremap <leader>sv :source $MYVIMRC<cr>
+nnoremap <leader>q :bp\|bd #<cr>
+
+nnoremap <c-l> <c-w>l
+nnoremap <c-r> <c-w>r
+
+nnoremap j gj
+nnoremap k gk
+nnoremap <down> 3jzz
+nnoremap <up> 3kzz
+nnoremap <leader>f gg=g
+nnoremap <s-h> :bp<cr>
+nnoremap <s-l> :bn<cr>
+
+inoremap jk <esc>
+
+" Disable ctrl + Left/Right which deletes stuff
+nnoremap <esc>[1;5D <nop>
+nnoremap <esc>[1;5C <nop>
+inoremap <esc>[1;5D <nop>
+inoremap <esc>[1;5C <nop>
+nnoremap <lt> <nop>
+nnoremap > <nop>
+nnoremap <c-r> <c-r>
+
+" Delete current selection to the black hole registry before pasting,
+" keeping the currently pasted text instead of overwriting it.
+vnoremap p "_dP
+
+" key-mappings for comment line in normal mode
+noremap  <silent> gc :call CommentLine()<cr>
+" key-mappings for range comment lines in visual <shift-v> mode
+vnoremap <silent> gc :call RangeCommentLine()<cr>
+
+" key-mappings for un-comment line in normal mode
+noremap  <silent> gC :call UnCommentLine()<cr>
+" key-mappings for range un-comment lines in visual <shift-v> mode
+vnoremap <silent> gC :call RangeUnCommentLine()<cr>
+
+" save file with sudo permissions
+:cmap w!! w !sudo tee %
+
+" space to toggle folds.
+nnoremap <space> za
+vnoremap <space> za
+
 " }}}
 " Basic settings and status line {{{
 set autoindent
@@ -216,235 +232,235 @@ augroup FT_python
     autocmd FileType json setlocal equalprg=python3\ -m\ json.tool
 augroup END
 " }}}
-" Comments {{{
+""" Comments {{{
 
-" Exit if already loaded
-if exists("loaded_comments_plugin")
-    finish
-endif
+"" Exit if already loaded
+"if exists("loaded_comments_plugin")
+    "finish
+"endif
 
-let loaded_comments_plugin="v2.10"
+"let loaded_comments_plugin="v2.10"
 
-" function to comment line in normal mode
-function! CommentLine()
-    let file_name = buffer_name("%")
+"" function to comment line in normal mode
+"function! CommentLine()
+    "let file_name = buffer_name("%")
 
-    " for .cpp or .hpp or .java or .C files use //
-    if file_name =~ '\.cpp$' || file_name =~ '\.hpp$' || file_name =~ '\.java$' || file_name =~ '\.php[2345]\?$' || file_name =~ '\.C$' || file_name =~ '\.go$' || file_name =~ '\.rs$'
-        execute ":silent! normal ^i//\<ESC>==\<down>^"
-        " for .c or .h or .pc or .css files use /* */
-    elseif file_name =~ '\.c$' || file_name =~ '\.h$' || file_name =~ '\.pc$' || file_name =~ '\.css$' || file_name =~ '\.js$'
-        " if there are previous comments on this line ie /* ... */
-        if stridx(getline("."), "\/\*") != -1 && stridx(getline("."), "\*\/") != -1
-            execute ":silent! normal :nohlsearch\<CR>:s/\\([^\\/\\*]*\\)\\(\\/\\*.*\\*\\/\\)/\\1\\*\\/\\2/\<CR>:s/\\([^[:blank:]]\\+\\)/\\/\\*\\1/\<CR>:nohlsearch\<CR>=="
-            " if there is a /* but no */ like line 1 in Issue A above
-        elseif stridx(getline("."), "\/\*") != -1 && stridx(getline("."), "\*\/") == -1
-            execute ":silent! normal :nohlsearch\<CR>:s/\\(.*\\)\\(\\/\\*.*$\\)/\\/\\*\\1\\*\\/\\2\\*\\//\<CR>:nohlsearch\<CR>=="
-            " if there is a */ but no /* like line 5 in Issue A above
-        elseif stridx(getline("."), "\/\*") == -1 && stridx(getline("."), "\*\/") != -1
-            execute ":silent! normal :nohlsearch\<CR>:s/\\(.*\\*\\/\\)/\\/\\*\\1/\<CR>:nohlsearch\<CR>=="
-            " if there are no comments on this line
-        elseif stridx(getline("."), "\/\*") == -1 && stridx(getline("."), "\*\/") == -1
-            execute ":silent! normal ^i/*\<ESC>$a*/\<ESC>==\<down>^"
-        endif
-        "for .ml or .mli files use (* *)
-    elseif file_name =~ '\.ml$' || file_name =~ '\.mli$'
-        if stridx(getline("."), "\(\*") == -1 && stridx(getline("."), "\*)") == -1
-            execute ":silent! normal ^i(*\<ESC>$a*)\<ESC>==\<down>^"
-        endif
-        " .html,.xml,.xthml,.htm
-    elseif file_name =~ '\.html$' || file_name =~ '\.htm$' || file_name =~ '\.xml$' || file_name =~ '\.xhtml$'
-        if stridx( getline("."), "\<!--" ) != -1 && stridx( getline("."), "--\>" ) != -1
-        elseif stridx( getline("."), "\<!--" ) != -1 && stridx( getline("."), "--\>" ) == -1
-            "  open, but a close "
-            execute ":silent! normal ^A--\>\<ESC>==\<down>^"
-        elseif stridx( getline("."), "\<!--" ) == -1 && stridx( getline("."), "--\>" ) != -1
-            execute ":silent! normal ^i\<\!--\<ESC>==\<down>^"
-        elseif stridx( getline("."), "\<!--" ) == -1 && stridx( getline("."), "--\>" ) == -1
-            execute ":silent! normal ^i\<\!--\<ESC>$a--\>\<ESC>==\<down>^"
-        endif
-        " for .vim files use "
-    elseif file_name =~ '\.vim$' || file_name =~ 'vimrc$'
-        execute ":silent! normal ^i\"\<ESC>\<down>^"
-        " for .sql files use --
-    elseif file_name =~ '\.sql$'
-        execute ":silent! normal ^i--\<ESC>\<down>^"
-        " for .ksh or .sh or .csh or .pl or .pm files use #
-    elseif file_name =~ '\.[kc]\?sh$' || file_name =~ '\.pl$' || file_name =~ '\.pm$'
-        execute ":silent! normal ^i#\<ESC>\<down>^"
-        " for .tex files use %
-    elseif file_name =~ '\.tex$' || file_name =~ '\.nw$'
-        execute ":silent! normal ^i%\<ESC>\<down>^"
-        " for fortran 77 files use C on first column
-    elseif file_name =~ '\.f$' || file_name =~ '\.F$'
-        execute ":silent! normal ^gIC\<ESC>\<down>^"
-        " for fortran 90/95 files use !
-    elseif file_name =~ '\.f90$' || file_name =~ '\.F90$' || file_name =~ '\.f95$' || file_name =~ '\.F95$'
-        execute ":silent! normal ^i!\<ESC>\<down>^"
-        " for VHDL and Haskell files use --
-    elseif file_name =~ '\.vhd$' || file_name =~ '\.vhdl$' || file_name =~ '\.hs$'
-        execute ":silent! normal ^gI-- \<ESC>\<down>^"
-        " for all other files use #
-    else
-        execute ":silent! normal ^i#\<ESC>\<down>^"
-    endif
-endfunction
+    "" for .cpp or .hpp or .java or .C files use //
+    "if file_name =~ '\.cpp$' || file_name =~ '\.hpp$' || file_name =~ '\.java$' || file_name =~ '\.php[2345]\?$' || file_name =~ '\.C$' || file_name =~ '\.go$' || file_name =~ '\.rs$'
+        "execute ":silent! normal ^i//\<ESC>==\<down>^"
+        "" for .c or .h or .pc or .css files use /* */
+    "elseif file_name =~ '\.c$' || file_name =~ '\.h$' || file_name =~ '\.pc$' || file_name =~ '\.css$' || file_name =~ '\.js$'
+        "" if there are previous comments on this line ie /* ... */
+        "if stridx(getline("."), "\/\*") != -1 && stridx(getline("."), "\*\/") != -1
+            "execute ":silent! normal :nohlsearch\<CR>:s/\\([^\\/\\*]*\\)\\(\\/\\*.*\\*\\/\\)/\\1\\*\\/\\2/\<CR>:s/\\([^[:blank:]]\\+\\)/\\/\\*\\1/\<CR>:nohlsearch\<CR>=="
+            "" if there is a /* but no */ like line 1 in Issue A above
+        "elseif stridx(getline("."), "\/\*") != -1 && stridx(getline("."), "\*\/") == -1
+            "execute ":silent! normal :nohlsearch\<CR>:s/\\(.*\\)\\(\\/\\*.*$\\)/\\/\\*\\1\\*\\/\\2\\*\\//\<CR>:nohlsearch\<CR>=="
+            "" if there is a */ but no /* like line 5 in Issue A above
+        "elseif stridx(getline("."), "\/\*") == -1 && stridx(getline("."), "\*\/") != -1
+            "execute ":silent! normal :nohlsearch\<CR>:s/\\(.*\\*\\/\\)/\\/\\*\\1/\<CR>:nohlsearch\<CR>=="
+            "" if there are no comments on this line
+        "elseif stridx(getline("."), "\/\*") == -1 && stridx(getline("."), "\*\/") == -1
+            "execute ":silent! normal ^i/*\<ESC>$a*/\<ESC>==\<down>^"
+        "endif
+        ""for .ml or .mli files use (* *)
+    "elseif file_name =~ '\.ml$' || file_name =~ '\.mli$'
+        "if stridx(getline("."), "\(\*") == -1 && stridx(getline("."), "\*)") == -1
+            "execute ":silent! normal ^i(*\<ESC>$a*)\<ESC>==\<down>^"
+        "endif
+        "" .html,.xml,.xthml,.htm
+    "elseif file_name =~ '\.html$' || file_name =~ '\.htm$' || file_name =~ '\.xml$' || file_name =~ '\.xhtml$'
+        "if stridx( getline("."), "\<!--" ) != -1 && stridx( getline("."), "--\>" ) != -1
+        "elseif stridx( getline("."), "\<!--" ) != -1 && stridx( getline("."), "--\>" ) == -1
+            ""  open, but a close "
+            "execute ":silent! normal ^A--\>\<ESC>==\<down>^"
+        "elseif stridx( getline("."), "\<!--" ) == -1 && stridx( getline("."), "--\>" ) != -1
+            "execute ":silent! normal ^i\<\!--\<ESC>==\<down>^"
+        "elseif stridx( getline("."), "\<!--" ) == -1 && stridx( getline("."), "--\>" ) == -1
+            "execute ":silent! normal ^i\<\!--\<ESC>$a--\>\<ESC>==\<down>^"
+        "endif
+        "" for .vim files use "
+    "elseif file_name =~ '\.vim$' || file_name =~ 'vimrc$'
+        "execute ":silent! normal ^i\"\<ESC>\<down>^"
+        "" for .sql files use --
+    "elseif file_name =~ '\.sql$'
+        "execute ":silent! normal ^i--\<ESC>\<down>^"
+        "" for .ksh or .sh or .csh or .pl or .pm files use #
+    "elseif file_name =~ '\.[kc]\?sh$' || file_name =~ '\.pl$' || file_name =~ '\.pm$'
+        "execute ":silent! normal ^i#\<ESC>\<down>^"
+        "" for .tex files use %
+    "elseif file_name =~ '\.tex$' || file_name =~ '\.nw$'
+        "execute ":silent! normal ^i%\<ESC>\<down>^"
+        "" for fortran 77 files use C on first column
+    "elseif file_name =~ '\.f$' || file_name =~ '\.F$'
+        "execute ":silent! normal ^gIC\<ESC>\<down>^"
+        "" for fortran 90/95 files use !
+    "elseif file_name =~ '\.f90$' || file_name =~ '\.F90$' || file_name =~ '\.f95$' || file_name =~ '\.F95$'
+        "execute ":silent! normal ^i!\<ESC>\<down>^"
+        "" for VHDL and Haskell files use --
+    "elseif file_name =~ '\.vhd$' || file_name =~ '\.vhdl$' || file_name =~ '\.hs$'
+        "execute ":silent! normal ^gI-- \<ESC>\<down>^"
+        "" for all other files use #
+    "else
+        "execute ":silent! normal ^i#\<ESC>\<down>^"
+    "endif
+"endfunction
 
-" function to un-comment line in normal mode
-function! UnCommentLine()
-    let file_name = buffer_name("%")
+"" function to un-comment line in normal mode
+"function! UnCommentLine()
+    "let file_name = buffer_name("%")
 
-    " for .cpp or .hpp or .java or .C files use //
-    if file_name =~ '\.cpp$' || file_name =~ '\.hpp$' || file_name =~ '\.java$' || file_name =~ '\.php[2345]\?$' || file_name =~ '\.C$' || file_name =~ '\.go$' || file_name =~ '\.rs$'
-        execute ":silent! normal :nohlsearch\<CR>:s/\\/\\///\<CR>:nohlsearch\<CR>=="
-        " for .ml or .mli
-    elseif file_name =~ '\.ml$' || file_name =~ '\.mli$'
-        execute ":silent! normal :nohlsearch\<CR>:s/(\\*//\<CR>:nohlsearch\<CR>"
-        execute ":silent! normal :nohlsearch\<CR>:s/\\*)//\<CR>:nohlsearch\<CR>=="
-        " for .c or .h or .pc or .css files use /* */
-    elseif file_name =~ '\.c$' || file_name =~ '\.h$' || file_name =~ '\.pc$' || file_name =~ '\.css$' || file_name =~ '\.js$'
-        execute ":silent! normal :nohlsearch\<CR>:s/\\/\\*//\<CR>:s/\\*\\///\<CR>:nohlsearch\<CR>=="
-        " for .vim files use "
-    elseif file_name =~ '\.vim$' || file_name =~ 'vimrc$'
-        execute ":silent! normal :nohlsearch\<CR>:s/\\\"//\<CR>:nohlsearch\<CR>"
-        " for .sql files use --
-    elseif file_name =~ '\.sql$'
-        execute ":silent! normal :nohlsearch\<CR>:s/\\-\\-//\<CR>:nohlsearch\<CR>"
-        " for .ksh or .sh or .csh or .pl or .pm files use #
-    elseif file_name =~ '\.[kc]\?sh$' || file_name =~ '\.pl$' || file_name =~ '\.pm$'
-        execute ":silent! normal :nohlsearch\<CR>:s/\\#//\<CR>:nohlsearch\<CR>"
-        " for .xml .html .xhtml .htm use <!-- -->
-    elseif file_name =~ '\.html$' || file_name =~ '\.htm$' || file_name =~ '\.xml$' || file_name =~ '\.xhtml$'
-        execute ":silent! normal :nohlsearch\<CR>:s/<!--//\<CR>=="
-        execute ":silent! normal :nohlsearch\<CR>:s/-->//\<CR>=="
-        " for .tex use %
-    elseif file_name =~ '\.tex$' || file_name =~ '\.nw$'
-        execute ":silent! normal :nohlsearch\<CR>:s/%/\<CR>:nohlsearch\<CR>"
-        " for fortran 77 files use C on first column
-    elseif file_name =~ '\.f$' || file_name =~ '\.F$'
-        execute ":silent! normal ^x\<ESC>\<down>^"
-        " for fortran 90/95 files use !
-    elseif file_name =~ '\.f90$' || file_name =~ '\.F90$' || file_name =~ '\.f95$' || file_name =~ '\.F95$'
-        execute ":silent! normal :nohlsearch\<CR>:s/!//\<CR>:nohlsearch\<CR>"
-        " for VHDL and Haskell files use --
-    elseif file_name =~ '\.vhd$' || file_name =~ '\.vhdl$' || file_name =~ '\.hs$'
-        execute ":silent! normal :nohlsearch\<CR>:s/-- //\<CR>:nohlsearch\<CR>"
-        " for all other files use #
-    else
-        execute ":silent! normal :nohlsearch\<CR>:s/\\#//\<CR>:nohlsearch\<CR>"
-    endif
-endfunction
+    "" for .cpp or .hpp or .java or .C files use //
+    "if file_name =~ '\.cpp$' || file_name =~ '\.hpp$' || file_name =~ '\.java$' || file_name =~ '\.php[2345]\?$' || file_name =~ '\.C$' || file_name =~ '\.go$' || file_name =~ '\.rs$'
+        "execute ":silent! normal :nohlsearch\<CR>:s/\\/\\///\<CR>:nohlsearch\<CR>=="
+        "" for .ml or .mli
+    "elseif file_name =~ '\.ml$' || file_name =~ '\.mli$'
+        "execute ":silent! normal :nohlsearch\<CR>:s/(\\*//\<CR>:nohlsearch\<CR>"
+        "execute ":silent! normal :nohlsearch\<CR>:s/\\*)//\<CR>:nohlsearch\<CR>=="
+        "" for .c or .h or .pc or .css files use /* */
+    "elseif file_name =~ '\.c$' || file_name =~ '\.h$' || file_name =~ '\.pc$' || file_name =~ '\.css$' || file_name =~ '\.js$'
+        "execute ":silent! normal :nohlsearch\<CR>:s/\\/\\*//\<CR>:s/\\*\\///\<CR>:nohlsearch\<CR>=="
+        "" for .vim files use "
+    "elseif file_name =~ '\.vim$' || file_name =~ 'vimrc$'
+        "execute ":silent! normal :nohlsearch\<CR>:s/\\\"//\<CR>:nohlsearch\<CR>"
+        "" for .sql files use --
+    "elseif file_name =~ '\.sql$'
+        "execute ":silent! normal :nohlsearch\<CR>:s/\\-\\-//\<CR>:nohlsearch\<CR>"
+        "" for .ksh or .sh or .csh or .pl or .pm files use #
+    "elseif file_name =~ '\.[kc]\?sh$' || file_name =~ '\.pl$' || file_name =~ '\.pm$'
+        "execute ":silent! normal :nohlsearch\<CR>:s/\\#//\<CR>:nohlsearch\<CR>"
+        "" for .xml .html .xhtml .htm use <!-- -->
+    "elseif file_name =~ '\.html$' || file_name =~ '\.htm$' || file_name =~ '\.xml$' || file_name =~ '\.xhtml$'
+        "execute ":silent! normal :nohlsearch\<CR>:s/<!--//\<CR>=="
+        "execute ":silent! normal :nohlsearch\<CR>:s/-->//\<CR>=="
+        "" for .tex use %
+    "elseif file_name =~ '\.tex$' || file_name =~ '\.nw$'
+        "execute ":silent! normal :nohlsearch\<CR>:s/%/\<CR>:nohlsearch\<CR>"
+        "" for fortran 77 files use C on first column
+    "elseif file_name =~ '\.f$' || file_name =~ '\.F$'
+        "execute ":silent! normal ^x\<ESC>\<down>^"
+        "" for fortran 90/95 files use !
+    "elseif file_name =~ '\.f90$' || file_name =~ '\.F90$' || file_name =~ '\.f95$' || file_name =~ '\.F95$'
+        "execute ":silent! normal :nohlsearch\<CR>:s/!//\<CR>:nohlsearch\<CR>"
+        "" for VHDL and Haskell files use --
+    "elseif file_name =~ '\.vhd$' || file_name =~ '\.vhdl$' || file_name =~ '\.hs$'
+        "execute ":silent! normal :nohlsearch\<CR>:s/-- //\<CR>:nohlsearch\<CR>"
+        "" for all other files use #
+    "else
+        "execute ":silent! normal :nohlsearch\<CR>:s/\\#//\<CR>:nohlsearch\<CR>"
+    "endif
+"endfunction
 
-" function to range comment lines in visual mode
-function! RangeCommentLine()
-    let file_name = buffer_name("%")
+"" function to range comment lines in visual mode
+"function! RangeCommentLine()
+    "let file_name = buffer_name("%")
 
-    " for .cpp or .hpp or .java or .C files use //
-    if file_name =~ '\.cpp$' || file_name =~ '\.hpp$' || file_name =~ '\.java$' || file_name =~ '\.php[2345]\?$' || file_name =~ '\.C$' || file_name =~ '\.go$' || file_name =~ '\.rs$'
-        execute ":silent! normal :s/\\S/\\/\\/\\0/\<CR>:nohlsearch<CR>=="
-        " for .c or .h or .pc or .css files use /* */
-    elseif file_name =~ '\.c$' || file_name =~ '\.h$' || file_name =~ '\.pc$' || file_name =~ '\.css$' || file_name =~ '\.js$'
-        " if there are previous comments on this line ie /* ... */
-        if stridx(getline("."), "\/\*") != -1 && stridx(getline("."), "\*\/") != -1
-            execute ":silent! normal :nohlsearch\<CR>:s/\\([^\\/\\*]*\\)\\(\\/\\*.*\\*\\/\\)/\\1\\*\\/\\2/\<CR>:s/\\([^[:blank:]]\\+\\)/\\/\\*\\1/\<CR>:nohlsearch\<CR>=="
-            " if there is a /* but no */ like line 1 in Issue A above
-        elseif stridx(getline("."), "\/\*") != -1 && stridx(getline("."), "\*\/") == -1
-            execute ":silent! normal :nohlsearch\<CR>:s/\\(.*\\)\\(\\/\\*.*$\\)/\\/\\*\\1\\*\\/\\2\\*\\//\<CR>:nohlsearch\<CR>=="
-            " if there is a */ but no /* like line 5 in Issue A above
-        elseif stridx(getline("."), "\/\*") == -1 && stridx(getline("."), "\*\/") != -1
-            execute ":silent! normal :nohlsearch\<CR>:s/\\(.*\\*\\/\\)/\\/\\*\\1/\<CR>:nohlsearch\<CR>=="
-            " if there are no comments on this line
-        elseif stridx(getline("."), "\/\*") == -1 && stridx(getline("."), "\*\/") == -1
-            execute ":silent! normal :s/\\(\\S.*$\\)/\\/\\*\\1\\*\\//\<CR>:nohlsearch\<CR>=="
-        endif
-        " .html,.xml,.xthml,.htm
-    elseif file_name =~ '\.html$' || file_name =~ '\.htm$' || file_name =~ '\.xml$' || file_name =~ '\.xhtml$'
-        if stridx( getline("."), "\<!--" ) != -1 && stridx( getline("."), "--\>" ) != -1
-        elseif stridx( getline("."), "\<!--" ) != -1 && stridx( getline("."), "--\>" ) == -1
-            "  open, but a close "
-            execute ":silent! normal ^A--\>\<ESC>==\<down>^"
-        elseif stridx( getline("."), "\<!--" ) == -1 && stridx( getline("."), "--\>" ) != -1
-            execute ":silent! normal ^i\<\!--\<ESC>==\<down>^"
-        elseif stridx( getline("."), "\<!--" ) == -1 && stridx( getline("."), "--\>" ) == -1
-            execute ":silent! normal ^i\<\!--\<ESC>$a--\>\<ESC>==\<down>^"
-        endif
-        " for .ml, .mli files use (* *)
-    elseif file_name =~ '\.ml$' || file_name =~ '\.mli'
-        if stridx(getline("."), "\(\*") == -1 && stridx(getline("."), "\*)/") == -1
-            execute ":silent! normal ^i\(*\<ESC>$a*)\<ESC>==\<down>^"
-        endif
-        " for .vim files use --
-    elseif file_name =~ '\.vim$' || file_name =~ 'vimrc$'
-        execute ":silent! normal :s/\\S/\\\"\\0/\<CR>:nohlsearch<CR>"
-        " for .sql files use --
-    elseif file_name =~ '\.sql$'
-        execute ":silent! normal :s/\\S/\\-\\-\\0/\<CR>:nohlsearch<CR>"
-        " for .ksh or .sh or .csh or .pl or .pm files use #
-    elseif file_name =~ '\.[kc]\?sh$' || file_name =~ '\.pl$' || file_name =~ '\.pm$'
-        execute ":silent! normal :s/\\S/\\#\\0/\<CR>:nohlsearch<CR>"
-        " for .tex use %
-    elseif file_name =~ '\.tex$' || file_name =~ '\.nw$'
-        execute ":silent! normal :s/\\S/\\%\\0/\<CR>:nohlsearch<CR>"
-        " for fortran 77 files use C on first column
-    elseif file_name =~ '\.f$' || file_name =~ '\.F$'
-        execute ":silent! normal ^gIC\<ESC>\<down>^"
-        " for fortran 90/95 files use !
-    elseif file_name =~ '\.f90$' || file_name =~ '\.F90$' || file_name =~ '\.f95$' || file_name =~ '\.F95$'
-        execute ":silent! normal :s/\\S/!\\0/\<CR>:nohlsearch<CR>"
-        " for VHDL and Haskell files use --
-    elseif file_name =~ '\.vhd$' || file_name =~ '\.vhdl$' || file_name =~ '\.hs$'
-        execute ":silent! normal ^gI-- \<ESC>\<down>^"
-        " for all other files use #
-    else
-        execute ":silent! normal :s/\\S/\\#\\0/\<CR>:nohlsearch<CR>"
-    endif
-endfunction
+    "" for .cpp or .hpp or .java or .C files use //
+    "if file_name =~ '\.cpp$' || file_name =~ '\.hpp$' || file_name =~ '\.java$' || file_name =~ '\.php[2345]\?$' || file_name =~ '\.C$' || file_name =~ '\.go$' || file_name =~ '\.rs$'
+        "execute ":silent! normal :s/\\S/\\/\\/\\0/\<CR>:nohlsearch<CR>=="
+        "" for .c or .h or .pc or .css files use /* */
+    "elseif file_name =~ '\.c$' || file_name =~ '\.h$' || file_name =~ '\.pc$' || file_name =~ '\.css$' || file_name =~ '\.js$'
+        "" if there are previous comments on this line ie /* ... */
+        "if stridx(getline("."), "\/\*") != -1 && stridx(getline("."), "\*\/") != -1
+            "execute ":silent! normal :nohlsearch\<CR>:s/\\([^\\/\\*]*\\)\\(\\/\\*.*\\*\\/\\)/\\1\\*\\/\\2/\<CR>:s/\\([^[:blank:]]\\+\\)/\\/\\*\\1/\<CR>:nohlsearch\<CR>=="
+            "" if there is a /* but no */ like line 1 in Issue A above
+        "elseif stridx(getline("."), "\/\*") != -1 && stridx(getline("."), "\*\/") == -1
+            "execute ":silent! normal :nohlsearch\<CR>:s/\\(.*\\)\\(\\/\\*.*$\\)/\\/\\*\\1\\*\\/\\2\\*\\//\<CR>:nohlsearch\<CR>=="
+            "" if there is a */ but no /* like line 5 in Issue A above
+        "elseif stridx(getline("."), "\/\*") == -1 && stridx(getline("."), "\*\/") != -1
+            "execute ":silent! normal :nohlsearch\<CR>:s/\\(.*\\*\\/\\)/\\/\\*\\1/\<CR>:nohlsearch\<CR>=="
+            "" if there are no comments on this line
+        "elseif stridx(getline("."), "\/\*") == -1 && stridx(getline("."), "\*\/") == -1
+            "execute ":silent! normal :s/\\(\\S.*$\\)/\\/\\*\\1\\*\\//\<CR>:nohlsearch\<CR>=="
+        "endif
+        "" .html,.xml,.xthml,.htm
+    "elseif file_name =~ '\.html$' || file_name =~ '\.htm$' || file_name =~ '\.xml$' || file_name =~ '\.xhtml$'
+        "if stridx( getline("."), "\<!--" ) != -1 && stridx( getline("."), "--\>" ) != -1
+        "elseif stridx( getline("."), "\<!--" ) != -1 && stridx( getline("."), "--\>" ) == -1
+            ""  open, but a close "
+            "execute ":silent! normal ^A--\>\<ESC>==\<down>^"
+        "elseif stridx( getline("."), "\<!--" ) == -1 && stridx( getline("."), "--\>" ) != -1
+            "execute ":silent! normal ^i\<\!--\<ESC>==\<down>^"
+        "elseif stridx( getline("."), "\<!--" ) == -1 && stridx( getline("."), "--\>" ) == -1
+            "execute ":silent! normal ^i\<\!--\<ESC>$a--\>\<ESC>==\<down>^"
+        "endif
+        "" for .ml, .mli files use (* *)
+    "elseif file_name =~ '\.ml$' || file_name =~ '\.mli'
+        "if stridx(getline("."), "\(\*") == -1 && stridx(getline("."), "\*)/") == -1
+            "execute ":silent! normal ^i\(*\<ESC>$a*)\<ESC>==\<down>^"
+        "endif
+        "" for .vim files use --
+    "elseif file_name =~ '\.vim$' || file_name =~ 'vimrc$'
+        "execute ":silent! normal :s/\\S/\\\"\\0/\<CR>:nohlsearch<CR>"
+        "" for .sql files use --
+    "elseif file_name =~ '\.sql$'
+        "execute ":silent! normal :s/\\S/\\-\\-\\0/\<CR>:nohlsearch<CR>"
+        "" for .ksh or .sh or .csh or .pl or .pm files use #
+    "elseif file_name =~ '\.[kc]\?sh$' || file_name =~ '\.pl$' || file_name =~ '\.pm$'
+        "execute ":silent! normal :s/\\S/\\#\\0/\<CR>:nohlsearch<CR>"
+        "" for .tex use %
+    "elseif file_name =~ '\.tex$' || file_name =~ '\.nw$'
+        "execute ":silent! normal :s/\\S/\\%\\0/\<CR>:nohlsearch<CR>"
+        "" for fortran 77 files use C on first column
+    "elseif file_name =~ '\.f$' || file_name =~ '\.F$'
+        "execute ":silent! normal ^gIC\<ESC>\<down>^"
+        "" for fortran 90/95 files use !
+    "elseif file_name =~ '\.f90$' || file_name =~ '\.F90$' || file_name =~ '\.f95$' || file_name =~ '\.F95$'
+        "execute ":silent! normal :s/\\S/!\\0/\<CR>:nohlsearch<CR>"
+        "" for VHDL and Haskell files use --
+    "elseif file_name =~ '\.vhd$' || file_name =~ '\.vhdl$' || file_name =~ '\.hs$'
+        "execute ":silent! normal ^gI-- \<ESC>\<down>^"
+        "" for all other files use #
+    "else
+        "execute ":silent! normal :s/\\S/\\#\\0/\<CR>:nohlsearch<CR>"
+    "endif
+"endfunction
 
-" function to range un-comment lines in visual mode
-function! RangeUnCommentLine()
-    let file_name = buffer_name("%")
+"" function to range un-comment lines in visual mode
+"function! RangeUnCommentLine()
+    "let file_name = buffer_name("%")
 
-    " for .cpp or .hpp or .java files use //
-    if file_name =~ '\.cpp$' || file_name =~ '\.hpp$' || file_name =~ '\.java$' || file_name =~ '\.php[2345]\?$' || file_name =~ '\.C$' || file_name =~ '\.go$' || file_name =~ '\.rs$'
-        execute ":silent! normal :s/\\/\\///\<CR>:nohlsearch\<CR>=="
-        " for .c or .h or .pc or .css files use /* */
-    elseif file_name =~ '\.c$' || file_name =~ '\.h$' || file_name =~ '\.pc$' || file_name =~ '\.css$' || file_name =~ '\.js$'
-        execute ":silent! normal :nohlsearch\<CR>:s/\\/\\*//\<CR>:s/\\*\\///\<CR>:nohlsearch\<CR>=="
-        " for .vim files use "
-    elseif file_name =~ '\.vim$' || file_name =~ 'vimrc$'
-        execute ":silent! normal :s/\\\"//\<CR>:nohlsearch\<CR>"
-        " for .sql files use --
-    elseif file_name =~ '\.sql$'
-        execute ":silent! normal :s/\\-\\-//\<CR>:nohlsearch\<CR>"
-        " for .ml .mli
-    elseif file_name =~ '\.ml$' || file_name =~ '\.mli$'
-        execute ":silent! normal :nohlsearch\<CR>:s/(\\*//\<CR>=="
-        execute ":silent! normal :nohlsearch\<CR>:s/\\*)//\<CR>=="
-        " for .xml .html .xhtml .htm use <!-- -->
-    elseif file_name =~ '\.html$' || file_name =~ '\.htm$' || file_name =~ '\.xml$' || file_name =~ '\.xhtml$'
-        execute ":silent! normal :nohlsearch\<CR>:s/<!--//\<CR>=="
-        execute ":silent! normal :nohlsearch\<CR>:s/-->//\<CR>=="
-    elseif file_name =~ '\.[kc]\?sh$' || file_name =~ '\.pl$' || file_name =~ '\.pm$'
-        execute ":silent! normal :s/\\#//\<CR>:nohlsearch\<CR>"
-        " for .tex use %
-    elseif file_name =~ '\.tex$' || file_name =~ '\.nw$'
-        execute ":silent! normal :s/%/\<CR>:nohlsearch\<CR>"
-        " for fortran 77 files use C on first column
-    elseif file_name =~ '\.f$' || file_name =~ '\.F$'
-        execute ":silent! normal ^x\<ESC>\<down>^"
-        " for fortran 90/95 files use !
-    elseif file_name =~ '\.f90$' || file_name =~ '\.F90$' || file_name =~ '\.f95$' || file_name =~ '\.F95$'
-        execute ":silent! normal :s/!//\<CR>:nohlsearch\<CR>"
-        " for VHDL and Haskell files use --
-    elseif file_name =~ '\.vhd$' || file_name =~ '\.vhdl$' || file_name =~ '\.hs$'
-        execute ":silent! normal :s/-- //\<CR>:nohlsearch\<CR>"
-        " for all other files use #
-    else
-        execute ":silent! normal :s/\\#//\<CR>:nohlsearch\<CR>"
-    endif
-endfunction
+    "" for .cpp or .hpp or .java files use //
+    "if file_name =~ '\.cpp$' || file_name =~ '\.hpp$' || file_name =~ '\.java$' || file_name =~ '\.php[2345]\?$' || file_name =~ '\.C$' || file_name =~ '\.go$' || file_name =~ '\.rs$'
+        "execute ":silent! normal :s/\\/\\///\<CR>:nohlsearch\<CR>=="
+        "" for .c or .h or .pc or .css files use /* */
+    "elseif file_name =~ '\.c$' || file_name =~ '\.h$' || file_name =~ '\.pc$' || file_name =~ '\.css$' || file_name =~ '\.js$'
+        "execute ":silent! normal :nohlsearch\<CR>:s/\\/\\*//\<CR>:s/\\*\\///\<CR>:nohlsearch\<CR>=="
+        "" for .vim files use "
+    "elseif file_name =~ '\.vim$' || file_name =~ 'vimrc$'
+        "execute ":silent! normal :s/\\\"//\<CR>:nohlsearch\<CR>"
+        "" for .sql files use --
+    "elseif file_name =~ '\.sql$'
+        "execute ":silent! normal :s/\\-\\-//\<CR>:nohlsearch\<CR>"
+        "" for .ml .mli
+    "elseif file_name =~ '\.ml$' || file_name =~ '\.mli$'
+        "execute ":silent! normal :nohlsearch\<CR>:s/(\\*//\<CR>=="
+        "execute ":silent! normal :nohlsearch\<CR>:s/\\*)//\<CR>=="
+        "" for .xml .html .xhtml .htm use <!-- -->
+    "elseif file_name =~ '\.html$' || file_name =~ '\.htm$' || file_name =~ '\.xml$' || file_name =~ '\.xhtml$'
+        "execute ":silent! normal :nohlsearch\<CR>:s/<!--//\<CR>=="
+        "execute ":silent! normal :nohlsearch\<CR>:s/-->//\<CR>=="
+    "elseif file_name =~ '\.[kc]\?sh$' || file_name =~ '\.pl$' || file_name =~ '\.pm$'
+        "execute ":silent! normal :s/\\#//\<CR>:nohlsearch\<CR>"
+        "" for .tex use %
+    "elseif file_name =~ '\.tex$' || file_name =~ '\.nw$'
+        "execute ":silent! normal :s/%/\<CR>:nohlsearch\<CR>"
+        "" for fortran 77 files use C on first column
+    "elseif file_name =~ '\.f$' || file_name =~ '\.F$'
+        "execute ":silent! normal ^x\<ESC>\<down>^"
+        "" for fortran 90/95 files use !
+    "elseif file_name =~ '\.f90$' || file_name =~ '\.F90$' || file_name =~ '\.f95$' || file_name =~ '\.F95$'
+        "execute ":silent! normal :s/!//\<CR>:nohlsearch\<CR>"
+        "" for VHDL and Haskell files use --
+    "elseif file_name =~ '\.vhd$' || file_name =~ '\.vhdl$' || file_name =~ '\.hs$'
+        "execute ":silent! normal :s/-- //\<CR>:nohlsearch\<CR>"
+        "" for all other files use #
+    "else
+        "execute ":silent! normal :s/\\#//\<CR>:nohlsearch\<CR>"
+    "endif
+"endfunction
 
-" }}}
+"" }}}
 " Vim color scheme {{{
 "
 " Name:        southernlights256.vim

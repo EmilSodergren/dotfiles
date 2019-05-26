@@ -1,5 +1,5 @@
 from os.path import dirname, realpath, expanduser, join, exists, islink
-from os import symlink, remove, chdir, getcwd, remove
+from os import symlink, remove, chdir, getcwd, remove, makedirs
 from subprocess import call, check_output, Popen, PIPE
 from argparse import ArgumentParser
 import re
@@ -7,7 +7,8 @@ import re
 dotfilespath = dirname(realpath(__file__))
 homefolder = expanduser("~")
 diff_so_fancy = join("bin", "diff-so-fancy")
-settingsfiles = [".vim", ".bashrc", ".tmux.conf", ".gitconfig", ".bash_git", ".profile", ".bash_completion", ".bash_completion.d", diff_so_fancy]
+neovim_init = join(".config", "nvim", "vim.init")
+settingsfiles = [".vim", ".bashrc", ".tmux.conf", ".gitconfig", ".bash_git", ".profile", ".bash_completion", ".bash_completion.d", diff_so_fancy, neovim_init]
 rust_binaries = ["cargo", "install-update", "-i", "cargo-update", "cargo-watch", "ripgrep", "fd-find", "tokei", "exa", "bat"]
 rust_nightly_binaries = ["cargo", "+nightly", "install-update", "-i", "racer"]
 
@@ -23,6 +24,8 @@ for stuff in settingsfiles:
     sourcepath = join(dotfilespath, stuff)
     if islink(linkpath):
         remove(linkpath)
+    if !exists(dirname(linkpath)):
+        makedirs(linkpath, 0755)
     symlink(sourcepath, linkpath)
 
 gitconfig_path = join(dotfilespath, ".gitconfig")
@@ -49,11 +52,7 @@ with open(gitconfig_path, "wt") as fout:
     fout.write(file_content)
 
 if args.internet:
-    if (not exists(homefolder+"/.dotfiles/.vim/bundle/Vundle.vim")):
-        call(["git", "clone", "https://github.com/VundleVim/Vundle.vim.git", homefolder+"/.dotfiles/.vim/bundle/Vundle.vim"])
-    if (not exists(homefolder+"/.dotfiles/tmux-resurrect")):
-        call(["git", "clone", "https://github.com/tmux-plugins/tmux-resurrect", homefolder+"/.dotfiles/tmux-resurrect"])
-    call(["vim","+VundleUpdate","+qall"])
+    call(["vim","+PlugInstall","+qall"])
     call(["vim", "+GoInstallBinaries", "+qall"])
 
     ps = Popen(["curl", "https://sh.rustup.rs", "-sSf"], stdout=PIPE)
@@ -65,10 +64,10 @@ if args.internet:
     call(["rustup", "component", "add", "rustfmt"])
     call(["rustup", "component", "add", "rust-src"])
     test = call(rust_binaries)
-    test2 = call(rust_nightly_binaries)
     if test != 0:
         call(["cargo", "install", "cargo-update"])
         call(rust_binaries)
+    test2 = call(rust_nightly_binaries)
     if test2 != 0:
         call(["rustup", "update", "nightly"])
         call(rust_nightly_binaries)
