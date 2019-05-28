@@ -35,13 +35,15 @@ if args.online:
     chdir(nvim3)
     call(["python3", "-m", "pip", "download", "pynvim"])
 
-if args.clean:
-    call(["make" "distclean"])
+if args.clean or args.install:
+    call(["sudo", "apt-get", "install", "ninja-build", "gettext", "libtool", "libtool-bin", "autoconf", "automake", "cmake", "g++", "pkg-config", "unzip"])
 
-if args.install:
-    call(["sudo", "apt-get", "install", "ninja-build", "gettext" "libtool" "libtool-bin" "autoconf" "automake" "cmake" "g++" "pkg-config" "unzip"])
-    call(["make" "CMAKE_BUILD_TYPE=Release"])
-    call(["sudo" "make" "install"])
+    if args.clean:
+        call(["make" "distclean"])
+
+    if args.install:
+        call(["make" "CMAKE_BUILD_TYPE=Release"])
+        call(["sudo" "make" "install"])
 
 if args.deps:
     call(["python", "-m", "pip", "install", join(nvim2, "*")])
