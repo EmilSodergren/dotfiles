@@ -24,7 +24,7 @@ for stuff in settingsfiles:
     sourcepath = join(dotfilespath, stuff)
     if islink(linkpath):
         remove(linkpath)
-    if !exists(dirname(linkpath)):
+    if not exists(dirname(linkpath)):
         makedirs(linkpath, 0755)
     symlink(sourcepath, linkpath)
 
