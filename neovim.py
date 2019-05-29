@@ -1,5 +1,5 @@
 from os.path import dirname, realpath, expanduser, join, exists, islink, basename
-from os import symlink, remove, chdir, getcwd, remove, makedirs
+from os import symlink, remove, chdir, listdir, getcwd, remove, makedirs
 from subprocess import call, check_output, Popen, PIPE
 from argparse import ArgumentParser
 import re
@@ -19,6 +19,13 @@ parser.add_argument('-p', '--pack', action='store_true', help='Pack neovim in a 
 args = parser.parse_args()
 
 call(["sudo", "apt", "install", "-y", "python-pip", "python3-pip"])
+if args.clean or args.install:
+    call(["sudo", "apt-get", "install", "ninja-build", "gettext", "libtool", "libtool-bin", "autoconf", "automake", "cmake", "g++", "pkg-config", "unzip"])
+
+    if args.clean:
+        chdir(neovimdir)
+        call(["sudo", "make", "distclean"])
+
 if args.online:
     if not exists(neovimdir):
         call(["git", "clone", "https://github.com/neovim/neovim.git", basename(neovimdir)])
@@ -35,21 +42,22 @@ if args.online:
     chdir(nvim3)
     call(["python3", "-m", "pip", "download", "pynvim"])
 
-if args.clean or args.install:
-    call(["sudo", "apt-get", "install", "ninja-build", "gettext", "libtool", "libtool-bin", "autoconf", "automake", "cmake", "g++", "pkg-config", "unzip"])
+    chdir(neovimdir)
+    call(["sudo", "make", "deps"])
 
-    if args.clean:
-        call(["make" "distclean"])
-
-    if args.install:
-        call(["make" "CMAKE_BUILD_TYPE=Release"])
-        call(["sudo" "make" "install"])
+if args.install:
+    call(["make", "CMAKE_BUILD_TYPE=RelWithDebInfo"])
+    call(["sudo", "make", "install"])
 
 if args.deps:
-    call(["python", "-m", "pip", "install", join(nvim2, "*")])
-    call(["python3", "-m", "pip", "install", join(nvim3, "*")])
+    chdir(nvim2)
+    call(["python2", "-m", "pip", "install", "-f", "./"] + listdir(nvim2) + ["--no-index"])
+    chdir(nvim3)
+    call(["python3", "-m", "pip", "install", "-f", "./"] + listdir(nvim3) + ["--no-index"])
 
 if args.pack:
     chdir(homefolder)
     call(["tar", "cfz", "neovim.tar.gz", basename(neovimdir)])
+    print("")
+    print("Neovim has been packed into " + join(homefolder, "neovim.tar.gz"))
 
