@@ -47,6 +47,7 @@ if args.online:
     call(["sudo", "make", "deps"])
 
 if args.install:
+    chdir(neovimdir)
     call(["make", "CMAKE_BUILD_TYPE=RelWithDebInfo"])
     call(["sudo", "make", "install"])
 
