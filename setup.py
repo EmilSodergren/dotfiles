@@ -7,7 +7,7 @@ import re
 dotfilespath = dirname(realpath(__file__))
 homefolder = expanduser("~")
 diff_so_fancy = join("bin", "diff-so-fancy")
-neovim_init = join(".config", "nvim", "vim.init")
+neovim_init = join(".config", "nvim", "init.vim")
 settingsfiles = [".vim", ".bashrc", ".tmux.conf", ".gitconfig", ".bash_git", ".profile", ".bash_completion", ".bash_completion.d", diff_so_fancy, neovim_init]
 rust_binaries = ["cargo", "install-update", "-i", "cargo-update", "cargo-watch", "ripgrep", "fd-find", "tokei", "exa", "bat"]
 rust_nightly_binaries = ["cargo", "+nightly", "install-update", "-i", "racer"]
@@ -24,7 +24,7 @@ for stuff in settingsfiles:
     if islink(linkpath):
         remove(linkpath)
     if not exists(dirname(linkpath)):
-        makedirs(linkpath, 0755)
+        makedirs(dirname(linkpath), 0755)
     symlink(sourcepath, linkpath)
 
 gitconfig_path = join(dotfilespath, ".gitconfig")
