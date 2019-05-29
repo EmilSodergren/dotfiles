@@ -1,6 +1,4 @@
-
-.vim/bundle/
-.vim/autoload/
+.vim/autoload
 .vim/plugged
 .vim/view
 tmux-resurrect/

@@ -16,7 +16,6 @@ parser = ArgumentParser(description='Setup the machine')
 
 parser.add_argument('-i', '--internet', action='store_true', help='Download stuff from the internet')
 parser.add_argument('-p', '--pack', action='store_true', help='Pack everything in dotfiles.tar.gz')
-parser.add_argument('-m', '--installmarkdown', action='store_true', help='Install markdown plugin dependencies')
 args = parser.parse_args()
 
 for stuff in settingsfiles:
@@ -71,9 +70,6 @@ if args.internet:
     if test2 != 0:
         call(["rustup", "update", "nightly"])
         call(rust_nightly_binaries)
-
-    print("Installing markdown-preview.nvim!")
-    call(["vim", "+call mkdp#util#install()", "+qall"])
 
     call(["vim", "+FZF", "+qall"])
 
