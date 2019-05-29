@@ -25,6 +25,7 @@ if args.clean or args.install:
     if args.clean:
         chdir(neovimdir)
         call(["sudo", "make", "distclean"])
+        call(["sudo", "rm", "-rf", nvim2, nvim3])
 
 if args.online:
     if not exists(neovimdir):
