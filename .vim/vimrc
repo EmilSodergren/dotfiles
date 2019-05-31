@@ -21,6 +21,7 @@ endif
 call plug#begin(expand('~/.vim/plugged'))
 Plug 'airblade/vim-gitgutter'
 Plug 'davidhalter/jedi-vim', {'for': 'python'}
+Plug 'dhruvasagar/vim-zoom'
 Plug 'raimon49/requirements.txt.vim', {'for': 'requirements'}
 Plug 'elzr/vim-json', {'for': 'json'}
 Plug 'fatih/vim-go', {'for': 'go', 'do': ':GoInstallBinaries'}
@@ -32,6 +33,7 @@ Plug 'machakann/vim-highlightedyank'
 Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
 Plug 'racer-rust/vim-racer', {'for': 'rust'}
 Plug 'rust-lang/rust.vim', {'for': 'rust'}
+Plug 'simeji/winresizer'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'timonv/vim-cargo', {'for': 'rust'}
@@ -79,11 +81,9 @@ set updatetime=100
 " Go Plugins (vim-go) {{{
 let g:go_fmt_autosave = 1
 let g:go_fmt_command = "goimports"
-let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
-let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
 " }}}
 " Highlighted yank {{{
-let g:highlightedyank_highlight_duration = 1000
+let g:highlightedyank_highlight_duration = 2000
 " }}}
 " Markdown Plugins {{{
 let g:vim_markdown_folding_disabled = 1
@@ -93,6 +93,10 @@ let g:vim_markdown_json_frontmatter = 1
 
 let g:mkdp_browser = 'chromium'
 let g:mkdp_auto_close = 0
+" }}}
+" Win Resize/Vim Zoom {{{
+let g:winresizer_start_key = '<c-a>'
+nmap <c-w>z <Plug>(zoom-toggle)
 " }}}
 " Rust Plugins {{{
 let g:rustfmt_autosave = 1
@@ -172,6 +176,9 @@ nnoremap <up> 3kzz
 nnoremap <leader>f gg=g
 nnoremap <s-h> :bp<cr>
 nnoremap <s-l> :bn<cr>
+
+nnoremap <c-w>\| <c-w>v
+nnoremap <c-w>- <c-w>s
 
 inoremap jk <esc>
 

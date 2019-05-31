@@ -24,7 +24,7 @@ for stuff in settingsfiles:
     if islink(linkpath):
         remove(linkpath)
     if not exists(dirname(linkpath)):
-        makedirs(dirname(linkpath), 0755)
+        makedirs(dirname(linkpath), 0o755)
     symlink(sourcepath, linkpath)
 
 gitconfig_path = join(dotfilespath, ".gitconfig")
@@ -51,8 +51,10 @@ with open(gitconfig_path, "wt") as fout:
     fout.write(file_content)
 
 if args.internet:
-    call(["vim","+PlugInstall","+qall"])
-    call(["vim", "+GoInstallBinaries", "+qall"])
+    try:
+        call(["nvim", "+PlugUpgrade", "+PlugUpdate", "+GoInstallBinaries", "+UpdateRemotePlugins", "+qall"])
+    except FileNotFoundError:
+        call(["vim", "+PlugUpgrade", "+PlugUpdate", "+GoInstallBinaries", "+UpdateRemotePlugins", "+qall"])
 
     ps = Popen(["curl", "https://sh.rustup.rs", "-sSf"], stdout=PIPE)
     call(["sh", "-s", "--", "-y"], stdin=ps.stdout)
@@ -71,9 +73,8 @@ if args.internet:
         call(["rustup", "update", "nightly"])
         call(rust_nightly_binaries)
 
-    call(["vim", "+FZF", "+qall"])
-
-
 if args.pack:
     chdir(homefolder)
     call(["tar", "cfz", "dotfiles.tar.gz", ".dotfiles/", "go/bin/", ".cargo/bin/"])
+    print("")
+    print(".dotfiles has been packed into " + join(homefolder, "dotfiles.tar.gz"))
