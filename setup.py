@@ -75,6 +75,6 @@ if args.internet:
 
 if args.pack:
     chdir(homefolder)
-    call(["tar", "cfz", "dotfiles.tar.gz", ".dotfiles/", "go/bin/", ".cargo/bin/", ".fzf/bin"])
+    call(["tar", "cfz", "dotfiles.tar.gz", ".dotfiles/", "go/bin/", ".cargo/bin/", ".fzf"])
     print("")
     print(".dotfiles has been packed into " + join(homefolder, "dotfiles.tar.gz"))
