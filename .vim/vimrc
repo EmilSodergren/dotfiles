@@ -19,31 +19,31 @@ if !filereadable(vimplug_exists)
 endif
 
 call plug#begin(expand('~/.vim/plugged'))
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'airblade/vim-gitgutter'
-Plug 'davidhalter/jedi-vim'
+Plug 'davidhalter/jedi-vim', {'for': 'python'}
 Plug 'raimon49/requirements.txt.vim', {'for': 'requirements'}
-Plug 'elzr/vim-json'
-Plug 'fatih/vim-go', {'do': ':GoInstallBinaries'}
+Plug 'elzr/vim-json', {'for': 'json'}
+Plug 'fatih/vim-go', {'for': 'go', 'do': ':GoInstallBinaries'}
 Plug 'iamcco/markdown-preview.nvim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
 Plug 'junegunn/fzf.vim'
-Plug 'lepture/vim-jinja'
-Plug 'plasticboy/vim-markdown'
-Plug 'racer-rust/vim-racer'
-Plug 'rust-lang/rust.vim'
+Plug 'lepture/vim-jinja', {'for': 'jinja'}
+Plug 'machakann/vim-highlightedyank'
+Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
+Plug 'racer-rust/vim-racer', {'for': 'rust'}
+Plug 'rust-lang/rust.vim', {'for': 'rust'}
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
-Plug 'timonv/vim-cargo'
+Plug 'timonv/vim-cargo', {'for': 'rust'}
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
+Plug 'tpope/vim-unimpaired'
+Plug 'vimlab/split-term.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'w0rp/ale'
+Plug 'Raimondi/delimitMate'
 
 call plug#end()
 
@@ -81,6 +81,9 @@ let g:go_fmt_autosave = 1
 let g:go_fmt_command = "goimports"
 let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
 let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
+" }}}
+" Highlighted yank {{{
+let g:highlightedyank_highlight_duration = 1000
 " }}}
 " Markdown Plugins {{{
 let g:vim_markdown_folding_disabled = 1
@@ -120,6 +123,7 @@ set formatoptions-=t
 set hidden
 set hlsearch
 set incsearch
+set inccommand=split
 set ignorecase
 set laststatus=2
 set noruler
@@ -151,9 +155,13 @@ let g:python3_host_prog='/usr/bin/python3'
 nnoremap <leader>ev :e ~/.dotfiles/.vim/vimrc<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
 nnoremap <leader>q :bp\|bd #<cr>
-
 nnoremap <c-l> <c-w>l
 nnoremap <c-r> <c-w>r
+
+nnoremap <a-h> <c-w>h
+nnoremap <a-j> <c-w>j
+nnoremap <a-k> <c-w>k
+nnoremap <a-l> <c-w>l
 
 nnoremap n nzzzv
 nnoremap N Nzzzv
