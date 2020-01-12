@@ -3,3 +3,4 @@
 .vim/view
 tmux-resurrect/
 bin/
+*.pyc
