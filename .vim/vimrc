@@ -19,6 +19,16 @@ if !filereadable(vimplug_exists)
 endif
 
 call plug#begin(expand('~/.vim/plugged'))
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'deoplete-plugins/deoplete-jedi'
+Plug 'deoplete-plugins/deoplete-go'
+Plug 'sebastianmarkow/deoplete-rust'
+Plug 'wellle/tmux-complete.vim'
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
+
 Plug 'airblade/vim-gitgutter'
 Plug 'davidhalter/jedi-vim', {'for': 'python'}
 Plug 'dhruvasagar/vim-zoom'
@@ -44,7 +54,6 @@ Plug 'tpope/vim-unimpaired'
 Plug 'vimlab/split-term.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'w0rp/ale'
 Plug 'Raimondi/delimitMate'
 
 call plug#end()
@@ -66,6 +75,9 @@ let g:airline_right_sep = ''
 let g:airline_right_alt_sep = ''
 let g:airline_detect_modified=1
 " }}}
+" Deoplete {{{
+let g:deoplete#enable_at_startup = 1
+" }}}
 " Fuzzy Finder Plugin {{{
 nnoremap <leader>p :FZF<cr>
 " Search Files
@@ -84,6 +96,12 @@ let g:go_fmt_command = "goimports"
 " }}}
 " Highlighted yank {{{
 let g:highlightedyank_highlight_duration = 2000
+" }}}
+" Language Client {{{
+let g:LanguageClient_serverCommands = {
+    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
+    \ 'javascript': ['/usr/local/bin/pyls'],
+    \ }
 " }}}
 " Markdown Plugins {{{
 let g:vim_markdown_folding_disabled = 1
@@ -181,6 +199,8 @@ nnoremap <c-w>\| <c-w>v
 nnoremap <c-w>- <c-w>s
 
 inoremap jk <esc>
+
+inoremap <expr> <C-o> pumvisible() ? "\<C-n>" : "\<C-o>"
 
 " Disable ctrl + Left/Right which deletes stuff
 nnoremap <esc>[1;5D <nop>
