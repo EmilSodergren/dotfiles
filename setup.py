@@ -24,7 +24,7 @@ for stuff in settingsfiles:
     if islink(linkpath):
         remove(linkpath)
     if not exists(dirname(linkpath)):
-        makedirs(dirname(linkpath), 0o755)
+        makedirs(dirname(linkpath), exist_ok=True)
     symlink(sourcepath, linkpath)
 
 gitconfig_path = join(dotfilespath, ".gitconfig")
@@ -38,9 +38,6 @@ with open(gitconfig_path, "rt") as f:
         if result:
             replace_line = result.group(0)
             old_email = result.group(1) or "EmilSodergren@users.noreply.github.com"
-            # Rename raw_input to input on python3
-            try: input = raw_input
-            except NameError: pass
             new_email = input("Give mail ({}):".format(old_email)) or old_email
 
 file_content = ""
@@ -59,11 +56,13 @@ if args.internet:
     ps = Popen(["curl", "https://sh.rustup.rs", "-sSf"], stdout=PIPE)
     call(["sh", "-s", "--", "-y"], stdin=ps.stdout)
     ps.wait()
+    makedirs(join(homefolder, "bin"), exist_ok=True)
     call(["wget", "-N", "-P", "bin", "https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy"])
     call(["chmod", "+x", diff_so_fancy])
     call(["rustup", "update", "stable"])
     call(["rustup", "component", "add", "rustfmt"])
     call(["rustup", "component", "add", "rust-src"])
+    call(["rustup", "component", "add", "rls", "--toolchain", "stable-x86_64-unknown-linux-gnu"])
     test = call(rust_binaries)
     if test != 0:
         call(["cargo", "install", "cargo-update"])
