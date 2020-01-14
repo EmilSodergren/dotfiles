@@ -6,26 +6,25 @@ import re
 
 homefolder = expanduser("~")
 neovimdir = join(homefolder, "neovim")
-nvim2 = join(neovimdir, "pynvim", "python2")
-nvim3 = join(neovimdir, "pynvim", "python3")
+pynvim = join(neovimdir, "pynvim")
 
 parser = ArgumentParser(description='Setup the neovim program')
 
 parser.add_argument('-o', '--online', action='store_true', help='Download stuff from the internet')
 parser.add_argument('-i', '--install', action='store_true', help='Build and install neovim')
 parser.add_argument('-c', '--clean', action='store_true', help='Clean before build and install')
-parser.add_argument('-d', '--deps', action='store_true', help='Install dependencies')
 parser.add_argument('-p', '--pack', action='store_true', help='Pack neovim in a tar file')
 args = parser.parse_args()
 
-call(["sudo", "apt", "install", "-y", "python-pip", "python3-pip"])
+chdir(homefolder)
+call(["sudo", "apt", "install", "-y", "python3-pip"])
 if args.clean or args.install:
     call(["sudo", "apt-get", "install", "ninja-build", "gettext", "libtool", "libtool-bin", "autoconf", "automake", "cmake", "g++", "pkg-config", "unzip"])
 
     if args.clean:
         chdir(neovimdir)
         call(["sudo", "make", "distclean"])
-        call(["sudo", "rm", "-rf", nvim2, nvim3])
+        call(["sudo", "rm", "-rf", pynvim])
 
 if args.online:
     if not exists(neovimdir):
@@ -33,14 +32,9 @@ if args.online:
     chdir(neovimdir)
     call(["git", "pull"])
 
-    if not exists(nvim2):
-        makedirs(nvim2)
-    chdir(nvim2)
-    call(["python", "-m", "pip", "download", "pynvim"])
-
-    if not exists(nvim3):
-        makedirs(nvim3)
-    chdir(nvim3)
+    if not exists(pynvim):
+        makedirs(pynvim)
+    chdir(pynvim)
     call(["python3", "-m", "pip", "download", "pynvim"])
 
     chdir(neovimdir)
@@ -50,12 +44,8 @@ if args.install:
     chdir(neovimdir)
     call(["make", "CMAKE_BUILD_TYPE=RelWithDebInfo"])
     call(["sudo", "make", "install"])
-
-if args.deps:
-    chdir(nvim2)
-    call(["python2", "-m", "pip", "install", "-f", "./"] + listdir(nvim2) + ["--no-index"])
-    chdir(nvim3)
-    call(["python3", "-m", "pip", "install", "-f", "./"] + listdir(nvim3) + ["--no-index"])
+    chdir(pynvim)
+    call(["python3", "-m", "pip", "install", "--user", "-f", "./"] + listdir(pynvim) + ["--no-index"])
 
 if args.pack:
     chdir(homefolder)
