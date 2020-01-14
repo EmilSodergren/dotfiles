@@ -24,6 +24,9 @@ Plug 'deoplete-plugins/deoplete-jedi'
 Plug 'deoplete-plugins/deoplete-go'
 Plug 'sebastianmarkow/deoplete-rust'
 Plug 'wellle/tmux-complete.vim'
+Plug 'Shougo/echodoc.vim'
+Plug 'Shougo/neosnippet.vim'
+Plug 'Shougo/neosnippet-snippets'
 Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
     \ 'do': 'bash install.sh',
@@ -43,8 +46,6 @@ Plug 'machakann/vim-highlightedyank'
 Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
 Plug 'rust-lang/rust.vim', {'for': 'rust'}
 Plug 'simeji/winresizer'
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
@@ -72,6 +73,8 @@ let g:airline_detect_modified=1
 " }}}
 " Deoplete {{{
 let g:deoplete#enable_at_startup = 1
+let g:echodoc#enable_at_startup = 1
+let g:echodoc#type = 'signature'
 call deoplete#custom#option({
             \ 'auto_complete_delay': 200,
             \ 'smart_case': v:true,
@@ -122,13 +125,9 @@ nmap <c-w>z <Plug>(zoom-toggle)
 let g:rustfmt_autosave = 1
 let g:racer_experimental_completer = 1
 " }}}
-" Ultisnips {{{
-let g:UltiSnipsSnippetDirectories = ['~/.vim/bundle/vim-snippets/UltiSnips/','~/.vim/bundle/vim-snippets/snippets/', '~/.vim/UltiSnips']
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsListSnippets="<c-l>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-let g:UltiSnipsEditSplit="context"
+" Neosnippet {{{
+imap <expr><cr> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<cr>"
+smap <expr><cr> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<cr>"
 " }}}
 " }}}
 " Basic settings and status line {{{
@@ -136,7 +135,8 @@ set autoindent
 set backspace=2
 set clipboard=unnamed
 set cmdheight=2
-set completeopt+=longest
+set completeopt+=noinsert
+set completeopt+=noselect
 set conceallevel=2
 set encoding=utf-8
 set expandtab
@@ -202,7 +202,9 @@ nnoremap <c-w>- <c-w>s
 
 inoremap jk <esc>
 
-inoremap <expr> <C-o> pumvisible() ? "\<C-n>" : "\<C-o>"
+" Use C-o to go down the popup menu of deoplete
+inoremap <expr> <C-d> pumvisible() ? "\<C-n>" : "\<C-d>"
+inoremap <expr> <C-u> pumvisible() ? "\<C-p>" : "\<C-u>"
 
 " Disable ctrl + Left/Right which deletes stuff
 nnoremap <esc>[1;5D <nop>
@@ -237,7 +239,7 @@ augroup FT_vim
 augroup END
 augroup reload_vimrc
     autocmd!
-    autocmd BufWritePost $MYVIMRC source $MYVIMRC
+    autocmd BufWritePost $HOME . '/.vim/vimrc' source $MYVIMRC
 augroup END
 " }}}
 " Go file settings {{{
@@ -259,7 +261,7 @@ augroup FT_rust
     autocmd FileType rust nnoremap <leader>b :Cbuild <cr>
     autocmd FileType rust nnoremap <leader>i :Cinstall <cr>
     autocmd FileType rust nnoremap <leader>t :Ctest <cr>
-    " autocmd FileType rust nnoremap <leader>bt :! RUST_BACKTRACE=1 cargo test <cr>
+    autocmd FileType rust nnoremap <leader>bt :! RUST_BACKTRACE=1 cargo test <cr>
 augroup END
 " }}}
 " Python file settings {{{
