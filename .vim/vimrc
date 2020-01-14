@@ -41,7 +41,6 @@ Plug 'junegunn/fzf.vim'
 Plug 'lepture/vim-jinja', {'for': 'jinja'}
 Plug 'machakann/vim-highlightedyank'
 Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
-Plug 'racer-rust/vim-racer', {'for': 'rust'}
 Plug 'rust-lang/rust.vim', {'for': 'rust'}
 Plug 'simeji/winresizer'
 Plug 'SirVer/ultisnips'
