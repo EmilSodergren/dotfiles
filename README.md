@@ -13,11 +13,7 @@ Steps to compile and install Neovim editor
 
 ## Build / Install
 ```
-git clone https://github.com/neovim/neovim.git
-cd neovim
-sudo apt-get install ninja-build gettext libtool libtool-bin autoconf automake cmake g++ pkg-config unzip
-make distclean && make CMAKE_BUILD_TYPE=Release
-sudo make install
+python3 neovim.py -i -o [-c]
 ```
 ## Uninstall
 ```
