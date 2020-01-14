@@ -77,6 +77,13 @@ let g:airline_detect_modified=1
 " }}}
 " Deoplete {{{
 let g:deoplete#enable_at_startup = 1
+call deoplete#custom#option({
+            \ 'auto_complete_delay': 200,
+            \ 'smart_case': v:true,
+            \ 'check_stderr': v:false,
+            \ })
+let g:deoplete#sources#rust#racer_binary = systemlist('which racer')[0]
+let g:deoplete#sources#rust#rust_source_path = $HOME . '/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src'
 " }}}
 " Fuzzy Finder Plugin {{{
 nnoremap <leader>p :FZF<cr>
@@ -99,7 +106,7 @@ let g:highlightedyank_highlight_duration = 2000
 " }}}
 " Language Client {{{
 let g:LanguageClient_serverCommands = {
-    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
+    \ 'rust': [$HOME . '/.cargo/bin/rustup', 'run', 'stable', 'rls'],
     \ 'javascript': ['/usr/local/bin/pyls'],
     \ }
 " }}}
@@ -225,6 +232,7 @@ noremap  <silent> gc :Commentary<cr>
 nnoremap <space> za
 vnoremap <space> za
 
+autocmd TermOpen * set bufhidden=wipe
 " }}}
 " Vimscript file settings {{{
 augroup FT_vim
@@ -252,13 +260,11 @@ augroup END
 " Rust file settings {{{
 augroup FT_rust
     au!
-    autocmd FileType rust nnoremap <leader>r :Cargo run <cr>
-    autocmd FileType rust nnoremap <leader>b :Cargo build <cr>
-    autocmd FileType rust nnoremap <leader>i :Cargo install <cr>
-    autocmd FileType rust nnoremap <leader>t :Cargo test <cr>
-    autocmd FileType rust nnoremap <leader>bt :! RUST_BACKTRACE=1 cargo test <cr>
-    autocmd FileType rust nnoremap gd :execute "normal \<Plug>(rust-def)" <cr>
-    autocmd FileType rust nnoremap <leader>gd :execute "normal \<Plug>(rust-doc)" <cr>
+    autocmd FileType rust nnoremap <leader>r :Crun <cr>
+    autocmd FileType rust nnoremap <leader>b :Cbuild <cr>
+    autocmd FileType rust nnoremap <leader>i :Cinstall <cr>
+    autocmd FileType rust nnoremap <leader>t :Ctest <cr>
+    " autocmd FileType rust nnoremap <leader>bt :! RUST_BACKTRACE=1 cargo test <cr>
 augroup END
 " }}}
 " Python file settings {{{
