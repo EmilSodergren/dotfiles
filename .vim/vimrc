@@ -161,17 +161,18 @@ set fileformat=unix
 set formatoptions-=t
 set hidden
 set hlsearch
-set incsearch
-set inccommand=split
 set ignorecase
+set inccommand=split
+set incsearch
 set laststatus=2
 set noruler
 set noswapfile
 set nowrap
 set number
+set scrolloff=10
 set shiftwidth=4
 set showcmd
-set scrolloff=10
+set signcolumn=yes
 set smartcase
 set smartindent
 set softtabstop=4
@@ -193,6 +194,7 @@ match EndingWhiteSpace /\s\+\%#\@<!$/
 let g:bash_ctrl_j='off'
 let g:python_host_prog='/usr/bin/python2'
 let g:python3_host_prog='/usr/bin/python3'
+let g:python3_host_skip_check = 1
 
 " open and source the vimrc file ev=edit vimrc sv=source vimrc
 nnoremap <leader>ev :e ~/.dotfiles/.vim/vimrc<cr>
@@ -212,7 +214,7 @@ nnoremap j gj
 nnoremap k gk
 nnoremap <down> 3jzz
 nnoremap <up> 3kzz
-nnoremap <leader>f gg=g
+nnoremap <leader>f gg=G
 nnoremap <s-h> :bp<cr>
 nnoremap <s-l> :bn<cr>
 
@@ -233,6 +235,9 @@ inoremap <esc>[1;5C <nop>
 nnoremap <lt> <nop>
 nnoremap > <nop>
 nnoremap <c-r> <c-r>
+
+nnoremap <F2> :call LanguageClient#textDocument_rename()<cr>
+
 
 " Delete current selection to the black hole registry before pasting,
 " keeping the currently pasted text instead of overwriting it.
