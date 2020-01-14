@@ -45,12 +45,8 @@ Plug 'rust-lang/rust.vim', {'for': 'rust'}
 Plug 'simeji/winresizer'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
-Plug 'timonv/vim-cargo', {'for': 'rust'}
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-rhubarb'
-Plug 'tpope/vim-unimpaired'
-Plug 'vimlab/split-term.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'Raimondi/delimitMate'
