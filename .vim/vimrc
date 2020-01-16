@@ -196,6 +196,8 @@ let g:python_host_prog='/usr/bin/python2'
 let g:python3_host_prog='/usr/bin/python3'
 let g:python3_host_skip_check = 1
 
+let g:netrw_dirhistmax = 0
+
 " open and source the vimrc file ev=edit vimrc sv=source vimrc
 nnoremap <leader>ev :e ~/.dotfiles/.vim/vimrc<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
