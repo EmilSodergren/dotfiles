@@ -47,12 +47,18 @@ with open(gitconfig_path, "rt") as f:
 with open(gitconfig_path, "wt") as fout:
     fout.write(file_content)
 
+# Install dependencies for Rust binaries
+call(["sudo", "apt-get", "-y", "install", "libclang-dev"])
+
 if args.internet:
     try:
         call(["nvim", "+PlugUpgrade", "+PlugUpdate", "+GoInstallBinaries", "+UpdateRemotePlugins", "+qall"])
     except FileNotFoundError:
         call(["vim", "+PlugUpgrade", "+PlugUpdate", "+GoInstallBinaries", "+UpdateRemotePlugins", "+qall"])
-
+    gitCmd = "clone"
+    if exists(join(dotfilespath, "tmux-resurrect")):
+        gitCmd = "pull"
+    call(["git", gitCmd, "https://github.com/tmux-plugins/tmux-resurrect", join(dotfilespath, "tmux-resurrect")])
     ps = Popen(["curl", "https://sh.rustup.rs", "-sSf"], stdout=PIPE)
     call(["sh", "-s", "--", "-y"], stdin=ps.stdout)
     ps.wait()
