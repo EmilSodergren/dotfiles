@@ -20,9 +20,9 @@ endif
 
 call plug#begin(expand('~/.vim/plugged'))
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'deoplete-plugins/deoplete-jedi'
+Plug 'deoplete-plugins/deoplete-jedi', {'for': 'python'}
 Plug 'deoplete-plugins/deoplete-go', {'do': 'make'}
-Plug 'sebastianmarkow/deoplete-rust'
+Plug 'sebastianmarkow/deoplete-rust', {'for': 'rust'}
 Plug 'wellle/tmux-complete.vim'
 Plug 'Shougo/echodoc.vim'
 Plug 'Shougo/neosnippet.vim'
@@ -136,7 +136,7 @@ let g:mkdp_auto_close = 0
 let g:winresizer_start_key = '<c-a>'
 nmap <c-w>z <Plug>(zoom-toggle)
 " }}}
-" Rust Plugins {{{
+" Rust.vim {{{
 let g:rustfmt_autosave = 1
 let g:racer_experimental_completer = 1
 " }}}
