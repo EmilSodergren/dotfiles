@@ -8,6 +8,13 @@
 # for ssh logins, install and configure the libpam-umask package.
 #umask 022
 
+export TERM="screen-256color"
+export GOPATH="$HOME/go"
+export GOBIN="$GOPATH/bin"
+
+export PATH="/usr/local/go/bin:$GOBIN:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
+
 # if running bash
 if [ -n "$BASH_VERSION" ]; then
     # include .bashrc if it exists
@@ -20,10 +27,3 @@ fi
 if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
-
-export TERM="screen-256color"
-export GOPATH="$HOME/go"
-export GOBIN="$GOPATH/bin"
-
-export PATH="/usr/local/go/bin:$GOBIN:$PATH"
-export PATH="$HOME/.cargo/bin:$PATH"
