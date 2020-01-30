@@ -5,6 +5,7 @@
     default = simple
 [http]
     sslcapath = /etc/ldap/certs/
+    sslCAinfo = /etc/ssl/certs/ca-certificates.crt
 [credential "https://ninelv.vdc.saab.se"]
     user = u009893
 [credential]
