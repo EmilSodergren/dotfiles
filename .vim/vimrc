@@ -102,6 +102,8 @@ let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const
 nnoremap <leader>p :FZF<cr>
 " Search Files
 nnoremap <leader>sf :FZF<cr>
+" Search Files from home
+nnoremap <leader>sh :FZF ~ <cr>
 " Search Git
 nnoremap <leader>sg :GFiles<cr>
 " Search Lines

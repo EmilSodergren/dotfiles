@@ -25,7 +25,7 @@ if args.uninstall:
 chdir(homefolder)
 call(["sudo", "apt", "install", "-y", "python3-pip"])
 if args.clean or args.install:
-    call(["sudo", "apt-get", "install", "ninja-build", "gettext", "libtool", "libtool-bin", "autoconf", "automake", "cmake", "g++", "pkg-config", "unzip"])
+    call(["sudo", "apt-get", "install", "ninja-build", "gettext", "libtool", "libtool-bin", "autoconf", "automake", "cmake", "g++", "pkg-config", "unzip", "wget", "curl"])
 
     if args.clean and exists(neovimdir):
         chdir(neovimdir)

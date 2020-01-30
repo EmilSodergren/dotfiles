@@ -48,7 +48,7 @@ with open(gitconfig_path, "wt") as fout:
     fout.write(file_content)
 
 # Install dependencies for Rust binaries
-call(["sudo", "apt-get", "-y", "install", "libclang-dev"])
+call(["sudo", "apt-get", "-y", "install", "libclang-dev", "libssl-dev", "fonts-powerline", "python3-jedi"])
 
 if args.internet:
     try:
