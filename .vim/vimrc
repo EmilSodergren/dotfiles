@@ -35,6 +35,7 @@ if has('nvim')
 end
 
 Plug 'airblade/vim-gitgutter'
+Plug 'cyberkov/openhab-vim'
 Plug 'davidhalter/jedi-vim', {'for': 'python'}
 Plug 'dhruvasagar/vim-zoom'
 Plug 'elzr/vim-json', {'for': 'json'}
