@@ -19,18 +19,20 @@ if !filereadable(vimplug_exists)
 endif
 
 call plug#begin(expand('~/.vim/plugged'))
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'deoplete-plugins/deoplete-jedi', {'for': 'python'}
-Plug 'deoplete-plugins/deoplete-go', {'do': 'make'}
-Plug 'sebastianmarkow/deoplete-rust', {'for': 'rust'}
-Plug 'wellle/tmux-complete.vim'
-Plug 'Shougo/echodoc.vim'
-Plug 'Shougo/neosnippet.vim'
-Plug 'Shougo/neosnippet-snippets'
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
+if has('nvim')
+    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+    Plug 'deoplete-plugins/deoplete-jedi', {'for': 'python'}
+    Plug 'deoplete-plugins/deoplete-go', {'do': 'make'}
+    Plug 'sebastianmarkow/deoplete-rust', {'for': 'rust'}
+    Plug 'wellle/tmux-complete.vim'
+    Plug 'Shougo/echodoc.vim'
+    Plug 'Shougo/neosnippet.vim'
+    Plug 'Shougo/neosnippet-snippets'
+    Plug 'autozimu/LanguageClient-neovim', {
+        \ 'branch': 'next',
+        \ 'do': 'bash install.sh',
+        \ }
+end
 
 Plug 'airblade/vim-gitgutter'
 Plug 'davidhalter/jedi-vim', {'for': 'python'}
@@ -74,29 +76,31 @@ let g:airline_right_alt_sep = ''
 let g:airline_detect_modified=1
 " }}}
 " Deoplete {{{
-let g:deoplete#enable_at_startup = 1
-let g:echodoc#enable_at_startup = 1
-let g:echodoc#type = 'signature'
-call deoplete#custom#option({
-            \ 'auto_complete_delay': 200,
-            \ 'smart_case': v:true,
-            \ })
-call deoplete#custom#option({
-            \ 'ignore_sources': {'rust': ['LanguageClient']},
-            \ })
-call deoplete#custom#source('_',
-            \ 'max_abbr_width', 60)
+if has("nvim")
+    let g:deoplete#enable_at_startup = 1
+    let g:echodoc#enable_at_startup = 1
+    let g:echodoc#type = 'signature'
+    call deoplete#custom#option({
+                \ 'auto_complete_delay': 200,
+                \ 'smart_case': v:true,
+                \ })
+    call deoplete#custom#option({
+                \ 'ignore_sources': {'rust': ['LanguageClient']},
+                \ })
+    call deoplete#custom#source('_',
+                \ 'max_abbr_width', 60)
 
-call deoplete#custom#var('around', {
-            \   'range_above': 30,
-            \   'range_below': 15,
-            \   'mark_above': '[↑]',
-            \   'mark_below': '[↓]',
-            \   'mark_changes': '[*]',
-            \})
+    call deoplete#custom#var('around', {
+                \   'range_above': 30,
+                \   'range_below': 15,
+                \   'mark_above': '[↑]',
+                \   'mark_below': '[↓]',
+                \   'mark_changes': '[*]',
+                \})
 " GO
-let g:deoplete#sources#go#gocode_binary = $GOPATH . '/bin/gocode'
-let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
+    let g:deoplete#sources#go#gocode_binary = $GOPATH . '/bin/gocode'
+    let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
+end
 " }}}
 " Fuzzy Finder Plugin {{{
 nnoremap <leader>p :FZF<cr>
@@ -143,8 +147,10 @@ let g:rustfmt_autosave = 1
 let g:racer_experimental_completer = 1
 " }}}
 " Neosnippet {{{
-imap <expr><cr> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<cr>"
-smap <expr><cr> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<cr>"
+if has('nvim')
+    imap <expr><cr> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<cr>"
+    smap <expr><cr> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<cr>"
+end
 " }}}
 " }}}
 " Basic settings and status line {{{
