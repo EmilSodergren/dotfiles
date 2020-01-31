@@ -170,7 +170,6 @@ set formatoptions-=t
 set hidden
 set hlsearch
 set ignorecase
-set inccommand=split
 set incsearch
 set laststatus=2
 set noruler
@@ -187,6 +186,9 @@ set softtabstop=4
 set t_Co=256
 set tabstop=4
 set textwidth=0
+if has('nvim')
+    set inccommand=split
+end
 
 syntax on
 colorscheme southernlights
@@ -265,7 +267,9 @@ noremap  <silent> gc :Commentary<cr>
 nnoremap <space> za
 vnoremap <space> za
 
-autocmd TermOpen * set bufhidden=wipe
+if has('nvim')
+    autocmd TermOpen * set bufhidden=wipe
+end
 " }}}
 " Vimscript file settings {{{
 augroup FT_vim
