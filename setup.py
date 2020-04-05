@@ -10,7 +10,7 @@ diff_so_fancy = join("bin", "diff-so-fancy")
 neovim_init = join(".config", "nvim", "init.vim")
 settingsfiles = [".vim", ".bashrc", ".tmux.conf", ".gitconfig", ".bash_git", ".profile", ".bash_completion", ".bash_completion.d", diff_so_fancy, neovim_init]
 rust_binaries = ["cargo", "install-update", "-i", "cargo-update", "cargo-watch", "ripgrep", "fd-find", "tokei", "lsd", "bat"]
-rust_nightly_binaries = ["cargo", "+nightly", "install-update", "-i", "racer"]
+rust_analyzer = ["cargo", "install", "--git", "https://github.com/rust-analyzer/rust-analyzer",  "rust-analyzer"]
 
 parser = ArgumentParser(description='Setup the machine')
 
@@ -71,15 +71,11 @@ if args.internet:
     call(["rustup", "update", "stable"])
     call(["rustup", "component", "add", "rustfmt"])
     call(["rustup", "component", "add", "rust-src"])
-    call(["rustup", "component", "add", "rls", "--toolchain", "stable-x86_64-unknown-linux-gnu"])
     test = call(rust_binaries)
     if test != 0:
         call(["cargo", "install", "cargo-update"])
         call(rust_binaries)
-    test2 = call(rust_nightly_binaries)
-    if test2 != 0:
-        call(["rustup", "update", "nightly"])
-        call(rust_nightly_binaries)
+    call(rust_analyzer)
 
 if args.font:
     call(["sudo", "unzip", "-o", join(dotfilespath, "bin", "Hack.zip"), "-d", "/usr/local/share/fonts/"])

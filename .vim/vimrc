@@ -23,7 +23,6 @@ if has('nvim')
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
     Plug 'deoplete-plugins/deoplete-jedi', {'for': 'python'}
     Plug 'deoplete-plugins/deoplete-go', {'do': 'make', 'for': 'go'}
-    Plug 'sebastianmarkow/deoplete-rust', {'for': 'rust'}
     Plug 'wellle/tmux-complete.vim'
     Plug 'Shougo/echodoc.vim'
     Plug 'Shougo/neosnippet.vim'
@@ -85,9 +84,6 @@ if has("nvim")
                 \ 'auto_complete_delay': 200,
                 \ 'smart_case': v:true,
                 \ })
-    call deoplete#custom#option({
-                \ 'ignore_sources': {'rust': ['LanguageClient']},
-                \ })
     call deoplete#custom#source('_',
                 \ 'max_abbr_width', 60)
 
@@ -126,7 +122,7 @@ let g:highlightedyank_highlight_duration = 2000
 " }}}
 " Language Client {{{
 let g:LanguageClient_serverCommands = {
-    \ 'rust': [$HOME . '/.cargo/bin/rustup', 'run', 'stable', 'rls'],
+    \ 'rust': ['rust-analyzer'],
     \ 'javascript': ['/usr/local/bin/pyls'],
     \ }
 " }}}
@@ -145,8 +141,6 @@ nmap <c-w>z <Plug>(zoom-toggle)
 " }}}
 " Rust.vim {{{
 let g:rustfmt_autosave = 1
-let g:racer_experimental_completer = 1
-let g:racer_insert_paren = 1
 " }}}
 " Neosnippet {{{
 if has('nvim')
@@ -252,7 +246,9 @@ nnoremap <lt> <nop>
 nnoremap > <nop>
 nnoremap <c-r> <c-r>
 
-nnoremap <F2> :call LanguageClient#textDocument_rename()<cr>
+nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<cr>
+nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
 
 
 " Delete current selection to the black hole registry before pasting,
@@ -299,13 +295,12 @@ augroup END
 " Rust file settings {{{
 augroup FT_rust
     au!
-    autocmd FileType rust let g:deoplete#sources#rust#racer_binary = systemlist('which racer')[0]
     autocmd FileType rust let g:deoplete#sources#rust#rust_source_path = $HOME . '/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src'
     autocmd FileType rust nnoremap <leader>r :Crun <cr>
-    autocmd FileType rust nnoremap <leader>b :Cbuild <cr>
+    autocmd FileType rust nnoremap <leader>b :Cbuild <cr> <bar> <s-g>
     autocmd FileType rust nnoremap <leader>i :Cinstall <cr>
     autocmd FileType rust nnoremap <leader>t :Ctest -- --nocapture <cr> <bar> <s-g>
-    autocmd FileType rust nnoremap <leader>bt :! RUST_BACKTRACE=1 cargo test <cr>
+    autocmd FileType rust nnoremap <leader>bt :! RUST_BACKTRACE=1 cargo test <cr> <bar> <s-g>
 augroup END
 " }}}
 " Python file settings {{{
