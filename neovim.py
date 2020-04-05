@@ -36,6 +36,7 @@ if args.online:
     if not exists(neovimdir):
         call(["git", "clone", "https://github.com/neovim/neovim.git", basename(neovimdir)])
     chdir(neovimdir)
+    call(["git", "checkout", "--", "."])
     call(["git", "pull"])
 
     if not exists(pynvim):
@@ -44,7 +45,7 @@ if args.online:
     call(["python3", "-m", "pip", "download", "pynvim"])
 
     chdir(neovimdir)
-    call(["sudo", "make", "deps"])
+    call(["make", "deps"])
 
 if args.install:
     chdir(neovimdir)
