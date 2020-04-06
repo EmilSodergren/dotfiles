@@ -124,6 +124,7 @@ let g:highlightedyank_highlight_duration = 2000
 let g:LanguageClient_serverCommands = {
     \ 'rust': ['rust-analyzer'],
     \ 'javascript': ['/usr/local/bin/pyls'],
+    \ 'go': ['gopls'],
     \ }
 " }}}
 " Markdown Plugins {{{

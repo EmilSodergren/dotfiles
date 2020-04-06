@@ -15,7 +15,8 @@ rust_analyzer = ["cargo", "install", "--git", "https://github.com/rust-analyzer/
 parser = ArgumentParser(description='Setup the machine')
 
 parser.add_argument('-o', '--online', action='store_true', help='Download stuff from the internet')
-parser.add_argument('-sr', '--skip-rust', action='store_true', help='Skip donwloading and updating the rust toolchain')
+parser.add_argument('-u', '--update-go-binaries', action='store_true', help='Skip updating the go binaries')
+parser.add_argument('-sr', '--skip-rust', action='store_true', help='Skip downloading and updating the rust toolchain')
 parser.add_argument('-f', '--font', action='store_true', help='Install Nerd Fonts')
 parser.add_argument('-p', '--pack', action='store_true', help='Pack everything in dotfiles.tar.gz')
 args = parser.parse_args()
@@ -30,7 +31,7 @@ for stuff in settingsfiles:
     symlink(sourcepath, linkpath)
 
 gitconfig_path = join(dotfilespath, ".gitconfig")
-regex = re.compile(r"email = *(.*)$")
+regex = re.compile(r"email =( ?)(.*)$")
 replace_line = ""
 old_email = ""
 new_email = ""
@@ -39,7 +40,7 @@ with open(gitconfig_path, "rt") as f:
         result = regex.search(line)
         if result:
             replace_line = result.group(0)
-            old_email = result.group(1) or "EmilSodergren@users.noreply.github.com"
+            old_email = result.group(2) or "EmilSodergren@users.noreply.github.com"
             new_email = input("Give mail ({}):".format(old_email)) or old_email
 
 file_content = ""
@@ -54,9 +55,14 @@ call(["sudo", "apt-get", "-y", "install", "libclang-dev", "libssl-dev", "fonts-p
 
 if args.online:
     try:
-        call(["nvim", "+PlugUpgrade", "+PlugUpdate", "+GoInstallBinaries", "+UpdateRemotePlugins", "+qall"])
+        call(["nvim", "+PlugUpgrade", "+PlugUpdate", "+UpdateRemotePlugins", "+qall"])
     except FileNotFoundError:
-        call(["vim", "+PlugUpgrade", "+PlugUpdate", "+GoInstallBinaries", "+UpdateRemotePlugins", "+qall"])
+        call(["vim", "+PlugUpgrade", "+PlugUpdate", "+UpdateRemotePlugins", "+qall"])
+    if args.update_go_binaries:
+        try:
+            call(["nvim", "+set ft=go", "+GoUpdateBinaries", "+qall"])
+        except FileNotFoundError:
+            call(["vim", "+set ft=go", "+GoUpdateBinaries", "+qall"])
 
     if exists(join(dotfilespath, "tmux-resurrect")):
         call(["git", "-C", join(dotfilespath, "tmux-resurrect"), "pull"])
