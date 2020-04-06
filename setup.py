@@ -9,12 +9,13 @@ homefolder = expanduser("~")
 diff_so_fancy = join("bin", "diff-so-fancy")
 neovim_init = join(".config", "nvim", "init.vim")
 settingsfiles = [".vim", ".bashrc", ".tmux.conf", ".gitconfig", ".bash_git", ".profile", ".bash_completion", ".bash_completion.d", diff_so_fancy, neovim_init]
-rust_binaries = ["cargo", "install-update", "-i", "cargo-update", "cargo-watch", "ripgrep", "fd-find", "tokei", "lsd", "bat"]
+rust_binaries = ["cargo", "install", "cargo-watch", "ripgrep", "fd-find", "tokei", "lsd", "bat"]
 rust_analyzer = ["cargo", "install", "--git", "https://github.com/rust-analyzer/rust-analyzer",  "rust-analyzer"]
 
 parser = ArgumentParser(description='Setup the machine')
 
-parser.add_argument('-i', '--internet', action='store_true', help='Download stuff from the internet')
+parser.add_argument('-o', '--online', action='store_true', help='Download stuff from the internet')
+parser.add_argument('-sr', '--skip-rust', action='store_true', help='Skip donwloading and updating the rust toolchain')
 parser.add_argument('-f', '--font', action='store_true', help='Install Nerd Fonts')
 parser.add_argument('-p', '--pack', action='store_true', help='Pack everything in dotfiles.tar.gz')
 args = parser.parse_args()
@@ -51,31 +52,38 @@ with open(gitconfig_path, "wt") as fout:
 # Install dependencies for Rust binaries
 call(["sudo", "apt-get", "-y", "install", "libclang-dev", "libssl-dev", "fonts-powerline", "python3-jedi"])
 
-if args.internet:
+if args.online:
     try:
         call(["nvim", "+PlugUpgrade", "+PlugUpdate", "+GoInstallBinaries", "+UpdateRemotePlugins", "+qall"])
     except FileNotFoundError:
         call(["vim", "+PlugUpgrade", "+PlugUpdate", "+GoInstallBinaries", "+UpdateRemotePlugins", "+qall"])
-    gitCmd = ["git", "clone", "https://github.com/tmux-plugins/tmux-resurrect", join(dotfilespath, "tmux-resurrect")]
+
     if exists(join(dotfilespath, "tmux-resurrect")):
-        gitCmd = ["git", "-C", "tmux-resurrect", "pull"]
-    call(gitCmd)
-    ps = Popen(["curl", "https://sh.rustup.rs", "-sSf"], stdout=PIPE)
-    call(["sh", "-s", "--", "-y"], stdin=ps.stdout)
-    ps.wait()
+        call(["git", "-C", join(dotfilespath, "tmux-resurrect"), "pull"])
+        call(["git", "-C", join(dotfilespath, "tmux-continuum"), "pull"])
+    else:
+        call(["git", "clone", "https://github.com/tmux-plugins/tmux-resurrect", join(dotfilespath, "tmux-resurrect")])
+        call(["git", "clone", "https://github.com/tmux-plugins/tmux-continuum", join(dotfilespath, "tmux-continuum")])
+
     makedirs(join(homefolder, "bin"), exist_ok=True)
     call(["wget", "-N", "-P", "bin", "https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy"])
     call(["chmod", "+x", diff_so_fancy])
     call(["wget", "-N", "-P", "bin", "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Hack.zip"])
 
-    call(["rustup", "update", "stable"])
-    call(["rustup", "component", "add", "rustfmt"])
-    call(["rustup", "component", "add", "rust-src"])
-    test = call(rust_binaries)
-    if test != 0:
-        call(["cargo", "install", "cargo-update"])
-        call(rust_binaries)
-    call(rust_analyzer)
+    if not args.skip_rust:
+        ps = Popen(["curl", "https://sh.rustup.rs", "-sSf"], stdout=PIPE)
+        call(["sh", "-s", "--", "-y"], stdin=ps.stdout)
+        ps.wait()
+        call(["rustup", "update", "stable"])
+        call(["rustup", "component", "add", "rustfmt"])
+        call(["rustup", "component", "add", "rust-src"])
+
+        if exists(join(homefolder,".cargo", "bin", "cargo-install-update")):
+            call(["cargo", "install-update", "-ag"])
+        else:
+            call(rust_binaries)
+            call(rust_analyzer)
+            call(["cargo", "install", "cargo-update"])
 
 if args.font:
     call(["sudo", "unzip", "-o", join(dotfilespath, "bin", "Hack.zip"), "-d", "/usr/local/share/fonts/"])

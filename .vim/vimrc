@@ -211,10 +211,10 @@ nnoremap <leader>q :bp\|bd #<cr>
 nnoremap <c-l> <c-w>l
 nnoremap <c-r> <c-w>r
 
-nnoremap <a-h> <c-w>h
-nnoremap <a-j> <c-w>j
-nnoremap <a-k> <c-w>k
-nnoremap <a-l> <c-w>l
+nnoremap <c-h> <c-w>h
+nnoremap <c-j> <c-w>j
+nnoremap <c-k> <c-w>k
+nnoremap <c-l> <c-w>l
 
 nnoremap n nzzzv
 nnoremap N Nzzzv
@@ -222,7 +222,7 @@ nnoremap j gj
 nnoremap k gk
 nnoremap <down> 3jzz
 nnoremap <up> 3kzz
-nnoremap <leader>f gg=G
+nnoremap <leader>f gg=G <bar> :%s#\s\+$##e<cr>
 nnoremap <s-h> :bp<cr>
 nnoremap <s-l> :bn<cr>
 
@@ -231,7 +231,7 @@ nnoremap <c-w>- <c-w>s
 
 inoremap jk <esc>
 
-" Use C-o to go down the popup menu of deoplete
+" Use C-u/d to go up/down the popup menu of deoplete
 inoremap <expr> <C-d> pumvisible() ? "\<C-n>" : "\<C-d>"
 inoremap <expr> <C-u> pumvisible() ? "\<C-p>" : "\<C-u>"
 cnoremap <expr> <C-d> pumvisible() ? "\<C-n>" : "\<C-d>"

@@ -5,7 +5,7 @@ _util-docker()
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
     prev="${COMP_WORDS[COMP_CWORD-1]}"
-    opts="`util-docker | grep "^ " | tr -s [:space:] | awk '{print $1}'`"
+    opts="`util-docker | command grep "^ " | tr -s [:space:] | awk '{print $1}'`"
 
     COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
     return 0

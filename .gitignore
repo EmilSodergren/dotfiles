@@ -2,5 +2,6 @@
 .vim/plugged
 .vim/view
 tmux-resurrect/
+tmux-continuum/
 bin/
 *.pyc

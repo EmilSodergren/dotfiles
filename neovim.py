@@ -47,13 +47,14 @@ if args.online:
     chdir(neovimdir)
     call(["make", "deps"])
 
-if args.install:
-    chdir(neovimdir)
     # Can't get the make parameter CMAKE_BUILD_TYPE to take
     # Change the Makefile instead, before continuing
     for line in fileinput.input("Makefile", inplace=True):
         print(line.replace("Debug", "Release"), end="")
     call(["make"])
+
+if args.install:
+    chdir(neovimdir)
     call(["sudo", "make", "install"])
     chdir(pynvim)
     call(["python3", "-m", "pip", "install", "--user", "-f", "./"] + listdir(pynvim) + ["--no-index"])

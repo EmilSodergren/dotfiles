@@ -8,12 +8,15 @@
 # for ssh logins, install and configure the libpam-umask package.
 #umask 022
 
-export TERM="screen-256color"
+export TERM="konsole-256color"
 export GOPATH="$HOME/go"
 export GOBIN="$GOPATH/bin"
 
 export PATH="/usr/local/go/bin:$GOBIN:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
+which nvim > /dev/null 2>&1 && export EDITOR=nvim || export EDITOR=vim
+
+IGNOREREF=10
 
 # if running bash
 if [ -n "$BASH_VERSION" ]; then
