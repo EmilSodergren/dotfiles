@@ -61,6 +61,9 @@ if args.install:
 
 if args.pack:
     chdir(homefolder)
+    weird_file = join(neovimdir, ".deps", "build", "src", "luarocks", "spec", "fixtures", "abc.bz2")
+    if exists(weird_file):
+        remove(weird_file)
     call(["tar", "cfz", "neovim.tar.gz", basename(neovimdir)])
     print("")
     print("Neovim has been packed into " + join(homefolder, "neovim.tar.gz"))
