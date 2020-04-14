@@ -38,7 +38,7 @@ Plug 'cyberkov/openhab-vim'
 Plug 'davidhalter/jedi-vim', {'for': 'python'}
 Plug 'dhruvasagar/vim-zoom'
 Plug 'elzr/vim-json', {'for': 'json'}
-Plug 'fatih/vim-go', {'for': 'go', 'do': ':GoInstallBinaries'}
+Plug 'fatih/vim-go', {'do': ':GoInstallBinaries'}
 Plug 'iamcco/markdown-preview.nvim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
 Plug 'junegunn/fzf.vim'

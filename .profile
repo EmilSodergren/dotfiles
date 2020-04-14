@@ -22,8 +22,12 @@ IGNOREREF=10
 if [ -n "$BASH_VERSION" ]; then
     # include .bashrc if it exists
     if [ -f "$HOME/.bashrc" ]; then
-	. "$HOME/.bashrc"
+        . "$HOME/.bashrc"
     fi
+fi
+
+if [ -x `which tmux` ] && ! [ -x `tmux has-session -t emil` ]; then
+    nohup tmux new-session -d -t emil </dev/null > /dev/null 2>&1 &
 fi
 
 # set PATH so it includes user's private bin if it exists
