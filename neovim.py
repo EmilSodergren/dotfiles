@@ -1,9 +1,8 @@
-from os.path import dirname, realpath, expanduser, join, exists, islink, basename
-from os import symlink, remove, chdir, listdir, getcwd, remove, makedirs
-from subprocess import call, check_output, Popen, PIPE
+from os.path import expanduser, join, exists, basename
+from os import chdir, remove
+from subprocess import call
 from argparse import ArgumentParser
 import fileinput
-import re
 
 homefolder = expanduser("~")
 neovimdir = join(homefolder, "neovim")
@@ -28,7 +27,6 @@ if args.clean or args.install:
     if args.clean and exists(neovimdir):
         chdir(neovimdir)
         call(["sudo", "make", "distclean"])
-        call(["sudo", "rm", "-rf", pynvim])
 
 if args.online:
     if not exists(neovimdir):
@@ -36,10 +34,6 @@ if args.online:
     chdir(neovimdir)
     call(["git", "checkout", "--", "."])
     call(["git", "pull"])
-
-    if not exists(pynvim):
-        makedirs(pynvim)
-    chdir(pynvim)
 
     chdir(neovimdir)
     call(["make", "deps"])

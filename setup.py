@@ -1,6 +1,6 @@
 from os.path import dirname, realpath, expanduser, join, exists, islink
-from os import symlink, remove, chdir, listdir, getcwd, remove, makedirs
-from subprocess import call, check_output, Popen, PIPE
+from os import symlink, remove, chdir, makedirs
+from subprocess import call, Popen, PIPE
 from argparse import ArgumentParser
 import re
 
