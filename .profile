@@ -8,7 +8,11 @@
 # for ssh logins, install and configure the libpam-umask package.
 #umask 022
 
-export TERM="konsole-256color"
+if ! [ -x /usr/share/terminfo/k/konsole-256color ]; then
+    export TERM="konsole-256color"
+else
+    export TERM="xterm-256color"
+fi
 export GOPATH="$HOME/go"
 export GOBIN="$GOPATH/bin"
 
