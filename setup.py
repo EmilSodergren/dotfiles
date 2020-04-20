@@ -1,5 +1,5 @@
 from os.path import dirname, realpath, expanduser, join, exists, islink
-from os import symlink, remove, chdir, getcwd, remove, makedirs
+from os import symlink, remove, chdir, listdir, getcwd, remove, makedirs
 from subprocess import call, check_output, Popen, PIPE
 from argparse import ArgumentParser
 import re
@@ -71,10 +71,14 @@ if args.online:
         call(["git", "clone", "https://github.com/tmux-plugins/tmux-resurrect", join(dotfilespath, "tmux-resurrect")])
         call(["git", "clone", "https://github.com/tmux-plugins/tmux-continuum", join(dotfilespath, "tmux-continuum")])
 
+    call(["sudo", "apt", "install", "-y", "python3-pip"])
     makedirs(join(homefolder, "bin"), exist_ok=True)
     call(["wget", "-N", "-P", "bin", "https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy"])
     call(["chmod", "+x", diff_so_fancy])
     call(["wget", "-N", "-P", "bin", "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Hack.zip"])
+
+    call(["python3", "-m", "pip", "install", "python-language-server[rope,pyflakes,mccabe,pycodestyle,yapf]"])
+    call(["python3", "-m", "pip", "install", "pynvim"])
 
     if not args.skip_rust:
         ps = Popen(["curl", "https://sh.rustup.rs", "-sSf"], stdout=PIPE)
@@ -97,6 +101,6 @@ if args.font:
 
 if args.pack:
     chdir(homefolder)
-    call(["tar", "cfz", "dotfiles.tar.gz", ".dotfiles/", "go/bin/", ".cargo/bin/", ".fzf"])
+    call(["tar", "cfz", "dotfiles.tar.gz", ".dotfiles/", "go/bin/", ".cargo/bin/", ".local/bin", ".local/include", ".local/lib", ".fzf"])
     print("")
     print(".dotfiles has been packed into " + join(homefolder, "dotfiles.tar.gz"))

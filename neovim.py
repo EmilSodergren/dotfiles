@@ -7,7 +7,6 @@ import re
 
 homefolder = expanduser("~")
 neovimdir = join(homefolder, "neovim")
-pynvim = join(neovimdir, "pynvim")
 
 parser = ArgumentParser(description='Setup the neovim program')
 
@@ -23,7 +22,6 @@ if args.uninstall:
     call(["sudo", "rm", "-r", "/usr/local/share/nvim/"])
 
 chdir(homefolder)
-call(["sudo", "apt", "install", "-y", "python3-pip"])
 if args.clean or args.install:
     call(["sudo", "apt-get", "install", "ninja-build", "gettext", "libtool", "libtool-bin", "autoconf", "automake", "cmake", "g++", "pkg-config", "unzip", "wget", "curl"])
 
@@ -42,7 +40,6 @@ if args.online:
     if not exists(pynvim):
         makedirs(pynvim)
     chdir(pynvim)
-    call(["python3", "-m", "pip", "download", "pynvim"])
 
     chdir(neovimdir)
     call(["make", "deps"])
@@ -56,8 +53,6 @@ if args.online:
 if args.install:
     chdir(neovimdir)
     call(["sudo", "make", "install"])
-    chdir(pynvim)
-    call(["python3", "-m", "pip", "install", "--user", "-f", "./"] + listdir(pynvim) + ["--no-index"])
 
 if args.pack:
     chdir(homefolder)

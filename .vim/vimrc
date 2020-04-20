@@ -123,7 +123,7 @@ let g:highlightedyank_highlight_duration = 2000
 " Language Client {{{
 let g:LanguageClient_serverCommands = {
     \ 'rust': ['rust-analyzer'],
-    \ 'javascript': ['/usr/local/bin/pyls'],
+    \ 'python': ['pyls'],
     \ 'go': ['gopls'],
     \ }
 " }}}
