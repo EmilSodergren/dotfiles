@@ -1,0 +1,10 @@
+#!/bin/bash
+
+lastarg=${@: -1}
+
+if [[ $lastarg == *.docx ]]; then
+    docx2txt < "$lastarg" | less
+else
+    /usr/bin/antiword "$@"
+fi
+

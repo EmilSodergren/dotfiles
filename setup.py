@@ -6,9 +6,11 @@ import re
 
 dotfilespath = dirname(realpath(__file__))
 homefolder = expanduser("~")
-diff_so_fancy = join("bin", "diff-so-fancy")
+local_bin = join(".local", "bin")
+diff_so_fancy = join(local_bin, "diff-so-fancy")
+antiword = join(local_bin, "antiword")
 neovim_init = join(".config", "nvim", "init.vim")
-settingsfiles = [".vim", ".bashrc", ".tmux.conf", ".gitconfig", ".bash_git", ".profile", ".bash_completion", ".bash_completion.d", diff_so_fancy, neovim_init]
+settingsfiles = [".vim", ".bashrc", ".tmux.conf", ".gitconfig", ".bash_git", ".profile", ".bash_completion", ".bash_completion.d", diff_so_fancy, neovim_init, antiword]
 rust_binaries = ["cargo", "install", "cargo-watch", "ripgrep", "fd-find", "tokei", "lsd", "bat"]
 rust_analyzer = ["cargo", "install", "--git", "https://github.com/rust-analyzer/rust-analyzer",  "rust-analyzer"]
 
@@ -50,6 +52,8 @@ with open(gitconfig_path, "rt") as f:
 with open(gitconfig_path, "wt") as fout:
     fout.write(file_content)
 
+# Install good stuff
+call(["sudo", "apt-get", "-y", "install", "antiword", "docx2txt"])
 # Install dependencies for Rust binaries
 call(["sudo", "apt-get", "-y", "install", "libclang-dev", "libssl-dev", "fonts-powerline", "python3-jedi"])
 
@@ -72,8 +76,8 @@ if args.online:
         call(["git", "clone", "https://github.com/tmux-plugins/tmux-continuum", join(dotfilespath, "tmux-continuum")])
 
     call(["sudo", "apt", "install", "-y", "python3-pip"])
-    makedirs(join(homefolder, "bin"), exist_ok=True)
-    call(["wget", "-N", "-P", "bin", "https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy"])
+    makedirs(local_bin, exist_ok=True)
+    call(["wget", "-N", "-P", dirname(diff_so_fancy), "https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy"])
     call(["chmod", "+x", diff_so_fancy])
     call(["wget", "-N", "-P", "bin", "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Hack.zip"])
 

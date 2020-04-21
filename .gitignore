@@ -3,5 +3,6 @@
 .vim/view
 tmux-resurrect/
 tmux-continuum/
-bin/
+bin/Hack.zip
+.local/bin/diff-so-fancy
 *.pyc
