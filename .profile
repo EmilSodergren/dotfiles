@@ -31,7 +31,10 @@ if [ -n "$BASH_VERSION" ]; then
     fi
 fi
 
-if [ -x `which tmux` ] && ! [ -x `tmux has-session -t emil` ]; then
+`/usr/bin/which /usr/bin/tmux &> /dev/null`; TMUX_EXIST=$?
+`/usr/bin/pgrep tmux &> /dev/null`; TMUX_IS_RUNNING=$?
+
+if [ $TMUX_EXIST -eq 0 ] && [ $TMUX_IS_RUNNING -eq 1 ]; then
     nohup tmux new-session -d -t emil </dev/null > /dev/null 2>&1 &
 fi
 
