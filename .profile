@@ -8,7 +8,7 @@
 # for ssh logins, install and configure the libpam-umask package.
 #umask 022
 
-if ! [ -x /usr/share/terminfo/k/konsole-256color ]; then
+if [ -f /usr/share/terminfo/k/konsole-256color ]; then
     export TERM="konsole-256color"
 else
     export TERM="xterm-256color"
@@ -35,7 +35,9 @@ fi
 `/usr/bin/pgrep tmux &> /dev/null`; TMUX_IS_RUNNING=$?
 
 if [ $TMUX_EXIST -eq 0 ] && [ $TMUX_IS_RUNNING -eq 1 ]; then
+    echo "Running nohup <stuff>"
     nohup tmux new-session -d -t emil </dev/null > /dev/null 2>&1 &
+    echo "Code was $?"
 fi
 
 # set PATH so it includes user's private bin if it exists
