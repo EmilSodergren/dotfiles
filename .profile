@@ -31,15 +31,6 @@ if [ -n "$BASH_VERSION" ]; then
     fi
 fi
 
-`/usr/bin/which /usr/bin/tmux &> /dev/null`; TMUX_EXIST=$?
-`/usr/bin/pgrep tmux &> /dev/null`; TMUX_IS_RUNNING=$?
-
-if [ $TMUX_EXIST -eq 0 ] && [ $TMUX_IS_RUNNING -eq 1 ]; then
-    echo "Running nohup <stuff>"
-    nohup tmux new-session -d -t emil </dev/null > /dev/null 2>&1 &
-    echo "Code was $?"
-fi
-
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
