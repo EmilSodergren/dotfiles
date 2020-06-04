@@ -297,7 +297,7 @@ augroup END
 augroup FT_rust
     au!
     autocmd FileType rust let g:deoplete#sources#rust#rust_source_path = $HOME . '/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src'
-    autocmd FileType rust nnoremap <leader>r :Crun <cr>
+    autocmd FileType rust nnoremap <leader>r :Crun <cr> <bar> <s-g>
     autocmd FileType rust nnoremap <leader>b :Cbuild <cr> <bar> <s-g>
     autocmd FileType rust nnoremap <leader>i :Cinstall <cr>
     autocmd FileType rust nnoremap <leader>t :Ctest -- --nocapture <cr> <bar> <s-g>
