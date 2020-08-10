@@ -135,3 +135,7 @@ if [ $TMUX_EXIST -eq 0 ] && [ $TMUX_IS_RUNNING -eq 1 ]; then
     echo "Starting tmux server"
     nohup tmux new-session -d -t emil </dev/null > /dev/null 2>&1 &
 fi
+
+if [ -z $TMUX ]; then
+    tmux attach
+fi
