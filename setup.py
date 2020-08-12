@@ -17,7 +17,7 @@ rust_analyzer = ["cargo", "install", "--git", "https://github.com/rust-analyzer/
 parser = ArgumentParser(description='Setup the machine')
 
 parser.add_argument('-o', '--online', action='store_true', help='Download stuff from the internet')
-parser.add_argument('-u', '--update-go-binaries', action='store_true', help='Skip updating the go binaries')
+parser.add_argument('-u', '--update-go-binaries', action='store_true', help='Update the go binaries, requires manual restart of the script after completion')
 parser.add_argument('-sr', '--skip-rust', action='store_true', help='Skip downloading and updating the rust toolchain')
 parser.add_argument('-f', '--font', action='store_true', help='Install Nerd Fonts')
 parser.add_argument('-p', '--pack', action='store_true', help='Pack everything in dotfiles.tar.gz')
