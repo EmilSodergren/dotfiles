@@ -227,6 +227,8 @@ nnoremap <leader>f gg=G <bar> :%s#\s\+$##e<cr>
 nnoremap <s-h> :bp<cr>
 nnoremap <s-l> :bn<cr>
 
+nnoremap <c-g> 1<c-g>
+
 nnoremap <c-w>\| <c-w>v
 nnoremap <c-w>- <c-w>s
 
