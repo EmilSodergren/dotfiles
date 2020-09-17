@@ -12,7 +12,7 @@ bfg_jar = join(local_bin, "bfg-1.13.0.jar")
 antiword = join(local_bin, "antiword")
 neovim_init = join(".config", "nvim", "init.vim")
 settingsfiles = [".vim", ".bashrc", ".tmux.conf", ".gitconfig", ".bash_git", ".profile", ".bash_completion", ".bash_completion.d", diff_so_fancy, neovim_init, antiword, bfg_jar]
-rust_binaries = ["cargo", "install", "cargo-watch", "ripgrep", "fd-find", "tokei", "lsd", "bat"]
+rust_binaries = ["cargo", "install", "cargo-watch", "ripgrep", "fd-find", "tokei", "lsd", "bat", "clippy"]
 rust_analyzer = ["cargo", "install", "--git", "https://github.com/rust-analyzer/rust-analyzer",  "rust-analyzer"]
 
 parser = ArgumentParser(description='Setup the machine')
