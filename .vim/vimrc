@@ -22,7 +22,6 @@ call plug#begin(expand('~/.vim/plugged'))
 if has('nvim')
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
     Plug 'deoplete-plugins/deoplete-jedi', {'for': 'python'}
-    Plug 'deoplete-plugins/deoplete-go', {'do': 'make', 'for': 'go'}
     Plug 'wellle/tmux-complete.vim'
     Plug 'Shougo/echodoc.vim'
     Plug 'Shougo/neosnippet.vim'
@@ -42,13 +41,13 @@ Plug 'fatih/vim-go', {'do': ':GoInstallBinaries'}
 Plug 'iamcco/markdown-preview.nvim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
 Plug 'junegunn/fzf.vim'
+Plug 'jreybert/vimagit'
 Plug 'lepture/vim-jinja', {'for': 'jinja'}
 Plug 'machakann/vim-highlightedyank'
 Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
 Plug 'rust-lang/rust.vim', {'for': 'rust'}
 Plug 'simeji/winresizer'
 Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'Raimondi/delimitMate'
@@ -130,6 +129,10 @@ let g:LanguageClient_serverCommands = {
     \ 'python': ['pyls'],
     \ 'go': ['gopls'],
     \ }
+" }}}
+" Magit {{{
+let g:magit_auto_close = 1
+let g:magit_scrolloff = 0
 " }}}
 " Markdown Plugins {{{
 let g:vim_markdown_folding_disabled = 1
@@ -279,9 +282,9 @@ end
 " Vimscript file settings {{{
 augroup FT_vim
     au!
-    autocmd FileType vim let b:mycomment = "\""
-    autocmd FileType vim setlocal foldmethod=marker
-augroup END
+    autocmd filetype vim let b:mycomment = "\""
+    autocmd filetype vim setlocal foldmethod=marker
+augroup end
 augroup reload_vimrc
     autocmd!
     autocmd BufWritePost $HOME . '/.vim/vimrc' source $MYVIMRC
