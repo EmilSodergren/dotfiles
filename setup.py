@@ -86,8 +86,8 @@ if args.online:
     call(["chmod", "+x", bfg_jar])
     call(["wget", "-N", "-P", "bin", "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Hack.zip"])
 
-    call(["python3", "-m", "pip", "install", "python-language-server[rope,pyflakes,mccabe,pycodestyle,yapf]"])
-    call(["python3", "-m", "pip", "install", "pynvim"])
+    call(["python3", "-m", "pip", "install", "--upgrade", "python-language-server[rope,pyflakes,mccabe,pycodestyle,yapf]"])
+    call(["python3", "-m", "pip", "install", "--upgrade", "pynvim"])
 
     if not args.skip_rust:
         ps = Popen(["curl", "https://sh.rustup.rs", "-sSf"], stdout=PIPE)
