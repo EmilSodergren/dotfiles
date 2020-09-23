@@ -12,8 +12,8 @@ bfg_jar = join(local_bin, "bfg-1.13.0.jar")
 antiword = join(local_bin, "antiword")
 neovim_init = join(".config", "nvim", "init.vim")
 settingsfiles = [".vim", ".bashrc", ".tmux.conf", ".gitconfig", ".bash_git", ".profile", ".bash_completion", ".bash_completion.d", diff_so_fancy, neovim_init, antiword, bfg_jar]
-rust_binaries = ["cargo", "install", "cargo-watch", "ripgrep", "fd-find", "tokei", "lsd", "bat", "clippy"]
-rust_analyzer = ["cargo", "install", "--git", "https://github.com/rust-analyzer/rust-analyzer",  "rust-analyzer"]
+rust_binaries = ["cargo", "install", "cargo-watch", "ripgrep", "fd-find", "tokei", "lsd", "bat"]
+rust_analyzer = ["cargo", "install", "--git", "https://github.com/rust-analyzer/rust-analyzer", "xtask", "rust-analyzer"]
 
 parser = ArgumentParser(description='Setup the machine')
 
@@ -23,6 +23,12 @@ parser.add_argument('-sr', '--skip-rust', action='store_true', help='Skip downlo
 parser.add_argument('-f', '--font', action='store_true', help='Install Nerd Fonts')
 parser.add_argument('-p', '--pack', action='store_true', help='Pack everything in dotfiles.tar.gz')
 args = parser.parse_args()
+
+def exists_all(path, files):
+    for f in files[2:]:
+        if not exists(join("path", f)):
+            return False
+    return True
 
 for stuff in settingsfiles:
     linkpath = join(homefolder, stuff)
@@ -96,8 +102,9 @@ if args.online:
         call(["rustup", "update", "stable"])
         call(["rustup", "component", "add", "rustfmt"])
         call(["rustup", "component", "add", "rust-src"])
+        call(["rustup", "component", "add", "clippy"])
 
-        if exists(join(homefolder,".cargo", "bin", "cargo-install-update")):
+        if exists_all(join(homefolder, ".cargo", "bin"), rust_binaries[2:]):
             call(["cargo", "install-update", "-ag"])
         else:
             call(rust_binaries)
