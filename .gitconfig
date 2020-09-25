@@ -3,6 +3,7 @@
     email =
 [push]
     default = simple
+    followTags = true
 [http]
     sslcapath = /etc/ldap/certs/
     sslCAinfo = /etc/ssl/certs/ca-certificates.crt
