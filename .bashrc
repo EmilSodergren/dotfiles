@@ -16,6 +16,9 @@ IGNOREEOF=10
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
 
+shopt -s autocd
+shopt -s cdspell
+shopt -s dirspell
 # append to the history file, don't overwrite it
 shopt -s histappend
 
@@ -103,6 +106,7 @@ alias clock='date'
 alias g='git'
 alias 9g='9lvgit'
 alias tmux='tmux -2'
+alias cd='echo "!cd is for noobs!" && sleep 2 && cd'
 #alias grep='rg'
 #alias l='ls -CF'
 
