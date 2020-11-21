@@ -21,15 +21,12 @@ endif
 call plug#begin(expand('~/.vim/plugged'))
 if has('nvim')
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-    Plug 'deoplete-plugins/deoplete-jedi', {'for': 'python'}
+    Plug 'Shougo/deoplete-lsp'
     Plug 'wellle/tmux-complete.vim'
     Plug 'Shougo/echodoc.vim'
     Plug 'Shougo/neosnippet.vim'
     Plug 'Shougo/neosnippet-snippets'
-    Plug 'autozimu/LanguageClient-neovim', {
-        \ 'branch': 'next',
-        \ 'do': 'bash install.sh',
-        \ }
+    Plug 'neovim/nvim-lspconfig'
 end
 
 Plug 'airblade/vim-gitgutter'
@@ -54,6 +51,13 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'Raimondi/delimitMate'
 
 call plug#end()
+
+lua <<EOF
+local lspconfig = require'lspconfig';
+lspconfig.gopls.setup{}
+lspconfig.rust_analyzer.setup{}
+lspconfig.pyls.setup{}
+EOF
 
 filetype plugin indent on
 " }}}
@@ -95,8 +99,6 @@ if has("nvim")
                 \   'mark_below': '[↓]',
                 \   'mark_changes': '[*]',
                 \})
-" GO
-    let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
 end
 " }}}
 " Fuzzy Finder Plugin {{{
@@ -122,13 +124,6 @@ let g:go_fmt_command = "goimports"
 " }}}
 " Highlighted yank {{{
 let g:highlightedyank_highlight_duration = 2000
-" }}}
-" Language Client {{{
-let g:LanguageClient_serverCommands = {
-    \ 'rust': ['rust-analyzer'],
-    \ 'python': ['pyls'],
-    \ 'go': ['gopls'],
-    \ }
 " }}}
 " Magit {{{
 let g:magit_auto_close = 1
@@ -230,7 +225,6 @@ nnoremap j gj
 nnoremap k gk
 nnoremap <down> 3jzz
 nnoremap <up> 3kzz
-nnoremap <leader>f gg=G <bar> :%s#\s\+$##e<cr>
 nnoremap <s-h> :bp<cr>
 nnoremap <s-l> :bn<cr>
 
@@ -256,9 +250,11 @@ nnoremap <lt> <nop>
 nnoremap > <nop>
 nnoremap <c-r> <c-r>
 
-nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<cr>
-nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
-nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+nnoremap <silent> <F2> <cmd>lua vim.lsp.buf.rename()<CR>
+nnoremap <silent> K <cmd>lua vim.lsp.buf.hover()<CR>
+nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> <leader>r <cmd>lua vim.lsp.buf.references()<CR>
+nnoremap <silent> <leader>f <cmd>lua vim.lsp.buf.formatting()<CR>
 
 
 " Delete current selection to the black hole registry before pasting,
@@ -298,7 +294,6 @@ augroup FT_go
     autocmd FileType go nnoremap <leader>i :GoInstall <cr>
     autocmd FileType go nnoremap <leader>t :GoTest <cr>
     autocmd FileType go nnoremap <leader>c :GoCallers <cr>
-    autocmd FileType go nnoremap <leader>r :GoReferrers <cr>
     " Set GOPATH to the folder above /src/ in full filepath
     autocmd FileType go nnoremap <leader>sgp :exe ":GoPath".split(expand("%:p"), "/src/")[0] <cr>
 augroup END
@@ -306,18 +301,17 @@ augroup END
 " Rust file settings {{{
 augroup FT_rust
     au!
-    autocmd FileType rust let g:deoplete#sources#rust#rust_source_path = $HOME . '/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src'
-    autocmd FileType rust nnoremap <leader>r :Crun <cr> <bar> <s-g>
     autocmd FileType rust nnoremap <leader>b :Cbuild <cr> <bar> <s-g>
     autocmd FileType rust nnoremap <leader>i :Cinstall <cr>
     autocmd FileType rust nnoremap <leader>t :Ctest -- --nocapture <cr> <bar> <s-g>
     autocmd FileType rust nnoremap <leader>bt :! RUST_BACKTRACE=1 cargo test <cr> <bar> <s-g>
+    autocmd FileType rust setlocal omnifunc=v:lua.vim.lsp.omnifunc
 augroup END
 " }}}
 " Python file settings {{{
 augroup FT_python
     au!
-    autocmd FileType python set omnifunc=python3complete#Complete
+    autocmd FileType python setlocal omnifunc=v:lua.vim.lsp.omnifunc
 augroup END
 " }}}
 " Json file settings {{{
