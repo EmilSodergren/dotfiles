@@ -55,9 +55,16 @@ call plug#end()
 if has('nvim')
 lua <<EOF
 local lspconfig = require'lspconfig';
+local home = os.getenv("HOME");
+lspconfig.dockerls.setup{
+  cmd = { home.."/.local/node_modules/dockerfile-language-server-nodejs/bin/docker-langserver", "--stdio" }
+}
 lspconfig.gopls.setup{}
 lspconfig.rust_analyzer.setup{}
 lspconfig.pyls.setup{}
+lspconfig.yamlls.setup{
+  cmd = { home.."/.local/node_modules/yaml-language-server/bin/yaml-language-server", "--stdio" }
+}
 EOF
 
     autocmd TermOpen * set bufhidden=wipe

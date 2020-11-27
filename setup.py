@@ -7,7 +7,6 @@ import re
 dotfilespath = dirname(realpath(__file__))
 homefolder = expanduser("~")
 local_bin = join(".local", "bin")
-local_nodejs = join(".local", "node_modules")
 diff_so_fancy = join(local_bin, "diff-so-fancy")
 bfg_jar = join(local_bin, "bfg-1.13.0.jar")
 antiword = join(local_bin, "antiword")
@@ -94,7 +93,7 @@ if args.online:
         call(["git", "clone", "https://github.com/tmux-plugins/tmux-resurrect", join(dotfilespath, "tmux-resurrect")])
         call(["git", "clone", "https://github.com/tmux-plugins/tmux-continuum", join(dotfilespath, "tmux-continuum")])
 
-    call(["npm", "install", "--prefix", join(homefolder, local_nodejs), *nodejs_language_servers])
+    call(["npm", "install", "--prefix", join(homefolder, ".local"), *nodejs_language_servers])
     call(["sudo", "apt", "install", "-y", "python3-pip"])
     makedirs(local_bin, exist_ok=True)
 
