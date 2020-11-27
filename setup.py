@@ -123,8 +123,8 @@ if args.online:
         if exists_all(join(homefolder, ".cargo", "bin"), rust_binaries):
             call(["cargo", "install-update", "-ag"])
         else:
-            call("cargo", "install", *rust_binaries)
-            call("cargo", "install", "--git", *rust_analyzer)
+            call(["cargo", "install", *rust_binaries])
+            call(["cargo", "install", "--git", *rust_analyzer])
             call(["cargo", "install", "cargo-update"])
 
 if args.font:
