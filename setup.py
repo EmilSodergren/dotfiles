@@ -7,18 +7,20 @@ import re
 dotfilespath = dirname(realpath(__file__))
 homefolder = expanduser("~")
 local_bin = join(".local", "bin")
+local_nodejs = join(".local", "node_modules")
 diff_so_fancy = join(local_bin, "diff-so-fancy")
 bfg_jar = join(local_bin, "bfg-1.13.0.jar")
 antiword = join(local_bin, "antiword")
 neovim_init = join(".config", "nvim", "init.vim")
 pycodestyle_config = join(".config", "pycodestyle")
 yapf_config = join(".config", "yapf", "style")
+nodejs_language_servers = ["yaml-language-server", "dockerfile-language-server-nodejs"]
 settingsfiles = [
     ".vim", ".bashrc", ".tmux.conf", ".gitconfig", ".bash_git", ".profile", ".bash_completion", ".bash_completion.d", diff_so_fancy,
     neovim_init, antiword, bfg_jar, pycodestyle_config, yapf_config
 ]
-rust_binaries = ["cargo", "install", "cargo-watch", "ripgrep", "fd-find", "tokei", "lsd", "bat", "sd"]
-rust_analyzer = ["cargo", "install", "--git", "https://github.com/rust-analyzer/rust-analyzer", "xtask", "rust-analyzer"]
+rust_binaries = ["cargo-watch", "ripgrep", "fd-find", "tokei", "lsd", "bat", "sd"]
+rust_analyzer = ["https://github.com/rust-analyzer/rust-analyzer", "xtask", "rust-analyzer"]
 
 parser = ArgumentParser(description='Setup the machine')
 
@@ -69,8 +71,8 @@ with open(gitconfig_path, "rt") as f:
 with open(gitconfig_path, "wt") as fout:
     fout.write(file_content)
 
-# Install good stuff
-call(["sudo", "apt-get", "-y", "install", "antiword", "docx2txt"])
+# Install good stuff, and nodejs
+call(["sudo", "apt-get", "-y", "install", "antiword", "docx2txt", "nodejs"])
 # Install dependencies for Rust binaries
 call(["sudo", "apt-get", "-y", "install", "libclang-dev", "libssl-dev", "fonts-powerline", "python3-jedi"])
 
@@ -92,6 +94,7 @@ if args.online:
         call(["git", "clone", "https://github.com/tmux-plugins/tmux-resurrect", join(dotfilespath, "tmux-resurrect")])
         call(["git", "clone", "https://github.com/tmux-plugins/tmux-continuum", join(dotfilespath, "tmux-continuum")])
 
+    call(["npm", "install", "--prefix", join(homefolder, local_nodejs), *nodejs_language_servers])
     call(["sudo", "apt", "install", "-y", "python3-pip"])
     makedirs(local_bin, exist_ok=True)
 
@@ -117,11 +120,11 @@ if args.online:
         call(["rustup", "component", "add", "rust-src"])
         call(["rustup", "component", "add", "clippy"])
 
-        if exists_all(join(homefolder, ".cargo", "bin"), rust_binaries[2:]):
+        if exists_all(join(homefolder, ".cargo", "bin"), rust_binaries):
             call(["cargo", "install-update", "-ag"])
         else:
-            call(rust_binaries)
-            call(rust_analyzer)
+            call("cargo", "install", *rust_binaries)
+            call("cargo", "install", "--git", *rust_analyzer)
             call(["cargo", "install", "cargo-update"])
 
 if args.font:
@@ -130,6 +133,9 @@ if args.font:
 
 if args.pack:
     chdir(homefolder)
-    call(["tar", "cfz", "dotfiles.tar.gz", ".dotfiles/", "go/bin/", ".cargo/bin/", ".local/bin", ".local/include", ".local/lib", ".fzf"])
+    call([
+        "tar", "cfz", "dotfiles.tar.gz", ".dotfiles/", "go/bin/", ".cargo/bin/", local_bin, local_nodejs, ".local/include", ".local/lib",
+        ".fzf"
+    ])
     print("")
     print(".dotfiles has been packed into " + join(homefolder, "dotfiles.tar.gz"))
