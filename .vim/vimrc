@@ -52,12 +52,14 @@ Plug 'Raimondi/delimitMate'
 
 call plug#end()
 
+if has('nvim')
 lua <<EOF
 local lspconfig = require'lspconfig';
 lspconfig.gopls.setup{}
 lspconfig.rust_analyzer.setup{}
 lspconfig.pyls.setup{}
 EOF
+end
 
 filetype plugin indent on
 " }}}

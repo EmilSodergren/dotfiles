@@ -11,7 +11,9 @@ diff_so_fancy = join(local_bin, "diff-so-fancy")
 bfg_jar = join(local_bin, "bfg-1.13.0.jar")
 antiword = join(local_bin, "antiword")
 neovim_init = join(".config", "nvim", "init.vim")
-settingsfiles = [".vim", ".bashrc", ".tmux.conf", ".gitconfig", ".bash_git", ".profile", ".bash_completion", ".bash_completion.d", diff_so_fancy, neovim_init, antiword, bfg_jar]
+pycodestyle_config = join(".config", "pycodestyle")
+yapf_config = join(".config", "yapf", "style")
+settingsfiles = [".vim", ".bashrc", ".tmux.conf", ".gitconfig", ".bash_git", ".profile", ".bash_completion", ".bash_completion.d", diff_so_fancy, neovim_init, antiword, bfg_jar, pycodestyle_config, yapf_config]
 rust_binaries = ["cargo", "install", "cargo-watch", "ripgrep", "fd-find", "tokei", "lsd", "bat", "sd"]
 rust_analyzer = ["cargo", "install", "--git", "https://github.com/rust-analyzer/rust-analyzer", "xtask", "rust-analyzer"]
 
@@ -54,7 +56,7 @@ with open(gitconfig_path, "rt") as f:
 
 file_content = ""
 with open(gitconfig_path, "rt") as f:
-    file_content = f.read().replace(replace_line, "email = "+new_email)
+    file_content = f.read().replace(replace_line, "email = " + new_email)
 
 with open(gitconfig_path, "wt") as fout:
     fout.write(file_content)
