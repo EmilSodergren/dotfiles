@@ -152,6 +152,7 @@ let g:rustfmt_autosave = 1
 " }}}
 " Neosnippet {{{
 if has('nvim')
+    imap <C-k> <Plug>(neosnippet_expand_or_jump)
     imap <expr><cr> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<cr>"
     smap <expr><cr> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<cr>"
 end
@@ -260,6 +261,7 @@ nnoremap <silent> K <cmd>lua vim.lsp.buf.hover()<CR>
 nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
 nnoremap <silent> <leader>r <cmd>lua vim.lsp.buf.references()<CR>
 nnoremap <silent> <leader>f <cmd>lua vim.lsp.buf.formatting()<CR>
+nnoremap <silent> <leader>n <cmd>lua vim.lsp.buf.code_action()<CR>
 
 
 " Delete current selection to the black hole registry before pasting,
