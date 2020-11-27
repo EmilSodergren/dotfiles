@@ -59,6 +59,9 @@ lspconfig.gopls.setup{}
 lspconfig.rust_analyzer.setup{}
 lspconfig.pyls.setup{}
 EOF
+
+    autocmd TermOpen * set bufhidden=wipe
+    autocmd FileType rust,python,go autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting()
 end
 
 filetype plugin indent on
@@ -272,10 +275,6 @@ noremap  <silent> gc :Commentary<cr>
 " space to toggle folds.
 nnoremap <space> za
 vnoremap <space> za
-
-if has('nvim')
-    autocmd TermOpen * set bufhidden=wipe
-end
 autocmd FileType yaml setlocal indentkeys-=<:> ts=2 sts=2 sw=2 expandtab
 " }}}
 " Vimscript file settings {{{
@@ -307,13 +306,6 @@ augroup FT_rust
     autocmd FileType rust nnoremap <leader>i :Cinstall <cr>
     autocmd FileType rust nnoremap <leader>t :Ctest -- --nocapture <cr> <bar> <s-g>
     autocmd FileType rust nnoremap <leader>bt :! RUST_BACKTRACE=1 cargo test <cr> <bar> <s-g>
-    autocmd FileType rust setlocal omnifunc=v:lua.vim.lsp.omnifunc
-augroup END
-" }}}
-" Python file settings {{{
-augroup FT_python
-    au!
-    autocmd FileType python setlocal omnifunc=v:lua.vim.lsp.omnifunc
 augroup END
 " }}}
 " Json file settings {{{
