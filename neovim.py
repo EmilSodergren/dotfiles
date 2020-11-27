@@ -22,7 +22,10 @@ if args.uninstall:
 
 chdir(homefolder)
 if args.clean or args.install:
-    call(["sudo", "apt-get", "install", "ninja-build", "gettext", "libtool", "libtool-bin", "autoconf", "automake", "cmake", "g++", "pkg-config", "unzip", "wget", "curl"])
+    call([
+        "sudo", "apt-get", "install", "ninja-build", "gettext", "libtool", "libtool-bin", "autoconf", "automake", "cmake", "g++",
+        "pkg-config", "unzip", "wget", "curl"
+    ])
 
     if args.clean and exists(neovimdir):
         chdir(neovimdir)
@@ -56,4 +59,3 @@ if args.pack:
     call(["tar", "cfz", "neovim.tar.gz", basename(neovimdir)])
     print("")
     print("Neovim has been packed into " + join(homefolder, "neovim.tar.gz"))
-

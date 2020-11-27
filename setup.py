@@ -13,24 +13,32 @@ antiword = join(local_bin, "antiword")
 neovim_init = join(".config", "nvim", "init.vim")
 pycodestyle_config = join(".config", "pycodestyle")
 yapf_config = join(".config", "yapf", "style")
-settingsfiles = [".vim", ".bashrc", ".tmux.conf", ".gitconfig", ".bash_git", ".profile", ".bash_completion", ".bash_completion.d", diff_so_fancy, neovim_init, antiword, bfg_jar, pycodestyle_config, yapf_config]
+settingsfiles = [
+    ".vim", ".bashrc", ".tmux.conf", ".gitconfig", ".bash_git", ".profile", ".bash_completion", ".bash_completion.d", diff_so_fancy,
+    neovim_init, antiword, bfg_jar, pycodestyle_config, yapf_config
+]
 rust_binaries = ["cargo", "install", "cargo-watch", "ripgrep", "fd-find", "tokei", "lsd", "bat", "sd"]
 rust_analyzer = ["cargo", "install", "--git", "https://github.com/rust-analyzer/rust-analyzer", "xtask", "rust-analyzer"]
 
 parser = ArgumentParser(description='Setup the machine')
 
 parser.add_argument('-o', '--online', action='store_true', help='Download stuff from the internet')
-parser.add_argument('-u', '--update-go-binaries', action='store_true', help='Update the go binaries, requires manual restart of the script after completion')
+parser.add_argument('-u',
+                    '--update-go-binaries',
+                    action='store_true',
+                    help='Update the go binaries, requires manual restart of the script after completion')
 parser.add_argument('-sr', '--skip-rust', action='store_true', help='Skip downloading and updating the rust toolchain')
 parser.add_argument('-f', '--font', action='store_true', help='Install Nerd Fonts')
 parser.add_argument('-p', '--pack', action='store_true', help='Pack everything in dotfiles.tar.gz')
 args = parser.parse_args()
+
 
 def exists_all(path, files):
     for f in files[2:]:
         if not exists(join("path", f)):
             return False
     return True
+
 
 for stuff in settingsfiles:
     linkpath = join(homefolder, stuff)
@@ -88,7 +96,10 @@ if args.online:
     makedirs(local_bin, exist_ok=True)
 
     # Download online resources
-    call(["wget", "-N", "-P", local_bin, "https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy"])
+    call([
+        "wget", "-N", "-P", local_bin,
+        "https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy"
+    ])
     call(["chmod", "+x", diff_so_fancy])
     call(["wget", "-N", "-P", local_bin, "https://repo1.maven.org/maven2/com/madgag/bfg/1.13.0/bfg-1.13.0.jar"])
     call(["chmod", "+x", bfg_jar])
