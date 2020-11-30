@@ -133,8 +133,8 @@ if args.font:
 if args.pack:
     chdir(homefolder)
     call([
-        "tar", "cfz", "dotfiles.tar.gz", ".dotfiles/", "go/bin/", ".cargo/bin/", local_bin, local_nodejs, ".local/include", ".local/lib",
-        ".fzf"
+        "tar", "cfz", "dotfiles.tar.gz", ".dotfiles/", "go/bin/", ".cargo/bin/", local_bin, ".local/node_modules", ".local/include",
+        ".local/lib", ".fzf"
     ])
     print("")
     print(".dotfiles has been packed into " + join(homefolder, "dotfiles.tar.gz"))
