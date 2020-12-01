@@ -52,24 +52,6 @@ Plug 'Raimondi/delimitMate'
 
 call plug#end()
 
-if has('nvim')
-lua <<EOF
-local lspconfig = require'lspconfig';
-local home = os.getenv("HOME");
-lspconfig.dockerls.setup{
-  cmd = { home.."/.local/node_modules/dockerfile-language-server-nodejs/bin/docker-langserver", "--stdio" }
-}
-lspconfig.gopls.setup{}
-lspconfig.rust_analyzer.setup{}
-lspconfig.pyls.setup{}
-lspconfig.yamlls.setup{
-  cmd = { home.."/.local/node_modules/yaml-language-server/bin/yaml-language-server", "--stdio" }
-}
-EOF
-
-    autocmd TermOpen * set bufhidden=wipe
-    autocmd FileType rust,python,go autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting()
-end
 
 filetype plugin indent on
 " }}}
@@ -212,6 +194,29 @@ hi PmenuSbar ctermbg=4
 hi EndingWhiteSpace ctermbg=52
 match EndingWhiteSpace /\s\+\%#\@<!$/
 " }}}
+" Initialize nvim-lsp {{{
+if has('nvim')
+lua <<EOF
+local lspconfig = require'lspconfig';
+local home = os.getenv("HOME");
+lspconfig.bashls.setup{
+  cmd = { home.."/.local/node_modules/bash-language-server/bin/main.js", "start" }
+}
+lspconfig.dockerls.setup{
+  cmd = { home.."/.local/node_modules/dockerfile-language-server-nodejs/bin/docker-langserver", "--stdio" }
+}
+lspconfig.gopls.setup{}
+lspconfig.rust_analyzer.setup{}
+lspconfig.pyls.setup{}
+lspconfig.yamlls.setup{
+  cmd = { home.."/.local/node_modules/yaml-language-server/bin/yaml-language-server", "--stdio" }
+}
+EOF
+
+    autocmd TermOpen * set bufhidden=wipe
+    autocmd FileType rust,python,go autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync(nil, 1000)
+end
+" }}}
 " maps {{{
 let g:bash_ctrl_j='off'
 let g:python_host_prog='/usr/bin/python2'
@@ -269,6 +274,7 @@ nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
 nnoremap <silent> <leader>r <cmd>lua vim.lsp.buf.references()<CR>
 nnoremap <silent> <leader>f <cmd>lua vim.lsp.buf.formatting()<CR>
 nnoremap <silent> <leader>n <cmd>lua vim.lsp.buf.code_action()<CR>
+nnoremap <silent> <leader>e <cmd>lua vim.lsp.buf.signature_help()<CR>
 
 
 " Delete current selection to the black hole registry before pasting,

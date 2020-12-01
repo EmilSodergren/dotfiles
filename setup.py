@@ -13,7 +13,7 @@ antiword = join(local_bin, "antiword")
 neovim_init = join(".config", "nvim", "init.vim")
 pycodestyle_config = join(".config", "pycodestyle")
 yapf_config = join(".config", "yapf", "style")
-nodejs_language_servers = ["yaml-language-server", "dockerfile-language-server-nodejs"]
+nodejs_language_servers = ["yaml-language-server", "dockerfile-language-server-nodejs", "bash-language-server"]
 settingsfiles = [
     ".vim", ".bashrc", ".tmux.conf", ".gitconfig", ".bash_git", ".profile", ".bash_completion", ".bash_completion.d", diff_so_fancy,
     neovim_init, antiword, bfg_jar, pycodestyle_config, yapf_config
