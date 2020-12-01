@@ -152,7 +152,7 @@ set autoindent
 set backspace=2
 set clipboard=unnamed
 set cmdheight=2
-set completeopt+=noinsert
+set completeopt+=menuone,noinsert,noselect
 set completeopt-=preview
 set conceallevel=2
 set encoding=utf-8
