@@ -17,7 +17,6 @@ export GOPATH="$HOME/go"
 export GOBIN="$GOPATH/bin"
 
 export PATH="/usr/local/go/bin:$GOBIN:$PATH"
-export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 which nvim > /dev/null 2>&1 && export EDITOR=nvim || export EDITOR=vim
 
@@ -35,3 +34,4 @@ fi
 if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
+source "$HOME/.cargo/env"
