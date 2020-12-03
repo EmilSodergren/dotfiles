@@ -31,7 +31,6 @@ end
 
 Plug 'airblade/vim-gitgutter'
 Plug 'cyberkov/openhab-vim'
-Plug 'davidhalter/jedi-vim', {'for': 'python'}
 Plug 'dhruvasagar/vim-zoom'
 Plug 'elzr/vim-json', {'for': 'json'}
 Plug 'fatih/vim-go', {'do': ':GoInstallBinaries'}
@@ -81,7 +80,6 @@ if has("nvim")
     call deoplete#custom#option({
                 \ 'auto_complete_delay': 200,
                 \ 'smart_case': v:true,
-                \ 'ignore_sources': {'python': ['jedi']}
                 \ })
     call deoplete#custom#source('_',
                 \ 'max_abbr_width', 60)
@@ -108,9 +106,6 @@ nnoremap <leader>sl :Lines<cr>
 " }}}
 " Git Gutter {{{
 set updatetime=100
-" }}}
-" Jedi Vim {{{
-let g:jedi#completions_enabled = 0
 " }}}
 " Go Plugins (vim-go) {{{
 let g:go_fmt_autosave = 1
