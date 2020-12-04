@@ -73,7 +73,7 @@ with open(gitconfig_path, "wt") as fout:
 # Install good stuff, and nodejs
 call(["sudo", "apt-get", "-y", "install", "antiword", "docx2txt", "nodejs"])
 # Install dependencies for Rust binaries
-call(["sudo", "apt-get", "-y", "install", "libclang-dev", "libssl-dev", "fonts-powerline", "python3-jedi"])
+call(["sudo", "apt-get", "-y", "install", "libclang-dev", "libssl-dev", "fonts-powerline", "python3-jedi", "python3-lib2to3"])
 
 if args.online:
     try:
