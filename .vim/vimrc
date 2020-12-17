@@ -312,8 +312,6 @@ augroup FT_go
     autocmd FileType go nnoremap <leader>i :GoInstall <cr>
     autocmd FileType go nnoremap <leader>t :GoTest <cr>
     autocmd FileType go nnoremap <leader>c :GoCallers <cr>
-    " Set GOPATH to the folder above /src/ in full filepath
-    autocmd FileType go nnoremap <leader>sgp :exe ":GoPath".split(expand("%:p"), "/src/")[0] <cr>
 augroup END
 " }}}
 " Rust file settings {{{
