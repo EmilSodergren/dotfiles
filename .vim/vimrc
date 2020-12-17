@@ -204,7 +204,13 @@ lspconfig.gopls.setup{}
 lspconfig.rust_analyzer.setup{}
 lspconfig.pyls.setup{}
 lspconfig.yamlls.setup{
-  cmd = { home.."/.local/node_modules/yaml-language-server/bin/yaml-language-server", "--stdio" }
+  cmd = { home.."/.local/node_modules/yaml-language-server/bin/yaml-language-server", "--stdio" },
+  settings = {
+    yaml = {
+      schemas = {
+      }
+    }
+  }
 }
 EOF
 
@@ -296,7 +302,7 @@ augroup FT_vim
 augroup end
 augroup reload_vimrc
     autocmd!
-    autocmd BufWritePost $HOME . '/.vim/vimrc' source $MYVIMRC
+    autocmd BufWritePost $HOME . '/.dotfiles/.vim/vimrc' source $MYVIMRC
 augroup END
 " }}}
 " Go file settings {{{
