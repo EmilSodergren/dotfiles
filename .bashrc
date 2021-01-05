@@ -101,7 +101,7 @@ fi
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # some more ls aliases
-which lsd > /dev/null 2>&1 && alias ll='lsd -lh' || alias ll='ls -lh'
+command -v lsd > /dev/null 2>&1 && alias ll='lsd -lh' || alias ll='ls -lh'
 alias clock='date'
 alias g='git'
 alias 9g='9lvgit'
