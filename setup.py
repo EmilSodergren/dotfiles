@@ -33,7 +33,6 @@ parser.add_argument('-f', '--font', action='store_true', help='Install Nerd Font
 parser.add_argument('-p', '--pack', action='store_true', help='Pack everything in dotfiles.tar.gz')
 args = parser.parse_args()
 
-
 def exists_all(path, files):
     for f in files[2:]:
         if not exists(join("path", f)):
@@ -71,7 +70,7 @@ with open(gitconfig_path, "wt") as fout:
     fout.write(file_content)
 
 # Install good stuff, and nodejs
-call(["sudo", "apt-get", "-y", "install", "antiword", "docx2txt", "nodejs"])
+call(["sudo", "apt-get", "-y", "install", "antiword", "docx2txt", "tmux", "nodejs", "npm"])
 # Install dependencies for Rust binaries
 call(["sudo", "apt-get", "-y", "install", "libclang-dev", "libssl-dev", "fonts-powerline", "python3-jedi", "python3-lib2to3"])
 
@@ -111,8 +110,8 @@ if args.online:
     call(["python3", "-m", "pip", "install", "--upgrade", "pynvim"])
 
     if not args.skip_rust:
-        ps = Popen(["curl", "https://sh.rustup.rs", "-sSf"], stdout=PIPE)
-        call(["sh", "-s", "--", "-y"], stdin=ps.stdout)
+        ps = Popen(["curl", "--proto", "=https", "--tlsv1.2", "-sSf", "https://sh.rustup.rs"], stdout=PIPE)
+        call(["sh", "-s", "--", "--default-toolchain", "none", "-y"], stdin=ps.stdout)
         ps.wait()
         call(["rustup", "update", "stable"])
         call(["rustup", "component", "add", "rustfmt"])
