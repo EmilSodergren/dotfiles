@@ -145,4 +145,3 @@ fi
 if [ -z $TMUX ]; then
     tmux attach
 fi
-source "$HOME/.cargo/env"
