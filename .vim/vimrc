@@ -108,8 +108,8 @@ nnoremap <leader>sl :Lines<cr>
 set updatetime=100
 " }}}
 " Go Plugins (vim-go) {{{
-let g:go_fmt_autosave = 0
-let g:go_fmt_command = ""
+let g:go_fmt_autosave = 1
+let g:go_fmt_command = "goimports"
 let g:go_code_completion_enabled = 0
 let g:go_mod_fmt_autosave = 0
 " }}}
