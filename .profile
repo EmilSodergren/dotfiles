@@ -18,6 +18,7 @@ export GOBIN="$GOPATH/bin"
 
 export PATH="/usr/local/go/bin:$GOBIN:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
+export PATH="$PATH:$HOME/.fzf/bin/"
 source "$HOME/.cargo/env"
 command -v nvim > /dev/null 2>&1 && export EDITOR=nvim || export EDITOR=vim
 
