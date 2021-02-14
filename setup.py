@@ -18,7 +18,7 @@ settingsfiles = [
     ".vim", ".bashrc", ".tmux.conf", ".gitconfig", ".bash_git", ".profile", ".bash_completion", ".bash_completion.d", diff_so_fancy,
     neovim_init, antiword, bfg_jar, pycodestyle_config, yapf_config
 ]
-rust_binaries = ["cargo-watch", "ripgrep", "fd-find", "tokei", "lsd", "bat", "sd"]
+rust_binaries = ["bat", "cargo-watch", "du-dust", "fd-find", "lsd", "ripgrep", "sd", "tokei", "ytop", "zoxide"]
 rust_analyzer = ["https://github.com/rust-analyzer/rust-analyzer", "xtask", "rust-analyzer"]
 
 parser = ArgumentParser(description='Setup the machine')
@@ -32,6 +32,7 @@ parser.add_argument('-sr', '--skip-rust', action='store_true', help='Skip downlo
 parser.add_argument('-f', '--font', action='store_true', help='Install Nerd Fonts')
 parser.add_argument('-p', '--pack', action='store_true', help='Pack everything in dotfiles.tar.gz')
 args = parser.parse_args()
+
 
 def exists_all(path, files):
     for f in files[2:]:
