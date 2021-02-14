@@ -101,7 +101,7 @@ fi
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # some more ls aliases
-command -v lsd > /dev/null 2>&1 && alias ll='lsd -lh' || alias ll='ls -lh'
+command -v lsd &> /dev/null && alias ll='lsd -lh' || alias ll='ls -lh'
 alias clock='date'
 alias g='git'
 alias 9g='9lvgit'
@@ -133,12 +133,15 @@ if ! shopt -oq posix; then
   fi
 fi
 
+if command -v zoxide &> /dev/null; then
+    eval "$(zoxide init bash)"
+fi
 `command -v /usr/bin/tmux &> /dev/null`; TMUX_EXIST=$?
 `/usr/bin/pgrep tmux &> /dev/null`; TMUX_IS_RUNNING=$?
 
 if [ $TMUX_EXIST -eq 0 ] && [ $TMUX_IS_RUNNING -eq 1 ]; then
     echo "Starting tmux server"
-    nohup tmux new-session -d -t emil </dev/null > /dev/null 2>&1 &
+    nohup tmux new-session -d -t emil </dev/null &> /dev/null &
     sleep .5
 fi
 
