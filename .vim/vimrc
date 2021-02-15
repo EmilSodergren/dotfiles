@@ -47,6 +47,7 @@ Plug 'tpope/vim-commentary'
 Plug 'jreybert/vimagit'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'cespare/vim-toml'
 Plug 'Raimondi/delimitMate'
 
 call plug#end()
