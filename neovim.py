@@ -1,61 +1,48 @@
 from os.path import expanduser, join, exists, basename
-from os import chdir, remove
+from os import chdir
 from subprocess import call
 from argparse import ArgumentParser
-import fileinput
+import apt
 
 homefolder = expanduser("~")
+nvim_install_dir = join(homefolder, ".local")
 neovimdir = join(homefolder, "neovim")
+apt_cache = apt.Cache()
 
 parser = ArgumentParser(description='Setup the neovim program')
+packages_for_build = [
+    "ninja-build", "gettext", "libtool", "libtool-bin", "autoconf", "automake", "cmake", "g++", "pkg-config", "unzip", "wget", "curl"
+]
 
-parser.add_argument('-o', '--online', action='store_true', help='Download stuff from the internet')
-parser.add_argument('-i', '--install', action='store_true', help='Build and install neovim')
 parser.add_argument('-c', '--clean', action='store_true', help='Clean before build and install')
-parser.add_argument('-p', '--pack', action='store_true', help='Pack neovim in a tar file')
-parser.add_argument('-u', '--uninstall', action='store_true', help='Uninstall neovim on the sudo make install path')
+parser.add_argument('-u', '--uninstall', action='store_true', help='Uninstall neovim local install path')
+parser.add_argument('-o', '--online', action='store_true', help='Download/Update sources and build/install')
 args = parser.parse_args()
 
 if args.uninstall:
-    call(["sudo", "rm", "/usr/local/bin/nvim"])
-    call(["sudo", "rm", "-r", "/usr/local/share/nvim/"])
+    call(["rm", "-f", join(nvim_install_dir, "bin", "nvim")])
+    call(["rm", "-fr", join(nvim_install_dir, "share", "nvim")])
+    call(["rm", "-fr", join(nvim_install_dir, "lib", "nvim")])
 
 chdir(homefolder)
-if args.clean or args.install:
-    call([
-        "sudo", "apt-get", "install", "ninja-build", "gettext", "libtool", "libtool-bin", "autoconf", "automake", "cmake", "g++",
-        "pkg-config", "unzip", "wget", "curl"
-    ])
+# Install packages only if needed
+for pac in packages_for_build:
+    if not apt_cache[pac].is_installed:
+        print("Needs to install packages for building Neovim")
+        call(["sudo", "apt-get", "install", "-y", *packages_for_build])
+        break
 
-    if args.clean and exists(neovimdir):
-        chdir(neovimdir)
-        call(["sudo", "make", "distclean"])
+if args.clean and exists(neovimdir):
+    chdir(neovimdir)
+    call(["make", "distclean"])
 
 if args.online:
     if not exists(neovimdir):
         call(["git", "clone", "https://github.com/neovim/neovim.git", basename(neovimdir)])
-    chdir(neovimdir)
-    call(["git", "checkout", "--", "."])
-    call(["git", "pull"])
+    else:
+        call(["git", "pull", "-C", neovimdir])
 
     chdir(neovimdir)
     call(["make", "deps"])
-
-    # Can't get the make parameter CMAKE_BUILD_TYPE to take
-    # Change the Makefile instead, before continuing
-    for line in fileinput.input("Makefile", inplace=True):
-        print(line.replace("Debug", "Release"), end="")
-    call(["make"])
-
-if args.install:
-    chdir(neovimdir)
-    call(["sudo", "make", "install"])
-
-if args.pack:
-    chdir(homefolder)
-    weird_file = join(neovimdir, ".deps", "build", "src", "luarocks", "spec", "fixtures", "abc.bz2")
-    if exists(weird_file):
-        remove(weird_file)
-    call(["tar", "cfz", "neovim.tar.gz", basename(neovimdir)])
-    print("")
-    print("Neovim has been packed into " + join(homefolder, "neovim.tar.gz"))
+    call(["make", "CMAKE_BUILD_TYPE=Release", "CMAKE_INSTALL_PREFIX={}".format(nvim_install_dir)])
+    call(["make", "install"])

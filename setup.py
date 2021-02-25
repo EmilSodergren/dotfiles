@@ -1,8 +1,9 @@
 from os.path import dirname, realpath, expanduser, join, exists, islink
-from os import symlink, remove, chdir, makedirs
+from os import symlink, remove, chdir, makedirs, system
 from subprocess import call, Popen, PIPE
 from argparse import ArgumentParser
 import re
+import apt
 
 dotfilespath = dirname(realpath(__file__))
 homefolder = expanduser("~")
@@ -20,10 +21,19 @@ settingsfiles = [
 ]
 rust_binaries = ["bat", "cargo-watch", "du-dust", "fd-find", "lsd", "ripgrep", "sd", "tokei", "ytop", "zoxide"]
 rust_analyzer = ["https://github.com/rust-analyzer/rust-analyzer", "xtask", "rust-analyzer"]
+packages_for_build = [
+    "antiword", "docx2txt", "tmux", "nodejs", "libclang-dev", "libssl-dev", "fonts-powerline", "python3-jedi", "python3-lib2to3"
+]
+apt_cache = apt.Cache()
 
 parser = ArgumentParser(description='Setup the machine')
 
 parser.add_argument('-o', '--online', action='store_true', help='Download stuff from the internet')
+parser.add_argument('-n', '--neovim', action='store_true', help='Should neovim be built, only vaild if --online is defined')
+parser.add_argument('-c',
+                    '--clean',
+                    action='store_true',
+                    help='If neovim should be cleaned before build, only vaild if --online and --neovim is defined')
 parser.add_argument('-u',
                     '--update-go-binaries',
                     action='store_true',
@@ -71,11 +81,19 @@ with open(gitconfig_path, "wt") as fout:
     fout.write(file_content)
 
 # Install good stuff, and nodejs
-call(["sudo", "apt-get", "-y", "install", "antiword", "docx2txt", "tmux", "nodejs", "npm"])
-# Install dependencies for Rust binaries
-call(["sudo", "apt-get", "-y", "install", "libclang-dev", "libssl-dev", "fonts-powerline", "python3-jedi", "python3-lib2to3"])
+# Install packages only if needed
+for pac in packages_for_build:
+    if not apt_cache[pac].is_installed:
+        print("Needs to install packages")
+        call(["sudo", "apt-get", "install", "-y", *packages_for_build])
+        break
 
 if args.online:
+    if args.neovim:
+        if args.clean:
+            system("python3 neovim.py -o -c")
+        else:
+            system("python3 neovim.py -o")
     try:
         call(["nvim", "+PlugUpgrade", "+PlugUpdate", "+UpdateRemotePlugins", "+qall"])
     except FileNotFoundError:
@@ -134,7 +152,7 @@ if args.pack:
     chdir(homefolder)
     call([
         "tar", "cfz", "dotfiles.tar.gz", ".dotfiles/", "go/bin/", ".cargo/bin/", ".cargo/env", local_bin, ".local/node_modules",
-        ".local/include", ".local/lib", ".fzf"
+        ".local/include", ".local/lib", ".local/share/nvim", ".fzf"
     ])
     print("")
     print(".dotfiles has been packed into " + join(homefolder, "dotfiles.tar.gz"))
