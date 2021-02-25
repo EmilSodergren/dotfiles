@@ -34,10 +34,11 @@ parser.add_argument('-c',
                     '--clean',
                     action='store_true',
                     help='If neovim should be cleaned before build, only vaild if --online and --neovim is defined')
-parser.add_argument('-u',
-                    '--update-go-binaries',
-                    action='store_true',
-                    help='Update the go binaries, requires manual restart of the script after completion')
+parser.add_argument(
+    '-u',
+    '--update-go-binaries',
+    action='store_true',
+    help='Update the go binaries, only valid if --online is defined. Requires manual restart of the script after completion')
 parser.add_argument('-sr', '--skip-rust', action='store_true', help='Skip downloading and updating the rust toolchain')
 parser.add_argument('-f', '--font', action='store_true', help='Install Nerd Fonts')
 parser.add_argument('-p', '--pack', action='store_true', help='Pack everything in dotfiles.tar.gz')
