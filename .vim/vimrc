@@ -204,7 +204,17 @@ lspconfig.dockerls.setup{
   cmd = { home.."/.local/node_modules/dockerfile-language-server-nodejs/bin/docker-langserver", "--stdio" }
 }
 lspconfig.gopls.setup{}
-lspconfig.rust_analyzer.setup{}
+lspconfig.rust_analyzer.setup{
+    settings = {
+        ["rust-analyzer"] = {
+          diagnostics = {
+              enable = true,
+              disabled = {"unresolved-proc-macro"},
+              enableExperimental = true,
+          }
+        }
+    }
+}
 lspconfig.pyls.setup{}
 lspconfig.yamlls.setup{
   cmd = { home.."/.local/node_modules/yaml-language-server/bin/yaml-language-server", "--stdio" },
