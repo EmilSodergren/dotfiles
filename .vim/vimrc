@@ -127,7 +127,7 @@ let g:tex_conceal = ""
 let g:vim_markdown_math = 1
 let g:vim_markdown_json_frontmatter = 1
 
-let g:mkdp_browser = 'chromium'
+let g:mkdp_browser = 'brave-browser'
 let g:mkdp_auto_close = 0
 " }}}
 " Win Resize/Vim Zoom {{{
