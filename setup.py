@@ -16,13 +16,23 @@ pycodestyle_config = join(".config", "pycodestyle")
 yapf_config = join(".config", "yapf", "style")
 nodejs_language_servers = ["yaml-language-server", "dockerfile-language-server-nodejs", "bash-language-server"]
 settingsfiles = [
-    ".vim", ".bashrc", ".tmux.conf", ".gitconfig", ".bash_git", ".profile", ".bash_completion", ".bash_completion.d", diff_so_fancy,
-    neovim_init, antiword, bfg_jar, pycodestyle_config, yapf_config
+    ".bash_completion", ".bash_completion.d", ".bash_git", ".bashrc", ".gitconfig", ".profile", ".tmux.conf", ".vim", antiword, bfg_jar,
+    diff_so_fancy, neovim_init, pycodestyle_config, yapf_config
 ]
 rust_binaries = ["bat", "cargo-watch", "du-dust", "fd-find", "lsd", "ripgrep", "sd", "tokei", "ytop", "zoxide"]
 rust_analyzer = ["https://github.com/rust-analyzer/rust-analyzer", "xtask", "rust-analyzer"]
-packages_for_build = [
-    "antiword", "docx2txt", "tmux", "nodejs", "libclang-dev", "libssl-dev", "fonts-powerline", "python3-jedi", "python3-lib2to3"
+packages_to_install = [
+    "antiword",
+    "bash-completion",
+    "docx2txt",
+    "fonts-powerline",
+    "libclang-dev",
+    "libssl-dev",
+    "nodejs",
+    "python3-jedi",
+    "python3-lib2to3",
+    "python3-pip"
+    "tmux",
 ]
 apt_cache = apt.Cache()
 
@@ -83,10 +93,10 @@ with open(gitconfig_path, "wt") as fout:
 
 # Install good stuff, and nodejs
 # Install packages only if needed
-for pac in packages_for_build:
+for pac in packages_to_install:
     if not apt_cache[pac].is_installed:
         print("Needs to install packages")
-        call(["sudo", "apt-get", "install", "-y", *packages_for_build])
+        call(["sudo", "apt-get", "install", "-y", *packages_to_install])
         break
 
 if args.online:
@@ -113,7 +123,6 @@ if args.online:
         call(["git", "clone", "https://github.com/tmux-plugins/tmux-continuum", join(dotfilespath, "tmux-continuum")])
 
     call(["npm", "install", "--prefix", join(homefolder, ".local"), *nodejs_language_servers])
-    call(["sudo", "apt", "install", "-y", "python3-pip"])
     makedirs(local_bin, exist_ok=True)
 
     # Download online resources
