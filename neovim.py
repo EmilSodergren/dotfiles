@@ -40,7 +40,7 @@ if args.online:
     if not exists(neovimdir):
         call(["git", "clone", "https://github.com/neovim/neovim.git", basename(neovimdir)])
     else:
-        call(["git", "pull", "-C", neovimdir])
+        call(["git", "-C", neovimdir, "pull"])
 
     chdir(neovimdir)
     call(["make", "deps"])
