@@ -31,7 +31,7 @@ packages_to_install = [
     "nodejs",
     "python3-jedi",
     "python3-lib2to3",
-    "python3-pip"
+    "python3-pip",
     "tmux",
 ]
 apt_cache = apt.Cache()
