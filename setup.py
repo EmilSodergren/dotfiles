@@ -8,7 +8,6 @@ import apt
 dotfilespath = dirname(realpath(__file__))
 homefolder = expanduser("~")
 local_bin = join(".local", "bin")
-diff_so_fancy = join(local_bin, "diff-so-fancy")
 bfg_jar = join(local_bin, "bfg-1.13.0.jar")
 antiword = join(local_bin, "antiword")
 neovim_init = join(".config", "nvim", "init.vim")
@@ -17,9 +16,9 @@ yapf_config = join(".config", "yapf", "style")
 nodejs_language_servers = ["yaml-language-server", "dockerfile-language-server-nodejs", "bash-language-server"]
 settingsfiles = [
     ".bash_completion", ".bash_completion.d", ".bash_git", ".bashrc", ".gitconfig", ".profile", ".tmux.conf", ".vim", antiword, bfg_jar,
-    diff_so_fancy, neovim_init, pycodestyle_config, yapf_config
+    neovim_init, pycodestyle_config, yapf_config
 ]
-rust_binaries = ["bat", "cargo-watch", "du-dust", "fd-find", "lsd", "ripgrep", "sd", "tokei", "ytop", "zoxide"]
+rust_binaries = ["bat", "cargo-watch", "du-dust", "fd-find", "git-delta", "lsd", "ripgrep", "sd", "tokei", "ytop", "zoxide"]
 rust_analyzer = ["https://github.com/rust-analyzer/rust-analyzer", "xtask", "rust-analyzer"]
 packages_to_install = [
     "antiword",
@@ -126,11 +125,6 @@ if args.online:
     makedirs(local_bin, exist_ok=True)
 
     # Download online resources
-    call([
-        "wget", "-N", "-P", local_bin,
-        "https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy"
-    ])
-    call(["chmod", "+x", diff_so_fancy])
     call(["wget", "-N", "-P", local_bin, "https://repo1.maven.org/maven2/com/madgag/bfg/1.13.0/bfg-1.13.0.jar"])
     call(["chmod", "+x", bfg_jar])
     call(["wget", "-N", "-P", "bin", "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Hack.zip"])

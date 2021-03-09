@@ -25,12 +25,25 @@
         | sort --numeric-sort --key=2 \
         | cut -c 1-12,41- \
         | $(command -v gnumfmt || echo numfmt) --field=2 --to=iec-i --suffix=B --padding=7 --round=nearest
-
 [core]
     editor = nvim
-    pager = diff-so-fancy | less --tabs=4 -RFX
+    pager = delta --dark --diff-so-fancy --navigate
+[delta]
+    hunk-header-style = "normal"
+    zero-style = "normal"
+    plus-style = "#52F852"
+    plus-non-emph-style = "#52F852"
+    plus-emph-style = "#52F852 #006000 bold"
+    minus-style = "#F04F4F"
+    minus-non-emph-style = "#F04F4F"
+    minus-emph-style = "#F04F4F #5F0000 bold"
+    whitespace-error-style = "red reverse"
+[interactive]
+    diffFilter = delta --color-only
 [merge]
     tool = kdiff3
+[diff]
+    colorMoved = default
 [color "diff"]
     whitespace = red reverse
     meta = yellow
@@ -45,5 +58,3 @@
     oldHighlight = red bold 52
     newNormal = green bold
     newHighlight = green bold 22
-[diff-so-fancy]
-    first-run = false
