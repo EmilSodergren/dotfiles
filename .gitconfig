@@ -27,7 +27,7 @@
         | $(command -v gnumfmt || echo numfmt) --field=2 --to=iec-i --suffix=B --padding=7 --round=nearest
 [core]
     editor = nvim
-    pager = delta --dark --diff-so-fancy --navigate
+    pager = delta --dark --diff-so-fancy
 [delta]
     hunk-header-style = "normal"
     zero-style = "normal"
