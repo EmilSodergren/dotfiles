@@ -200,6 +200,7 @@ local home = os.getenv("HOME");
 lspconfig.bashls.setup{
   cmd = { home.."/.local/node_modules/bash-language-server/bin/main.js", "start" }
 }
+lspconfig.ccls.setup{}
 lspconfig.dockerls.setup{
   cmd = { home.."/.local/node_modules/dockerfile-language-server-nodejs/bin/docker-langserver", "--stdio" }
 }
@@ -229,7 +230,7 @@ lspconfig.yamlls.setup{
 EOF
 
     autocmd TermOpen * set bufhidden=wipe
-    autocmd FileType rust,python,go autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync(nil, 1000)
+    autocmd FileType c,cpp,rust,python,go autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync(nil, 1000)
     autocmd BufWritePre *.go lua vim.lsp.buf.code_action({ source = { organizeImports = true } })
     set omnifunc=v:lua.vim.lsp.omnifunc
 end

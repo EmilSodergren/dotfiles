@@ -8,15 +8,15 @@ import apt
 dotfilespath = dirname(realpath(__file__))
 homefolder = expanduser("~")
 local_bin = join(".local", "bin")
-bfg_jar = join(local_bin, "bfg-1.13.0.jar")
+bfg_jar = join(homefolder, local_bin, "bfg-1.13.0.jar")
 antiword = join(local_bin, "antiword")
 neovim_init = join(".config", "nvim", "init.vim")
 pycodestyle_config = join(".config", "pycodestyle")
 yapf_config = join(".config", "yapf", "style")
 nodejs_language_servers = ["yaml-language-server", "dockerfile-language-server-nodejs", "bash-language-server"]
 settingsfiles = [
-    ".bash_completion", ".bash_completion.d", ".bash_git", ".bashrc", ".gitconfig", ".profile", ".tmux.conf", ".vim", antiword, bfg_jar,
-    neovim_init, pycodestyle_config, yapf_config
+    ".bash_completion", ".bash_completion.d", ".bash_git", ".bashrc", ".gitconfig", ".profile", ".tmux.conf", ".vim", antiword, neovim_init,
+    pycodestyle_config, yapf_config
 ]
 rust_binaries = ["bat", "cargo-watch", "du-dust", "fd-find", "git-delta", "lsd", "ripgrep", "sd", "tokei", "ytop", "zoxide"]
 rust_analyzer = ["https://github.com/rust-analyzer/rust-analyzer", "xtask", "rust-analyzer"]
@@ -43,6 +43,7 @@ parser.add_argument('-c',
                     '--clean',
                     action='store_true',
                     help='If neovim should be cleaned before build, only vaild if --online and --neovim is defined')
+parser.add_argument('-sc', '--skip_ccls', action='store_true', help='Should ccls be built, only vaild if --online is defined')
 parser.add_argument(
     '-u',
     '--update-go-binaries',
@@ -104,6 +105,8 @@ if args.online:
             system("python3 neovim.py -o -c")
         else:
             system("python3 neovim.py -o")
+    if not args.skip_ccls:
+        system("python3 ccls.py -o")
     try:
         call(["nvim", "+PlugUpgrade", "+PlugUpdate", "+UpdateRemotePlugins", "+qall"])
     except FileNotFoundError:
@@ -125,7 +128,7 @@ if args.online:
     makedirs(local_bin, exist_ok=True)
 
     # Download online resources
-    call(["wget", "-N", "-P", local_bin, "https://repo1.maven.org/maven2/com/madgag/bfg/1.13.0/bfg-1.13.0.jar"])
+    call(["wget", "-N", "-P", dirname(bfg_jar), "https://repo1.maven.org/maven2/com/madgag/bfg/1.13.0/bfg-1.13.0.jar"])
     call(["chmod", "+x", bfg_jar])
     call(["wget", "-N", "-P", "bin", "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Hack.zip"])
 
