@@ -102,11 +102,11 @@ for pac in packages_to_install:
 if args.online:
     if args.neovim:
         if args.clean:
-            system("python3 neovim.py -o -c")
+            system("python3 neovim.py -b -c")
         else:
-            system("python3 neovim.py -o")
+            system("python3 neovim.py -b")
     if not args.skip_ccls:
-        system("python3 ccls.py -o")
+        system("python3 ccls.py -b")
     try:
         call(["nvim", "+PlugUpgrade", "+PlugUpdate", "+UpdateRemotePlugins", "+qall"])
     except FileNotFoundError:

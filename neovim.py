@@ -16,7 +16,7 @@ packages_for_build = [
 
 parser.add_argument('-c', '--clean', action='store_true', help='Clean before build and install')
 parser.add_argument('-u', '--uninstall', action='store_true', help='Uninstall neovim local install path')
-parser.add_argument('-o', '--online', action='store_true', help='Download/Update sources and build/install')
+parser.add_argument('-b', '--build', action='store_true', help='Download/Update sources and build/install')
 args = parser.parse_args()
 
 if args.uninstall:
@@ -36,7 +36,7 @@ if args.clean and exists(neovimdir):
     chdir(neovimdir)
     call(["make", "distclean"])
 
-if args.online:
+if args.build:
     if not exists(neovimdir):
         call(["git", "clone", "https://github.com/neovim/neovim.git", basename(neovimdir)])
     else:

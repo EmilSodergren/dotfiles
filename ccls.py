@@ -9,11 +9,11 @@ ccls_install_dir = join(homefolder, ".local")
 ccls_dir = join(homefolder, "ccls")
 apt_cache = apt.Cache()
 
-parser = ArgumentParser(description='Setup the neovim program')
+parser = ArgumentParser(description='Setup the ccls program')
 packages_for_build = ["clang", "cmake", "libclang-dev", "llvm-dev", "rapidjson-dev"]
 
-parser.add_argument('-u', '--uninstall', action='store_true', help='Uninstall neovim local install path')
-parser.add_argument('-o', '--online', action='store_true', help='Download/Update sources and build/install')
+parser.add_argument('-u', '--uninstall', action='store_true', help='Uninstall ccls local install path')
+parser.add_argument('-b', '--build', action='store_true', help='Download/Update sources and build/install')
 args = parser.parse_args()
 
 if args.uninstall:
@@ -23,11 +23,11 @@ chdir(homefolder)
 # Install packages only if needed
 for pac in packages_for_build:
     if not apt_cache[pac].is_installed:
-        print("Needs to install packages for building Neovim")
+        print("Needs to install packages for building CCLS")
         call(["sudo", "apt-get", "install", "-y", *packages_for_build])
         break
 
-if args.online:
+if args.build:
     if not exists(ccls_dir):
         call(["git", "clone", "--depth=1", "--recursive", "https://github.com/MaskRay/ccls", basename(ccls_dir)])
     else:
