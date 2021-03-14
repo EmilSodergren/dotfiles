@@ -55,9 +55,22 @@ parser.add_argument('-p', '--pack', action='store_true', help='Pack everything i
 args = parser.parse_args()
 
 
+# Maps the binary package name to the actual binary name
+def rust_binary_mapper(f):
+    if f == "du-dust":
+        return "dust"
+    if f == "fd-find":
+        return "fd"
+    if f == "git-delta":
+        return "delta"
+    if f == "ripgrep":
+        return "rg"
+    return f
+
+
 def exists_all(path, files):
-    for f in files[2:]:
-        if not exists(join("path", f)):
+    for f in files:
+        if not exists(join(path, rust_binary_mapper(f))):
             return False
     return True
 
@@ -145,6 +158,7 @@ if args.online:
         call(["rustup", "component", "add", "clippy"])
 
         if exists_all(join(homefolder, ".cargo", "bin"), rust_binaries):
+            print("HEJ")
             call(["cargo", "install-update", "-ag"])
         else:
             call(["cargo", "install", *rust_binaries])
