@@ -111,6 +111,7 @@ for pac in packages_to_install:
         print("Needs to install packages")
         call(["sudo", "apt-get", "install", "-y", *packages_to_install])
         break
+system("python3 ccls.py")
 
 if args.online:
     if args.neovim:
