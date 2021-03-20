@@ -10,13 +10,14 @@ homefolder = expanduser("~")
 local_bin = join(".local", "bin")
 bfg_jar = join(homefolder, local_bin, "bfg-1.13.0.jar")
 antiword = join(local_bin, "antiword")
+ccls_config = join(local_bin, "ccls_config")
 neovim_init = join(".config", "nvim", "init.vim")
 pycodestyle_config = join(".config", "pycodestyle")
 yapf_config = join(".config", "yapf", "style")
 nodejs_language_servers = ["yaml-language-server", "dockerfile-language-server-nodejs", "bash-language-server"]
 settingsfiles = [
-    ".bash_completion", ".bash_completion.d", ".bash_git", ".bashrc", ".gitconfig", ".profile", ".tmux.conf", ".vim", antiword, neovim_init,
-    pycodestyle_config, yapf_config
+    ".bash_completion", ".bash_completion.d", ".bash_git", ".bashrc", ".gitconfig", ".profile", ".tmux.conf", ".vim", antiword, ccls_config,
+    neovim_init, pycodestyle_config, yapf_config
 ]
 rust_binaries = ["bat", "cargo-watch", "du-dust", "fd-find", "git-delta", "lsd", "ripgrep", "sd", "tokei", "ytop", "zoxide"]
 rust_analyzer = ["https://github.com/rust-analyzer/rust-analyzer", "xtask", "rust-analyzer"]
