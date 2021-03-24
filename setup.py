@@ -160,7 +160,6 @@ if args.online:
         call(["rustup", "component", "add", "clippy"])
 
         if exists_all(join(homefolder, ".cargo", "bin"), rust_binaries):
-            print("HEJ")
             call(["cargo", "install-update", "-ag"])
         else:
             call(["cargo", "install", *rust_binaries])
