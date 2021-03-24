@@ -128,9 +128,9 @@ if args.online:
         call(["vim", "+PlugUpgrade", "+PlugUpdate", "+UpdateRemotePlugins", "+qall"])
     if args.update_go_binaries:
         try:
-            call(["nvim", "+set ft=go", "+GoUpdateBinaries", "+qall"])
+            call(["nvim", "-c", "GoUpdateBinaries", "-c", "qall"])
         except FileNotFoundError:
-            call(["vim", "+set ft=go", "+GoUpdateBinaries", "+qall"])
+            call(["vim", "-c", "GoUpdateBinaries", "-c", "qall"])
 
     if exists(join(dotfilespath, "tmux-resurrect")):
         call(["git", "-C", join(dotfilespath, "tmux-resurrect"), "pull"])
