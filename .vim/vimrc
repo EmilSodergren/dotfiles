@@ -294,6 +294,8 @@ nnoremap <silent> <leader>f <cmd>lua vim.lsp.buf.formatting()<CR>
 nnoremap <silent> <leader>n <cmd>lua vim.lsp.buf.code_action()<CR>
 nnoremap <silent> <leader>e <cmd>lua vim.lsp.buf.signature_help()<CR>
 
+" Clean up whitespaces at end of lines
+:nnoremap <silent> <leader>ws :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :nohl <Bar> :unlet _s <CR>
 
 " Delete current selection to the black hole registry before pasting,
 " keeping the currently pasted text instead of overwriting it.
