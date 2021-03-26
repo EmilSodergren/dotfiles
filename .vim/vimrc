@@ -27,7 +27,7 @@ if has('nvim')
     Plug 'Shougo/neosnippet.vim'
     Plug 'Shougo/neosnippet-snippets'
     Plug 'neovim/nvim-lspconfig'
-end
+endif
 Plug 'alec-gibson/nvim-tetris'
 Plug 'airblade/vim-gitgutter'
 Plug 'cyberkov/openhab-vim'
@@ -92,7 +92,7 @@ if has("nvim")
                 \   'mark_below': '[↓]',
                 \   'mark_changes': '[*]',
                 \})
-end
+endif
 " }}}
 " Fuzzy Finder Plugin {{{
 nnoremap <leader>p :FZF<cr>
@@ -142,7 +142,7 @@ if has('nvim')
     imap <C-k> <Plug>(neosnippet_expand_or_jump)
     imap <expr><cr> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<cr>"
     smap <expr><cr> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<cr>"
-end
+endif
 " }}}
 " }}}
 " Basic settings and status line {{{
@@ -180,7 +180,7 @@ set tabstop=4
 set textwidth=0
 if has('nvim')
     set inccommand=split
-end
+endif
 
 syntax on
 colorscheme southernlights
@@ -233,7 +233,7 @@ EOF
     autocmd FileType c,cpp,rust,python,go autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync(nil, 1000)
     autocmd BufWritePre *.go lua vim.lsp.buf.code_action({ source = { organizeImports = true } })
     set omnifunc=v:lua.vim.lsp.omnifunc
-end
+endif
 " }}}
 " maps {{{
 let g:bash_ctrl_j='off'
@@ -246,7 +246,7 @@ let g:netrw_dirhistmax = 0
 " open and source the vimrc file ev=edit vimrc sv=source vimrc
 nnoremap <leader>ev :e ~/.dotfiles/.vim/vimrc<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
-nnoremap <leader>q :bp\|bd #<cr>
+nnoremap <leader>q :bp<bar>bd #<cr>
 nnoremap <c-l> <c-w>l
 nnoremap <c-r> <c-w>r
 
@@ -266,7 +266,7 @@ nnoremap <s-l> :bn<cr>
 
 nnoremap <c-g> 1<c-g>
 
-nnoremap <c-w>\| <c-w>v
+nnoremap <c-w><bar> <c-w>v
 nnoremap <c-w>- <c-w>s
 
 inoremap jk <esc>
