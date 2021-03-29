@@ -28,7 +28,6 @@ if has('nvim')
     Plug 'Shougo/neosnippet-snippets'
     Plug 'neovim/nvim-lspconfig'
 endif
-Plug 'alec-gibson/nvim-tetris'
 Plug 'airblade/vim-gitgutter'
 Plug 'cyberkov/openhab-vim'
 Plug 'dhruvasagar/vim-zoom'
