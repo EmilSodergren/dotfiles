@@ -10,7 +10,9 @@ python3 setup.py [-o] [-n] [-c] [-u] [-sr] [-f] [-p]
 ```
 To run all:
 ```
-python3 setup.py -foncup
+python3 setup.py -funcop
 ```
-## Preparing for another user
-sudo su \<user\> -s /bin/bash -c "python3 setup.py -o -p -n"
+To update:
+```
+python3 setup.py -uno
+```
