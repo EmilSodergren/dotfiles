@@ -19,6 +19,7 @@ settingsfiles = [
     ".bash_completion", ".bash_completion.d", ".bash_git", ".bashrc", ".gitconfig", ".profile", ".tmux.conf", ".vim", antiword, ccls_config,
     neovim_init, pycodestyle_config, yapf_config
 ]
+rustup_bin = "~/.cargo/bin/rustup"
 rust_binaries = ["bat", "cargo-watch", "du-dust", "fd-find", "git-delta", "lsd", "ripgrep", "sd", "tokei", "ytop", "zoxide"]
 rust_analyzer = ["https://github.com/rust-analyzer/rust-analyzer", "xtask", "rust-analyzer"]
 packages_to_install = [
@@ -156,10 +157,10 @@ if args.online:
         ps = Popen(["curl", "--proto", "=https", "--tlsv1.2", "-sSf", "https://sh.rustup.rs"], stdout=PIPE)
         call(["sh", "-s", "--", "--default-toolchain", "none", "-y"], stdin=ps.stdout)
         ps.wait()
-        call(["rustup", "update", "stable"])
-        call(["rustup", "component", "add", "rustfmt"])
-        call(["rustup", "component", "add", "rust-src"])
-        call(["rustup", "component", "add", "clippy"])
+        call([rustup_bin, "update", "stable"])
+        call([rustup_bin, "component", "add", "rustfmt"])
+        call([rustup_bin, "component", "add", "rust-src"])
+        call([rustup_bin, "component", "add", "clippy"])
 
         if exists_all(join(homefolder, ".cargo", "bin"), rust_binaries):
             call(["cargo", "install-update", "-ag"])
