@@ -13,6 +13,8 @@
     helper = cache --timeout=3600
 [branch]
     autosetuprebase = always
+[pull]
+    rebase = true
 [alias]
     st = status
     br = branch
