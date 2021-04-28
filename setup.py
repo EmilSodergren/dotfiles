@@ -19,7 +19,7 @@ settingsfiles = [
     ".bash_completion", ".bash_completion.d", ".bash_git", ".bashrc", ".gitconfig", ".profile", ".tmux.conf", ".vim", antiword, ccls_config,
     neovim_init, pycodestyle_config, yapf_config
 ]
-rustup_bin = "~/.cargo/bin/rustup"
+rustup_bin = join(homefolder, ".cargo/bin/rustup")
 rust_binaries = ["bat", "cargo-watch", "du-dust", "fd-find", "git-delta", "lsd", "ripgrep", "sd", "tokei", "ytop", "zoxide"]
 rust_analyzer = ["https://github.com/rust-analyzer/rust-analyzer", "xtask", "rust-analyzer"]
 packages_to_install = [
@@ -151,6 +151,8 @@ if args.online:
     call(["wget", "-N", "-P", "bin", "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Hack.zip"])
 
     call(["python3", "-m", "pip", "install", "--upgrade", "python-language-server[rope,pyflakes,mccabe,pycodestyle,yapf]"])
+    call(["python3", "-m", "pip", "install", "--upgrade", "greenlet"])
+    call(["python3", "-m", "pip", "install", "--upgrade", "msgpack"])
     call(["python3", "-m", "pip", "install", "--upgrade", "pynvim"])
 
     if not args.skip_rust:
