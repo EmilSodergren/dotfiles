@@ -101,7 +101,7 @@ fi
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 maybenvim() {
     args=${@:1}
-    if [[ $TERM == konsole-256color ]]; then
+    if [[ $TERM == screen-256color ]]; then
         nvim $args
     else
         vim $args
@@ -129,6 +129,10 @@ if [ -f ~/.bash_aliases ]; then
 fi
 
 complete -cf sudo
+
+export TERM=screen-256color
+export MYVIMRC="$HOME/.config/nvim/init.vim"
+export EDITOR=nvim
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile

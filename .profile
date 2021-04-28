@@ -8,11 +8,6 @@
 # for ssh logins, install and configure the libpam-umask package.
 #umask 022
 
-if [ -f /usr/share/terminfo/k/konsole-256color ]; then
-    export TERM="konsole-256color"
-else
-    export TERM="xterm-256color"
-fi
 export GOPATH="$HOME/go"
 export GOBIN="$GOPATH/bin"
 
@@ -20,7 +15,6 @@ export PATH="/usr/local/go/bin:$GOBIN:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$PATH:$HOME/.fzf/bin/"
 source "$HOME/.cargo/env"
-command -v nvim > /dev/null 2>&1 && export EDITOR=nvim || export EDITOR=vim
 
 IGNOREREF=10
 
