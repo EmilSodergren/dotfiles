@@ -14,7 +14,7 @@ ccls_config = join(local_bin, "ccls_config")
 neovim_init = join(".config", "nvim", "init.vim")
 pycodestyle_config = join(".config", "pycodestyle")
 yapf_config = join(".config", "yapf", "style")
-nodejs_language_servers = ["yaml-language-server", "dockerfile-language-server-nodejs", "bash-language-server"]
+nodejs_language_servers = ["yaml-language-server", "dockerfile-language-server-nodejs", "bash-language-server", "neovim"]
 settingsfiles = [
     ".bash_completion", ".bash_completion.d", ".bash_git", ".bashrc", ".gitconfig", ".profile", ".tmux.conf", ".vim", antiword, ccls_config,
     neovim_init, pycodestyle_config, yapf_config
