@@ -43,7 +43,11 @@
 [interactive]
     diffFilter = delta --color-only
 [merge]
-    tool = kdiff3
+    tool = nvim
+[mergetool]
+    prompt = false
+[mergetool "nvim"]
+    cmd = nvim -f -c \"Gvdiffsplit!\" \"$MERGED\"
 [diff]
     colorMoved = default
 [color "diff"]
