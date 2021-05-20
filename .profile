@@ -14,7 +14,7 @@ export GOBIN="$GOPATH/bin"
 export PATH="/usr/local/go/bin:$GOBIN:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$PATH:$HOME/.fzf/bin/"
-source "$HOME/.cargo/env"
+. "$HOME/.cargo/env"
 
 IGNOREREF=10
 
