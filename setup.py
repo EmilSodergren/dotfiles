@@ -4,11 +4,13 @@ from subprocess import call, Popen, PIPE
 from argparse import ArgumentParser
 import re
 import apt
+import os
+import json
 
 dotfilespath = dirname(realpath(__file__))
 homefolder = expanduser("~")
 local_bin = join(".local", "bin")
-bfg_jar = join(homefolder, local_bin, "bfg-1.13.0.jar")
+bfg_jar = join(homefolder, local_bin, "bfg-1.14.0.jar")
 antiword = join(local_bin, "antiword")
 ccls_config = join(local_bin, "ccls_config")
 neovim_init = join(".config", "nvim", "init.vim")
@@ -31,7 +33,6 @@ packages_to_install = [
     "libclang-dev",
     "libssl-dev",
     "nodejs",
-    "npm",
     "python3-jedi",
     "python3-lib2to3",
     "python3-pip",
@@ -56,6 +57,7 @@ parser.add_argument(
 parser.add_argument('-sr', '--skip-rust', action='store_true', help='Skip downloading and updating the rust toolchain')
 parser.add_argument('-f', '--font', action='store_true', help='Install Nerd Fonts')
 parser.add_argument('-p', '--pack', action='store_true', help='Pack everything in dotfiles.tar.gz')
+parser.add_argument('-a', '--artifactory', action='store_true', help='Publish to Artifactory')
 args = parser.parse_args()
 
 
@@ -146,7 +148,7 @@ if args.online:
     makedirs(local_bin, exist_ok=True)
 
     # Download online resources
-    call(["wget", "-N", "-P", dirname(bfg_jar), "https://repo1.maven.org/maven2/com/madgag/bfg/1.13.0/bfg-1.13.0.jar"])
+    call(["wget", "-N", "-P", dirname(bfg_jar), "https://repo1.maven.org/maven2/com/madgag/bfg/1.14.0/bfg-1.14.0.jar"])
     call(["chmod", "+x", bfg_jar])
     call(["wget", "-N", "-P", "bin", "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Hack.zip"])
 
@@ -175,7 +177,7 @@ if args.font:
     call(["sudo", "unzip", "-o", join(dotfilespath, "bin", "Hack.zip"), "-d", "/usr/local/share/fonts/"])
     call(["fc-cache", "-f", "-v"])
 
-if args.pack:
+if args.pack or args.artifactory:
     chdir(homefolder)
     call([
         "tar", "cfz", "dotfiles.tar.gz", ".dotfiles/", "go/bin/", ".cargo/bin/", ".cargo/env", local_bin, ".local/node_modules",
@@ -183,3 +185,14 @@ if args.pack:
     ])
     print("")
     print(".dotfiles has been packed into " + join(homefolder, "dotfiles.tar.gz"))
+
+    auth_file = join(homefolder, ".dotfiles", "auth.json")
+    if args.artifactory and exists(auth_file):
+        with open(auth_file, "r") as a:
+            config = json.load(a)
+        command = [
+            "curl", "-H", "X-JFrog-Art-Api:{}".format(config["api_key"]), "-T",
+            join(homefolder, "dotfiles.tar.gz"),
+            join(config["url"], "dotfiles.tar.gz")
+        ]
+        os.system(" ".join(command))

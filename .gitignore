@@ -6,3 +6,4 @@ tmux-continuum/
 bin/Hack.zip
 .local/bin/diff-so-fancy
 .local/bin/bfg-1.13.0.jar
+auth.json
