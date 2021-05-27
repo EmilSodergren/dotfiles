@@ -134,6 +134,7 @@ complete -cf sudo
 export TERM=screen-256color
 export MYVIMRC="$HOME/.config/nvim/init.vim"
 export EDITOR=nvim
+export SUDO_ASKPASS=/usr/bin/ssh-askpass
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile

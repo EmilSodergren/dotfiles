@@ -36,6 +36,7 @@ packages_to_install = [
     "python3-jedi",
     "python3-lib2to3",
     "python3-pip",
+    "ssh-askpass",
     "tmux",
 ]
 apt_cache = apt.Cache()
