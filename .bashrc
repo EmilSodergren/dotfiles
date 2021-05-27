@@ -160,3 +160,4 @@ fi
 if [ -z $TMUX ]; then
     tmux attach
 fi
+. "$HOME/.cargo/env"
