@@ -45,6 +45,7 @@ Plug 'rust-lang/rust.vim', {'for': 'rust'}
 Plug 'simeji/winresizer'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-surround'
 Plug 'jreybert/vimagit'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
