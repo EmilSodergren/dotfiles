@@ -28,6 +28,7 @@ packages_to_install = [
     "antiword",
     "bash-completion",
     "docx2txt",
+    "flameshot",
     "fonts-powerline",
     "git",
     "libclang-dev",
