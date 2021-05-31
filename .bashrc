@@ -115,7 +115,7 @@ alias 9g='9lvgit'
 alias tmux='tmux -2'
 alias gonvim='GOPATH=`pwd` GOBIN=`pwd`/bin nvim'
 alias nvim=maybenvim
-alias notes='nvim -c MarkdownPreview ~/Downloads/notes.md'
+alias notes='nvim -c MarkdownPreview ~/Documents/notes.md'
 # alias cd='echo "!cd is for noobs!" && sleep 2 && cd'
 #alias grep='rg'
 #alias l='ls -CF'
