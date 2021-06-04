@@ -318,6 +318,8 @@ cmap w!! w !sudo tee > /dev/null %
 nnoremap dgh :diffget //2 <CR> ]c
 nnoremap dgl :diffget //3 <CR> ]c
 
+nmap ysss <Plug>Yssurround <s>I* <esc>f*xx
+
 " space to toggle folds.
 nnoremap <space> za
 vnoremap <space> za
