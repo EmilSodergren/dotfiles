@@ -33,6 +33,7 @@ packages_to_install = [
     "git",
     "libclang-dev",
     "libssl-dev",
+    "make",
     "nodejs",
     "python3-jedi",
     "python3-lib2to3",
