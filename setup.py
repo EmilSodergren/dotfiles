@@ -22,7 +22,7 @@ settingsfiles = [
     neovim_init, pycodestyle_config, yapf_config
 ]
 rustup_bin = join(homefolder, ".cargo/bin/rustup")
-rust_binaries = ["bat", "cargo-watch", "du-dust", "fd-find", "git-delta", "lsd", "ripgrep", "sd", "tokei", "ytop", "zoxide"]
+rust_binaries = ["bat", "cargo-watch", "cargo-edit", "du-dust", "fd-find", "git-delta", "lsd", "ripgrep", "sd", "tokei", "ytop", "zoxide"]
 rust_analyzer = ["https://github.com/rust-analyzer/rust-analyzer", "xtask", "rust-analyzer"]
 packages_to_install = [
     "antiword",
