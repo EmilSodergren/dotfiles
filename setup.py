@@ -155,7 +155,7 @@ if args.online:
     call(["chmod", "+x", bfg_jar])
     call(["wget", "-N", "-P", "bin", "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Hack.zip"])
 
-    call(["python3", "-m", "pip", "install", "--upgrade", "python-language-server[rope,pyflakes,mccabe,pycodestyle,yapf]"])
+    call(["python3", "-m", "pip", "install", "--upgrade", "python-lsp-server[rope,pyflakes,mccabe,pycodestyle,yapf]"])
     call(["python3", "-m", "pip", "install", "--upgrade", "greenlet"])
     call(["python3", "-m", "pip", "install", "--upgrade", "msgpack"])
     call(["python3", "-m", "pip", "install", "--upgrade", "pynvim"])

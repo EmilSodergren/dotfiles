@@ -224,7 +224,7 @@ lspconfig.rust_analyzer.setup{
         }
     }
 }
-lspconfig.pyls.setup{}
+lspconfig.pylsp.setup{}
 lspconfig.yamlls.setup{
   cmd = { home.."/.local/node_modules/yaml-language-server/bin/yaml-language-server", "--stdio" },
   settings = {
