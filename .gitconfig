@@ -69,3 +69,5 @@
     newHighlight = green bold 22
 [init]
 	defaultBranch = main
+[rebase]
+	autoStash = true
