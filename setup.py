@@ -2,6 +2,7 @@ from os.path import dirname, realpath, expanduser, join, exists, islink
 from os import symlink, remove, chdir, makedirs, system
 from subprocess import call, Popen, PIPE
 from argparse import ArgumentParser
+from datetime import datetime
 import re
 import apt
 import os
@@ -199,3 +200,5 @@ if args.pack or args.artifactory:
             join(config["url"], "dotfiles.tar.gz")
         ]
         os.system(" ".join(command))
+
+print("Finished: {}".format(datetime.now().strftime("%H:%M:%S")))
