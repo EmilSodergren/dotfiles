@@ -189,7 +189,7 @@ if args.pack or args.artifactory:
     chdir(homefolder)
     call([
         "tar", "cfz", "dotfiles.tar.gz", ".dotfiles/", "go/bin/", ".cargo/bin/", ".cargo/env", local_bin, ".local/node_modules",
-        ".local/include", ".local/lib", ".local/share/nvim", ".fzf"
+        ".local/include", ".local/lib", ".local/share/nvim", ".local/share/konsole", ".fzf"
     ])
     print("")
     print(".dotfiles has been packed into " + join(homefolder, "dotfiles.tar.gz"))
