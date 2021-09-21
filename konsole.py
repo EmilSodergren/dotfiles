@@ -61,6 +61,7 @@ if args.build:
     build_dir = join(konsole_dir, "build")
     makedirs(build_dir, exist_ok=True)
     chdir(build_dir)
+    # Debian 10 needs tag v19.12.3 in konsole, and kinit-dev package installed
     call(["cmake", "..", "-DCMAKE_INSTALL_PREFIX={}".format(konsole_install_dir)])
     call(["make", "-j", nproc])
     call(["make", "install", "-j", nproc])
