@@ -52,7 +52,8 @@ parser.add_argument('-c',
                     '--clean',
                     action='store_true',
                     help='If neovim should be cleaned before build, only vaild if --online and --neovim is defined')
-parser.add_argument('-sc', '--skip_ccls', action='store_true', help='Should ccls be built, only vaild if --online is defined')
+parser.add_argument('-sc', '--skip_ccls', action='store_true', help='Should ccls be skipped, only vaild if --online is defined')
+parser.add_argument('-sk', '--skip_konsole', action='store_true', help='Should konsole be skipped, only vaild if --online is defined')
 parser.add_argument(
     '-u',
     '--update-go-binaries',
@@ -122,6 +123,7 @@ for pac in packages_to_install:
         call(["sudo", "apt-get", "install", "-y", *packages_to_install])
         break
 system("python3 ccls.py")
+system("python3 konsole.py")
 
 if args.online:
     if args.neovim:
@@ -131,6 +133,8 @@ if args.online:
             system("python3 neovim.py -b")
     if not args.skip_ccls:
         system("python3 ccls.py -b")
+    if not args.skip_konsole:
+        system("python3 konsole.py -b")
     try:
         call(["nvim", "+PlugUpgrade", "+PlugUpdate", "+UpdateRemotePlugins", "+qall"])
     except FileNotFoundError:
