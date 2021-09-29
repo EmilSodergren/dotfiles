@@ -214,15 +214,15 @@ lspconfig.dockerls.setup{
 }
 lspconfig.gopls.setup{}
 lspconfig.rust_analyzer.setup{
-    settings = {
-        ["rust-analyzer"] = {
-          diagnostics = {
-              enable = true,
-              disabled = {"unresolved-proc-macro"},
-              enableExperimental = true,
-          }
-        }
+  settings = {
+    ["rust-analyzer"] = {
+      diagnostics = {
+        enable = true,
+        disabled = {"unresolved-proc-macro"},
+        enableExperimental = true,
+      }
     }
+  }
 }
 lspconfig.pylsp.setup{}
 lspconfig.yamlls.setup{
