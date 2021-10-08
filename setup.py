@@ -27,7 +27,9 @@ rust_binaries = ["bat", "cargo-watch", "cargo-edit", "du-dust", "fd-find", "git-
 rust_analyzer = ["https://github.com/rust-analyzer/rust-analyzer", "xtask", "rust-analyzer"]
 packages_to_install = [
     "antiword",
+    "apt-transport-https",
     "bash-completion",
+    "curl",
     "docx2txt",
     "flameshot",
     "fonts-powerline",
@@ -127,6 +129,19 @@ system("python3 ccls.py")
 system("python3 konsole.py")
 
 if args.online:
+    if not exists("/etc/apt/sources.list.d/brave-browser-release.list"):
+        call([
+            "sudo", "curl", "-fsSLo", "/usr/share/keyrings/brave-browser-archive-keyring.gpg",
+            "https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg"
+        ])
+        with open("/tmp/brave-browser-release.list", "w+") as f:
+            f.write(
+                "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main"
+            )
+            call(["sudo", "mv", "/tmp/brave-browser-release.list", "/etc/apt/sources.list.d/brave-browser-release.list"])
+        call(["sudo", "apt-get", "update"])
+        call(["sudo", "apt-get", "install", "-y", "brave-browser"])
+
     if args.neovim:
         if args.clean:
             system("python3 neovim.py -b -c")
