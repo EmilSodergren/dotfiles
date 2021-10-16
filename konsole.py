@@ -2,6 +2,7 @@ from os.path import expanduser, join, exists, basename
 from os import chdir, makedirs, cpu_count
 from subprocess import call
 from argparse import ArgumentParser
+from shutil import rmtree
 import apt
 
 homefolder = expanduser("~")
@@ -41,6 +42,7 @@ packages_for_build = [
 ]
 
 parser.add_argument('-b', '--build', action='store_true', help='Download/Update sources and build/install')
+parser.add_argument('-c', '--clean', action='store_true', help='Clean before build')
 args = parser.parse_args()
 
 chdir(homefolder)
@@ -51,6 +53,9 @@ for pac in packages_for_build:
         # call(["sudo", "apt-get", "install", "-y", pac])
         call(["sudo", "apt-get", "install", "-y", *packages_for_build])
         break
+
+if args.clean:
+    rmtree(konsole_dir)
 
 if args.build:
     if not exists(konsole_dir):

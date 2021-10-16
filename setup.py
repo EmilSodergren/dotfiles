@@ -90,6 +90,28 @@ def exists_all(path, files):
     return True
 
 
+def install_brave_browser():
+    if not exists("/etc/apt/sources.list.d/brave-browser-release.list"):
+        call([
+            "sudo", "curl", "-fsSLo", "/usr/share/keyrings/brave-browser-archive-keyring.gpg",
+            "https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg"
+        ])
+        with open("/tmp/brave-browser-release.list", "w+") as f:
+            f.write(
+                "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main"
+            )
+            call(["sudo", "mv", "/tmp/brave-browser-release.list", "/etc/apt/sources.list.d/brave-browser-release.list"])
+        call(["sudo", "apt-get", "update"])
+        call(["sudo", "apt-get", "install", "-y", "brave-browser"])
+
+
+def install_program(script_name, with_clean):
+    if args.clean:
+        system("python3 {} -b -c".format(script_name))
+    else:
+        system("python3 neovim.py -b")
+
+
 for stuff in settingsfiles:
     linkpath = join(homefolder, stuff)
     sourcepath = join(dotfilespath, stuff)
@@ -130,37 +152,17 @@ system("python3 ccls.py")
 system("python3 konsole.py")
 
 if args.online:
-    if not exists("/etc/apt/sources.list.d/brave-browser-release.list"):
-        call([
-            "sudo", "curl", "-fsSLo", "/usr/share/keyrings/brave-browser-archive-keyring.gpg",
-            "https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg"
-        ])
-        with open("/tmp/brave-browser-release.list", "w+") as f:
-            f.write(
-                "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main"
-            )
-            call(["sudo", "mv", "/tmp/brave-browser-release.list", "/etc/apt/sources.list.d/brave-browser-release.list"])
-        call(["sudo", "apt-get", "update"])
-        call(["sudo", "apt-get", "install", "-y", "brave-browser"])
-
+    install_brave_browser()
     if args.neovim:
-        if args.clean:
-            system("python3 neovim.py -b -c")
-        else:
-            system("python3 neovim.py -b")
+        install_program("neovim.py", args.clean)
     if not args.skip_ccls:
-        system("python3 ccls.py -b")
+        install_program("ccls.py", args.clean)
     if not args.skip_konsole:
-        system("python3 konsole.py -b")
-    try:
-        call(["nvim", "+PlugUpgrade", "+PlugUpdate", "+UpdateRemotePlugins", "+qall"])
-    except FileNotFoundError:
-        call(["vim", "+PlugUpgrade", "+PlugUpdate", "+UpdateRemotePlugins", "+qall"])
+        install_program("konsole.py", args.clean)
+
+    call(["nvim", "+PlugUpgrade", "+PlugUpdate", "+UpdateRemotePlugins", "+qall"])
     if args.update_go_binaries:
-        try:
-            call(["nvim", "-c", "GoUpdateBinaries", "-c", "qall"])
-        except FileNotFoundError:
-            call(["vim", "-c", "GoUpdateBinaries", "-c", "qall"])
+        call(["nvim", "-c", "GoUpdateBinaries", "-c", "qall"])
 
     if exists(join(dotfilespath, "tmux-resurrect")):
         call(["git", "-C", join(dotfilespath, "tmux-resurrect"), "pull"])

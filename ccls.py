@@ -2,6 +2,7 @@ from os.path import expanduser, join, exists, basename
 from os import chdir
 from subprocess import call
 from argparse import ArgumentParser
+from shutil import rmtree
 import apt
 
 homefolder = expanduser("~")
@@ -14,6 +15,7 @@ packages_for_build = ["clang", "cmake", "libclang-dev", "llvm-dev", "rapidjson-d
 
 parser.add_argument('-u', '--uninstall', action='store_true', help='Uninstall ccls local install path')
 parser.add_argument('-b', '--build', action='store_true', help='Download/Update sources and build/install')
+parser.add_argument('-c', '--clean', action='store_true', help='Clean before build')
 args = parser.parse_args()
 
 if args.uninstall:
@@ -26,6 +28,9 @@ for pac in packages_for_build:
         print("Needs to install packages for building CCLS")
         call(["sudo", "apt-get", "install", "-y", *packages_for_build])
         break
+
+if args.clean:
+    rmtree(ccls_dir)
 
 if args.build:
     if not exists(ccls_dir):
