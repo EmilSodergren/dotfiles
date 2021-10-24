@@ -110,7 +110,7 @@ def install_program(script_name, with_clean):
     if args.clean:
         system("python3 {} -b -c".format(script_name))
     else:
-        system("python3 neovim.py -b")
+        system("python3 {} -b".format(script_name))
 
 
 for stuff in settingsfiles:
@@ -149,8 +149,6 @@ for pac in packages_to_install:
         print("Needs to install packages")
         call(["sudo", "apt-get", "install", "-y", *packages_to_install])
         break
-system("python3 ccls.py")
-system("python3 konsole.py")
 
 if args.online:
     install_brave_browser()
