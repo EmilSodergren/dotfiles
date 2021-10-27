@@ -45,6 +45,7 @@ packages_to_install = [
     "python3-pip",
     "ssh-askpass",
     "tmux",
+    "xclip",
 ]
 apt_cache = apt.Cache()
 
