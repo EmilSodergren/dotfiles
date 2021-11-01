@@ -186,9 +186,16 @@ set softtabstop=4
 set t_Co=256
 set tabstop=4
 set textwidth=0
+set number
 if has('nvim')
     set inccommand=split
 endif
+
+augroup numbertoggle
+    autocmd!
+    autocmd BufEnter,FocusGained,InsertLeave,WinEnter * if &nu && mode() != "i" | set rnu   | endif
+    autocmd BufLeave,FocusLost,InsertEnter,WinLeave   * if &nu                  | set nornu | endif
+augroup END
 
 syntax on
 colorscheme southernlights
@@ -230,7 +237,7 @@ lspconfig.yamlls.setup{
   settings = {
     yaml = {
       schemas = {
-        ["https://json.schemastore.org/github-workflow"] = "mean_bean*.yml"
+        ["/home/mre/Downloads/github-workflow.json"] = "mean_bean_ci.yml"
       }
     }
   }
