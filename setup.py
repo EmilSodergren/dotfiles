@@ -44,7 +44,6 @@ packages_to_install = [
     "python3-lib2to3",
     "python3-pip",
     "ssh-askpass",
-    "tmux",
     "xclip",
 ]
 apt_cache = apt.Cache()
@@ -59,6 +58,7 @@ parser.add_argument('-c',
                     help='If neovim should be cleaned before build, only vaild if --online and --neovim is defined')
 parser.add_argument('-sc', '--skip_ccls', action='store_true', help='Should ccls be skipped, only vaild if --online is defined')
 parser.add_argument('-sk', '--skip_konsole', action='store_true', help='Should konsole be skipped, only vaild if --online is defined')
+parser.add_argument('-st', '--skip_tmux', action='store_true', help='Should tmux be skipped, only vaild if --online is defined')
 parser.add_argument(
     '-u',
     '--update-go-binaries',
@@ -158,6 +158,8 @@ if args.online:
         install_program("ccls.py", args.clean)
     if not args.skip_konsole:
         install_program("konsole.py", args.clean)
+    if not args.skip_tmux:
+        install_program("tmux.py", args.clean)
 
     call(["nvim", "+PlugUpgrade", "+PlugUpdate", "+UpdateRemotePlugins", "+qall"])
     if args.update_go_binaries:
