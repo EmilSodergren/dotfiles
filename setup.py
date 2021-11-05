@@ -98,11 +98,11 @@ def install_brave_browser():
             "sudo", "curl", "-fsSLo", "/usr/share/keyrings/brave-browser-archive-keyring.gpg",
             "https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg"
         ])
-        with open("/tmp/brave-browser-release.list", "w+") as f:
+        with open("/tmp/brave-browser-release.list", "w") as f:
             f.write(
                 "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main"
             )
-            call(["sudo", "mv", "/tmp/brave-browser-release.list", "/etc/apt/sources.list.d/brave-browser-release.list"])
+        call(["sudo", "mv", "/tmp/brave-browser-release.list", "/etc/apt/sources.list.d/brave-browser-release.list"])
         call(["sudo", "apt-get", "update"])
         call(["sudo", "apt-get", "install", "-y", "brave-browser"])
 
@@ -169,9 +169,11 @@ if args.online:
     if exists(join(dotfilespath, "tmux-resurrect")):
         call(["git", "-C", join(dotfilespath, "tmux-resurrect"), "pull"])
         call(["git", "-C", join(dotfilespath, "tmux-continuum"), "pull"])
+        call(["git", "-C", join(dotfilespath, "tmux-notify"), "pull"])
     else:
         call(["git", "clone", "https://github.com/tmux-plugins/tmux-resurrect", join(dotfilespath, "tmux-resurrect")])
         call(["git", "clone", "https://github.com/tmux-plugins/tmux-continuum", join(dotfilespath, "tmux-continuum")])
+        call(["git", "clone", "https://github.com/ChanderG/tmux-notify", join(dotfilespath, "tmux-notify")])
 
     call(["npm", "install", "--prefix", join(homefolder, ".local"), *nodejs_language_servers])
     makedirs(local_bin, exist_ok=True)
