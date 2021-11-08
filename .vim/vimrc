@@ -26,6 +26,7 @@ if has('nvim')
     Plug 'Shougo/echodoc.vim'
     Plug 'Shougo/neosnippet.vim'
     Plug 'Shougo/neosnippet-snippets'
+    Plug 'simrat39/rust-tools.nvim'
     Plug 'neovim/nvim-lspconfig'
 endif
 Plug 'alec-gibson/nvim-tetris'
@@ -210,6 +211,7 @@ match EndingWhiteSpace /\s\+\%#\@<!$/
 " Initialize nvim-lsp {{{
 if has('nvim')
 lua <<EOF
+require('rust-tools').setup({})
 local lspconfig = require'lspconfig';
 local home = os.getenv("HOME");
 lspconfig.bashls.setup{
@@ -220,17 +222,6 @@ lspconfig.dockerls.setup{
   cmd = { home.."/.local/node_modules/dockerfile-language-server-nodejs/bin/docker-langserver", "--stdio" }
 }
 lspconfig.gopls.setup{}
-lspconfig.rust_analyzer.setup{
-  settings = {
-    ["rust-analyzer"] = {
-      diagnostics = {
-        enable = true,
-        disabled = {"unresolved-proc-macro"},
-        enableExperimental = true,
-      }
-    }
-  }
-}
 lspconfig.pylsp.setup{}
 lspconfig.yamlls.setup{
   cmd = { home.."/.local/node_modules/yaml-language-server/bin/yaml-language-server", "--stdio" },
