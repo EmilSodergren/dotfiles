@@ -166,14 +166,13 @@ if args.online:
     if args.update_go_binaries:
         call(["nvim", "-c", "GoUpdateBinaries", "-c", "qall"])
 
-    if exists(join(dotfilespath, "tmux-resurrect")):
-        call(["git", "-C", join(dotfilespath, "tmux-resurrect"), "pull"])
-        call(["git", "-C", join(dotfilespath, "tmux-continuum"), "pull"])
-        call(["git", "-C", join(dotfilespath, "tmux-notify"), "pull"])
-    else:
-        call(["git", "clone", "https://github.com/tmux-plugins/tmux-resurrect", join(dotfilespath, "tmux-resurrect")])
-        call(["git", "clone", "https://github.com/tmux-plugins/tmux-continuum", join(dotfilespath, "tmux-continuum")])
-        call(["git", "clone", "https://github.com/ChanderG/tmux-notify", join(dotfilespath, "tmux-notify")])
+    for tmuxpath, tmuxurl in [(join(dotfilespath, "tmux-resurrect"), "https://github.com/tmux-plugins/tmux-resurrect"),
+                              (join(dotfilespath, "tmux-continuum"), "https://github.com/tmux-plugins/tmux-continuum"),
+                              (join(dotfilespath, "tmux-notify"), "https://github.com/ChanderG/tmux-notify")]:
+        if exists(tmuxpath):
+            call(["git", "-C", tmuxpath, "pull"])
+        else:
+            call(["git", "clone", tmuxurl, tmuxpath])
 
     call(["npm", "install", "--prefix", join(homefolder, ".local"), *nodejs_language_servers])
     makedirs(local_bin, exist_ok=True)
