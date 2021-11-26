@@ -212,14 +212,8 @@ if args.pack or args.artifactory:
     print(".dotfiles has been packed into " + join(homefolder, "dotfiles.tar.gz"))
 
     auth_file = join(homefolder, ".dotfiles", "auth.json")
-    if args.artifactory and exists(auth_file):
-        with open(auth_file, "r") as a:
-            config = json.load(a)
-        command = [
-            "curl", "-H", "X-JFrog-Art-Api:{}".format(config["api_key"]), "-T",
-            join(homefolder, "dotfiles.tar.gz"),
-            join(config["url"], "dotfiles.tar.gz")
-        ]
+    if args.artifactory:
+        command = ["jfrog", "rt", "u", join(homefolder, "dotfiles.tar.gz"), "ace-generic-prod-se-blu-sync/u009893/dotfiles.tar.gz"]
         os.system(" ".join(command))
 
 print("Finished: {}".format(datetime.now().strftime("%H:%M:%S")))
