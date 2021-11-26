@@ -53,11 +53,11 @@ apt_cache = apt.Cache()
 parser = ArgumentParser(description='Setup the machine')
 
 parser.add_argument('-o', '--online', action='store_true', help='Download stuff from the internet')
-parser.add_argument('-n', '--neovim', action='store_true', help='Should neovim be built, only vaild if --online is defined')
+parser.add_argument('-sn', '--skip_neovim', action='store_true', help='Should neovim be skipped, only vaild if --online is defined')
 parser.add_argument('-c',
                     '--clean',
                     action='store_true',
-                    help='If neovim should be cleaned before build, only vaild if --online and --neovim is defined')
+                    help='If programs should be cleaned before build, only vaild if --online  is defined')
 parser.add_argument('-sc', '--skip_ccls', action='store_true', help='Should ccls be skipped, only vaild if --online is defined')
 parser.add_argument('-sk', '--skip_konsole', action='store_true', help='Should konsole be skipped, only vaild if --online is defined')
 parser.add_argument('-st', '--skip_tmux', action='store_true', help='Should tmux be skipped, only vaild if --online is defined')
@@ -154,7 +154,7 @@ for pac in packages_to_install:
 
 if args.online:
     install_brave_browser()
-    if args.neovim:
+    if not args.skip_neovim:
         install_program("neovim.py", args.clean)
     if not args.skip_ccls:
         install_program("ccls.py", args.clean)
