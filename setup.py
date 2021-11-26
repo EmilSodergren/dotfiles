@@ -61,11 +61,6 @@ parser.add_argument('-c',
 parser.add_argument('-sc', '--skip_ccls', action='store_true', help='Should ccls be skipped, only vaild if --online is defined')
 parser.add_argument('-sk', '--skip_konsole', action='store_true', help='Should konsole be skipped, only vaild if --online is defined')
 parser.add_argument('-st', '--skip_tmux', action='store_true', help='Should tmux be skipped, only vaild if --online is defined')
-parser.add_argument(
-    '-u',
-    '--update-go-binaries',
-    action='store_true',
-    help='Update the go binaries, only valid if --online is defined. Requires manual restart of the script after completion')
 parser.add_argument('-sr', '--skip-rust', action='store_true', help='Skip downloading and updating the rust toolchain')
 parser.add_argument('-f', '--font', action='store_true', help='Install Nerd Fonts')
 parser.add_argument('-p', '--pack', action='store_true', help='Pack everything in dotfiles.tar.gz')
@@ -164,8 +159,7 @@ if args.online:
         install_program("tmux.py", args.clean)
 
     call(["nvim", "+PlugUpgrade", "+PlugUpdate", "+UpdateRemotePlugins", "+qall"])
-    if args.update_go_binaries:
-        call(["nvim", "-c", "GoUpdateBinaries", "-c", "qall"])
+    call(["nvim", "-c", "GoUpdateBinaries", "-c", "qall"])
 
     for tmuxpath, tmuxurl in [(join(dotfilespath, "tmux-resurrect"), "https://github.com/tmux-plugins/tmux-resurrect"),
                               (join(dotfilespath, "tmux-continuum"), "https://github.com/tmux-plugins/tmux-continuum"),
