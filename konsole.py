@@ -69,5 +69,5 @@ if args.build:
     call(["cmake", "..", "-DCMAKE_INSTALL_PREFIX={}".format(konsole_install_dir)])
     call(["make", "-j", nproc])
     if apt_cache["konsole"].is_installed:
-        call(["sudo", "apt-get", "remove", "konsole"])
+        call(["sudo", "apt-get", "remove", "-y", "konsole"])
     call(["make", "install", "-j", nproc])
