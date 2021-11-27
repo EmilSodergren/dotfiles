@@ -3,6 +3,7 @@ from os import symlink, remove, chdir, makedirs, system
 from subprocess import call, Popen, PIPE
 from argparse import ArgumentParser
 from datetime import datetime
+from glob import glob
 import re
 import apt
 import os
@@ -149,6 +150,8 @@ for pac in packages_to_install:
         break
 
 if args.online:
+    if not glob("/etc/apt/sources.list.d/kubuntu-ppa*.list"):
+        call(["sudo", "add-apt-repository", "-y", "ppa:kubuntu-ppa/backports"])
     install_brave_browser()
     if not args.skip_neovim:
         install_program("neovim.py", args.clean)
