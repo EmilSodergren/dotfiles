@@ -55,6 +55,7 @@ apt_cache = apt.Cache()
 parser = ArgumentParser(description='Setup the machine')
 
 parser.add_argument('-o', '--online', action='store_true', help='Download stuff from the internet')
+parser.add_argument('-sa', '--skip_all', action='store_true', help='Short hand for -sn -sc -sk -sr -st, only vaild if --online is defined')
 parser.add_argument('-sn', '--skip_neovim', action='store_true', help='Should neovim be skipped, only vaild if --online is defined')
 parser.add_argument('-c',
                     '--clean',
@@ -153,14 +154,15 @@ if args.online:
     if not glob("/etc/apt/sources.list.d/kubuntu-ppa*.list"):
         call(["sudo", "add-apt-repository", "-y", "ppa:kubuntu-ppa/backports"])
     install_brave_browser()
-    if not args.skip_neovim:
-        install_program("neovim.py", args.clean)
-    if not args.skip_ccls:
-        install_program("ccls.py", args.clean)
-    if not args.skip_konsole:
-        install_program("konsole.py", args.clean)
-    if not args.skip_tmux:
-        install_program("tmux.py", args.clean)
+    if not args.skip_all:
+        if not args.skip_neovim:
+            install_program("neovim.py", args.clean)
+        if not args.skip_ccls:
+            install_program("ccls.py", args.clean)
+        if not args.skip_konsole:
+            install_program("konsole.py", args.clean)
+        if not args.skip_tmux:
+            install_program("tmux.py", args.clean)
 
     call(["nvim", "+PlugUpgrade", "+PlugUpdate", "+UpdateRemotePlugins", "+qall"])
     call(["nvim", "-c", "GoUpdateBinaries", "-c", "qall"])
@@ -186,7 +188,7 @@ if args.online:
     call(["python3", "-m", "pip", "install", "--upgrade", "msgpack"])
     call(["python3", "-m", "pip", "install", "--upgrade", "pynvim"])
 
-    if not args.skip_rust:
+    if not args.skip_all and not args.skip_rust:
         ps = Popen(["curl", "--proto", "=https", "--tlsv1.2", "-sSf", "https://sh.rustup.rs"], stdout=PIPE)
         call(["sh", "-s", "--", "--default-toolchain", "none", "-y"], stdin=ps.stdout)
         ps.wait()
