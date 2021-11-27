@@ -45,6 +45,7 @@ packages_to_install = [
     "python3-lib2to3",
     "python3-pip",
     "ssh-askpass",
+    "vim-nox",
     "wl-clipboard",
     "xclip",
 ]
