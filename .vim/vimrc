@@ -201,7 +201,7 @@ augroup END
 syntax on
 colorscheme southernlights
 
-hi Pmenu ctermfg=40 ctermbg=8
+hi Pmenu ctermfg=40 ctermbg=236
 hi PmenuSel ctermbg=52
 hi PmenuSbar ctermbg=4
 
