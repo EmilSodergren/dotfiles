@@ -41,6 +41,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'jreybert/vimagit'
 Plug 'lepture/vim-jinja', {'for': 'jinja'}
 Plug 'machakann/vim-highlightedyank'
+Plug 'mbbill/undotree'
 Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
 Plug 'rust-lang/rust.vim', {'for': 'rust'}
 Plug 'simeji/winresizer'
@@ -151,6 +152,14 @@ if has('nvim')
     imap <C-k> <Plug>(neosnippet_expand_or_jump)
     imap <expr><cr> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<cr>"
     smap <expr><cr> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<cr>"
+endif
+" }}}
+" Undotree {{{
+if has('nvim')
+    let g:undotree_ShortIndicators = 1
+    let g:undotree_DiffpanelHeight = 16
+    let g:undotree_SetFocusWhenToggle = 1
+    let g:undotree_SplitWidth = 35
 endif
 " }}}
 " }}}
@@ -317,6 +326,8 @@ nnoremap dgh :diffget //2 <CR> ]c
 nnoremap dgl :diffget //3 <CR> ]c
 
 nmap ysss <Plug>Yssurround <s>I* <esc>f*xx
+
+nnoremap <leader>u :UndotreeToggle<CR>
 
 nmap <leader>sp :call <SID>SynStack()<CR>
 function! <SID>SynStack()
