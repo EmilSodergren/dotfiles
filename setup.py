@@ -7,7 +7,6 @@ from glob import glob
 import re
 import apt
 import os
-import json
 
 dotfilespath = dirname(realpath(__file__))
 homefolder = expanduser("~")
@@ -45,6 +44,7 @@ packages_to_install = [
     "python3-jedi",
     "python3-lib2to3",
     "python3-pip",
+    "software-properties-common",
     "ssh-askpass",
     "vim-nox",
     "wl-clipboard",
