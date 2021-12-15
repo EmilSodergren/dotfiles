@@ -8,6 +8,7 @@ import apt
 homefolder = expanduser("~")
 konsole_install_dir = join(homefolder, ".local")
 konsole_dir = join(homefolder, "konsole")
+build_dir = join(konsole_dir, "build")
 apt_cache = apt.Cache()
 nproc = str(cpu_count())
 
@@ -54,7 +55,7 @@ for pac in packages_for_build:
         break
 
 if args.clean:
-    rmtree(konsole_dir)
+    rmtree(build_dir)
 
 if args.build:
     if not exists(konsole_dir):
@@ -62,7 +63,6 @@ if args.build:
     else:
         call(["git", "-C", konsole_dir, "pull"])
 
-    build_dir = join(konsole_dir, "build")
     makedirs(build_dir, exist_ok=True)
     chdir(build_dir)
     # Debian 10 needs tag v19.12.3 in konsole, and kinit-dev package installed
