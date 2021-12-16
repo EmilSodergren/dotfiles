@@ -5,7 +5,7 @@ My linux configuration
 cd ~
 git clone git@github.com:EmilSodergren/dotfiles.git .dotfiles
 cd .dotfiles
-python3 setup.py [-o] [-n] [-c] [-u] [-sr] [-f] [-p] [-a]
+python3 setup.py [-h] [-o] [-sa] [-sn] [-c] [-sc] [-sk] [-st] [-sr] [-f] [-p] [-a]
 
 ```
 To run all:

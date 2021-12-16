@@ -65,7 +65,7 @@ parser.add_argument('-sc', '--skip_ccls', action='store_true', help='Should ccls
 parser.add_argument('-sk', '--skip_konsole', action='store_true', help='Should konsole be skipped, only vaild if --online is defined')
 parser.add_argument('-st', '--skip_tmux', action='store_true', help='Should tmux be skipped, only vaild if --online is defined')
 parser.add_argument('-sr', '--skip-rust', action='store_true', help='Skip downloading and updating the rust toolchain')
-parser.add_argument('-f', '--font', action='store_true', help='Install Nerd Fonts')
+parser.add_argument('-f', '--font', action='store_true', help='Install Hack Nerd Fonts')
 parser.add_argument('-p', '--pack', action='store_true', help='Pack everything in dotfiles.tar.gz')
 parser.add_argument('-a', '--artifactory', action='store_true', help='Publish to Artifactory')
 args = parser.parse_args()
