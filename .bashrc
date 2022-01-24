@@ -135,6 +135,7 @@ export MYVIMRC="$HOME/.config/nvim/init.vim"
 export EDITOR=nvim
 export SUDO_ASKPASS=/usr/bin/ssh-askpass
 export FZF_DEFAULT_COMMAND='fd --type file --follow --hidden --exclude .git'
+export WS_BOOTSTRAP_NO_SAVE=1
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
