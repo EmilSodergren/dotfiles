@@ -341,7 +341,7 @@ endfunc
 nnoremap <space> za
 vnoremap <space> za
 autocmd FileType yaml setlocal indentkeys-=<:> ts=4 sts=4 sw=4 expandtab
-autocmd FileType bash setlocal ts=2 sts=2 sw=2 expandtab
+autocmd FileType sh setlocal ts=2 sts=2 sw=2 expandtab
 " }}}
 " Vimscript file settings {{{
 augroup FT_vim
