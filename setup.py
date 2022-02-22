@@ -81,6 +81,8 @@ def rust_binary_mapper(f):
         return "delta"
     if f == "ripgrep":
         return "rg"
+    if f == "cargo-edit":
+        return "cargo-add"
     return f
 
 
