@@ -56,6 +56,7 @@ apt_cache = apt.Cache()
 parser = ArgumentParser(description='Setup the machine')
 
 parser.add_argument('-o', '--online', action='store_true', help='Download stuff from the internet')
+parser.add_argument('-ob', '--only-brave', action='store_true', help='Only install brave browser and exit')
 parser.add_argument('-sa', '--skip_all', action='store_true', help='Short hand for -sn -sc -sk -sr -st, only vaild if --online is defined')
 parser.add_argument('-sn', '--skip_neovim', action='store_true', help='Should neovim be skipped, only vaild if --online is defined')
 parser.add_argument('-c',
@@ -115,6 +116,11 @@ def install_program(script_name, with_clean):
     else:
         system("python3 {} -b".format(script_name))
 
+if args.only_brave:
+    call(["sudo", "apt-get", "update"])
+    call(["sudo", "apt-get", "-y", "install", "curl"])
+    install_brave_browser()
+    sys.exit(0)
 
 for stuff in settingsfiles:
     linkpath = join(homefolder, stuff)
