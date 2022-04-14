@@ -109,7 +109,7 @@ def install_brave_browser():
 
 
 def install_program(script_name, with_clean):
-    if args.clean:
+    if with_clean:
         system("python3 {} -b -c".format(script_name))
     else:
         system("python3 {} -b".format(script_name))
