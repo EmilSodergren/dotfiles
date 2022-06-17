@@ -14,6 +14,7 @@ local_bin = join(".local", "bin")
 bfg_jar = join(homefolder, local_bin, "bfg-1.14.0.jar")
 antiword = join(local_bin, "antiword")
 ccls_config = join(local_bin, "ccls_config")
+forgit = join(local_bin, "forgit")
 write_notes = join(local_bin, "write_notes")
 konsole_config = join(".local", "share", "konsole", "Emil.profile")
 neovim_init = join(".config", "nvim", "init.vim")
@@ -22,7 +23,7 @@ yapf_config = join(".config", "yapf", "style")
 nodejs_language_servers = ["yaml-language-server", "dockerfile-language-server-nodejs", "bash-language-server", "neovim"]
 settingsfiles = [
     ".bash_completion", ".bash_completion.d", ".bash_git", ".bashrc", ".gitconfig", ".profile", ".tmux.conf", ".vim", antiword, ccls_config,
-    konsole_config, neovim_init, pycodestyle_config, write_notes, yapf_config
+    forgit, konsole_config, neovim_init, pycodestyle_config, write_notes, yapf_config
 ]
 rustup_bin = join(homefolder, ".cargo/bin/rustup")
 rust_binaries = ["bat", "cargo-watch", "cargo-edit", "du-dust", "fd-find", "git-delta", "lsd", "ripgrep", "sd", "tokei", "ytop", "zoxide"]
