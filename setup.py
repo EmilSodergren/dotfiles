@@ -168,6 +168,7 @@ if args.online:
             install_program("tmux.py", args.clean)
 
     call(["nvim", "+PlugUpgrade", "+PlugUpdate", "+UpdateRemotePlugins", "+qall"])
+    call(["./install.sh"], cwd=".vim/plugged/markdown-preview.nvim/app/")
     call(["nvim", "-c", "GoUpdateBinaries", "-c", "qall"])
 
     for tmuxpath, tmuxurl in [(join(dotfilespath, "tmux-resurrect"), "https://github.com/tmux-plugins/tmux-resurrect"),
