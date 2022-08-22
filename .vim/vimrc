@@ -182,6 +182,7 @@ set hlsearch
 set ignorecase
 set incsearch
 set laststatus=2
+set mouse=
 set noruler
 set noswapfile
 set nowrap
