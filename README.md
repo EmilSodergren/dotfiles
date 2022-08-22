@@ -10,9 +10,9 @@ python3 setup.py [-h] [-o] [-sa] [-sn] [-c] [-sc] [-sk] [-st] [-sr] [-f] [-p] [-
 ```
 To run all:
 ```
-python3 setup.py -funcoa
+python3 setup.py -oc
 ```
 To update:
 ```
-python3 setup.py -uno
+python3 setup.py -o
 ```
