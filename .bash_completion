@@ -118,6 +118,7 @@ _complete_alias () {
 #
 complete -F _complete_alias g
 complete -F _complete_alias 9g
+complete -F _complete_alias k
 #complete -F _complete_alias myalias3"
 
 # Source user created completions

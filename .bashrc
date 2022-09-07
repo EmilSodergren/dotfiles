@@ -111,6 +111,7 @@ maybenvim() {
 command -v lsd &> /dev/null && alias ll='lsd -lh' || alias ll='ls -lh'
 alias clock='date'
 alias g='git'
+alias k='kubectl'
 alias 9g='9lvgit'
 alias gonvim='GOPATH=`pwd` GOBIN=`pwd`/bin nvim'
 alias nvim=maybenvim
@@ -153,11 +154,16 @@ if command -v zoxide &> /dev/null; then
 fi
 `command -v tmux &> /dev/null`; TMUX_EXIST=$?
 `/usr/bin/pgrep tmux &> /dev/null`; TMUX_IS_RUNNING=$?
+`command -v kubectl &> /dev/null`; KUBECTL_EXIST=$?
 
 if [ $TMUX_EXIST -eq 0 ] && [ $TMUX_IS_RUNNING -eq 1 ]; then
     echo "Starting tmux server"
     nohup tmux -2 new-session -d -t emil </dev/null &> /dev/null &
     sleep .5
+fi
+
+if [ $KUBECTL_EXIST -eq 0 ]; then
+  . <(kubectl completion bash)
 fi
 
 if [ -z $TMUX ]; then
