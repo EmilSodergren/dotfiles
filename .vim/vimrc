@@ -237,6 +237,7 @@ lspconfig.yamlls.setup{
   cmd = { home.."/.local/node_modules/yaml-language-server/bin/yaml-language-server", "--stdio" },
   settings = {
     yaml = {
+      completion = true,
       schemas = {
         ["/home/mre/Downloads/github-workflow.json"] = "mean_bean_ci.yml"
       }
