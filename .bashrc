@@ -166,7 +166,7 @@ if [ $KUBECTL_EXIST -eq 0 ]; then
   . <(kubectl completion bash)
 fi
 
-if  [ $TMUX_IS_RUNNING -eq 1 ] && [ -z $TMUX ]; then
+if  [ $TMUX_EXIST -eq 0 ] && [ -z $TMUX ]; then
     tmux attach
 fi
 . "$HOME/.cargo/env"
