@@ -116,11 +116,6 @@ def install_program(script_name, with_clean):
     else:
         system("python3 {} -b".format(script_name))
 
-if args.only_brave:
-    call(["sudo", "apt-get", "update"])
-    call(["sudo", "apt-get", "-y", "install", "curl"])
-    install_brave_browser()
-    sys.exit(0)
 
 for stuff in settingsfiles:
     linkpath = join(homefolder, stuff)
