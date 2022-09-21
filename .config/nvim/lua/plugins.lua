@@ -1,4 +1,5 @@
 return require('packer').startup(function(use)
+  use 'wbthomason/packer.nvim'
 
   use 'Raimondi/delimitMate'
   use 'Shougo/deoplete-lsp'
@@ -30,7 +31,6 @@ return require('packer').startup(function(use)
   use 'tpope/vim-surround'
   use 'vim-airline/vim-airline'
   use 'vim-airline/vim-airline-themes'
-  use 'wbthomason/packer.nvim'
   use 'wellle/tmux-complete.vim'
 
 end)
