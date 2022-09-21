@@ -1,7 +1,7 @@
 vim.g.mapleader = ","
 
-require('utils')
+require("utils")
 init_packer()
 
-require('plugins')
+require("plugins")
 
