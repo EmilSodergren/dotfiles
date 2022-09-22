@@ -68,9 +68,6 @@ end, { noremap, buffer = true, silent = true })
 -- " keeping the currently pasted text instead of overwriting it.
 vim.keymap.set("v", "p", '"_dP', { noremap })
 
--- " key-mappings for comment line in normal mode tpope/vim-commentary
--- vim.keymap.set({"n", "v", "o"}, "gc", function() vim.cmd[[Commentary]] end, { remap, silent = true })
-
 -- " save file with sudo permissions
 vim.keymap.set("c", "w!!", "w !sudo tee > /dev/null %")
 
