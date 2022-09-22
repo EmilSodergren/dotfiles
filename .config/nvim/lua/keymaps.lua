@@ -46,8 +46,6 @@ vim.keymap.set({"i", "c"}, "<c-u>", function()
 end, { noremap, expr = true })
 
 -- " Disable ctrl + Left/Right which deletes stuff
-vim.keymap.set("n", "<lt>", "<nop>", { noremap })
--- nnoremap <c-r> <c-r>
 
 vim.keymap.set("n", "<F2>", vim.lsp.buf.rename, { noremap, buffer = true, silent = true })
 vim.keymap.set("n", "K", vim.lsp.buf.hover, { noremap, buffer = true, silent = true })
@@ -71,7 +69,7 @@ end, { noremap, buffer = true, silent = true })
 vim.keymap.set("v", "p", '"_dP', { noremap })
 
 -- " key-mappings for comment line in normal mode tpope/vim-commentary
-vim.keymap.set("n", "gc", "<cmd>Commentary<cr>", { noremap, silent = true })
+-- vim.keymap.set({"n", "v", "o"}, "gc", function() vim.cmd[[Commentary]] end, { remap, silent = true })
 
 -- " save file with sudo permissions
 vim.keymap.set("c", "w!!", "w !sudo tee > /dev/null %")
