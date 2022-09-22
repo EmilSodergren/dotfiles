@@ -35,11 +35,14 @@ require('packer').startup(function(use)
 
 end)
 
+-- RUST TOOLS
 require("rust-tools").setup({})
+
+-- COMMENT
 require("Comment").setup(
 {
-  -- toggler = { line = 'gc' },
-  mappings = { basic = false,
+  toggler = { line = 'gc' },
+  mappings = { basic = true,
                extra = false,
                extended = false}
 })
