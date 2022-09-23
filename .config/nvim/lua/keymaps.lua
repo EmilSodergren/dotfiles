@@ -37,7 +37,7 @@ vim.keymap.set("n", "<c-w>-", "<c-w>s", { noremap })
 
 vim.keymap.set("i", "jk", "<esc>", { noremap })
 
--- " Use C-u/d to go up/down the popup menu of deoplete
+-- Use C-u/d to go up/down the popup menu of deoplete
 vim.keymap.set({"i", "c"}, "<c-d>", function()
     return vim.fn.pumvisible() == 1 and "<c-n>" or "<c-d>"
 end, { noremap, expr = true })
@@ -45,7 +45,7 @@ vim.keymap.set({"i", "c"}, "<c-u>", function()
     return vim.fn.pumvisible() == 1 and "<c-p>" or "<c-u>"
 end, { noremap, expr = true })
 
--- " Disable ctrl + Left/Right which deletes stuff
+-- Disable ctrl + Left/Right which deletes stuff
 
 vim.keymap.set("n", "<F2>", vim.lsp.buf.rename, { noremap, buffer = true, silent = true })
 vim.keymap.set("n", "K", vim.lsp.buf.hover, { noremap, buffer = true, silent = true })
@@ -55,7 +55,7 @@ vim.keymap.set("n", "<leader>f", vim.lsp.buf.formatting , { noremap, buffer = tr
 vim.keymap.set("n", "<leader>n", vim.lsp.buf.code_action, { noremap, buffer = true, silent = true })
 vim.keymap.set("n", "<leader>e", vim.lsp.buf.signature_help, { noremap, buffer = true, silent = true })
 
--- " Clean up whitespaces at end of lines
+-- Clean up whitespaces at end of lines
 -- vim.keymap.set("n", "<leader>ws", "<cmd>let _s=@/ <Bar> %s/\\s\\+$//e <Bar> let @/=_s <Bar> nohl <Bar> unlet _s <cr>", { noremap, buffer = true, silent = true })
 vim.keymap.set("n", "<leader>ws", function()
     local pos = vim.api.nvim_win_get_cursor(0)
@@ -64,20 +64,19 @@ vim.keymap.set("n", "<leader>ws", function()
     vim.api.nvim_win_set_cursor(0, pos)
 end, { noremap, buffer = true, silent = true })
 
--- " Delete current selection to the black hole registry before pasting,
--- " keeping the currently pasted text instead of overwriting it.
+-- Delete current selection to the black hole registry before pasting,
+-- keeping the currently pasted text instead of overwriting it.
 vim.keymap.set("v", "p", '"_dP', { noremap })
 
--- " save file with sudo permissions
+-- save file with sudo permissions
 vim.keymap.set("c", "w!!", "w !sudo tee > /dev/null %")
 
--- nnoremap dgh :diffget //2 <CR> ]c
 vim.keymap.set("n", "dgh", "<cmd>diffget //2<cr> ]c", { noremap })
--- nnoremap dgl :diffget //3 <CR> ]c
 vim.keymap.set("n", "dgl", "<cmd>diffget //3<cr> ]c", { noremap })
 
--- nmap ysss <Plug>Yssurround <s>I* <esc>f*xx
 vim.keymap.set("n", "ysss", "<Plug>Yssurround <s><cr>I* <esc>f*xx")
 
--- nnoremap <leader>u :UndotreeToggle<CR>
 vim.keymap.set("n", "<leader>u", "<cmd>UndotreeToggle<cr>", { noremap })
+
+vim.keymap.set({"n", "v"}, "<space>", "za", { noremap })
+

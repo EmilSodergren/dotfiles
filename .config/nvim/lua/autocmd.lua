@@ -20,10 +20,21 @@ vim.api.nvim_create_autocmd({ "BufLeave","FocusLost", "InsertEnter","WinLeave" }
     
 })
 
-vim.api.nvim_create_autocmd("FileType",
-{ pattern="yaml",
+vim.api.nvim_create_augroup("tab_overrides", { clear = true }) 
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" },
+{
+  group = "tab_overrides",
+  pattern ="*.yaml",
   callback = function()
     vim.opt_local.indentkeys:remove {"<:>"}
+    vim.opt_local.tabstop = 2
+    vim.opt_local.softtabstop = 2
+    vim.opt_local.shiftwidth = 2
+  end
+})
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" },
+{ pattern = {"*.sh", "*.lua"},
+  callback = function()
     vim.opt_local.tabstop = 2
     vim.opt_local.softtabstop = 2
     vim.opt_local.shiftwidth = 2
