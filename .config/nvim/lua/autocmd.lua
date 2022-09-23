@@ -47,7 +47,7 @@ vim.api.nvim_create_autocmd("FileType",
   group = "rust_commands",
   pattern = { "rust" },
   callback = function()
-    vim.keymap.set("n", "<leader>b", "<cmduCbuild<cr><bar><s-g>", { noremap })
+    vim.keymap.set("n", "<leader>b", "<cmd>Cbuild<cr><bar><s-g>", { noremap })
     vim.keymap.set("n", "<leader>i", "<cmd>Cinstall<cr>", { noremap })
     vim.keymap.set("n", "<leader>t", "<cmd>Ctest -- --nocapture<cr><bar><s-g>", { noremap })
     vim.keymap.set("n", "<leader>bt", "<cmd>! RUST_BACKTRACE=1 cargo test <cr>,<bar><s-g>", { noremap })

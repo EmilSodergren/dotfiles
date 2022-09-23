@@ -10,7 +10,7 @@ vim.g.python3_host_prog="/usr/bin/python3"
 vim.g.python3_host_skip_check = 1
 vim.g.netrw_dirhistmax = 0
 
-vim.keymap.set("n", "<leader>ev", "<cmd>e ~/.dotfiles/.config/nvim/init.lua<cr>", { noremap })
+vim.keymap.set("n", "<leader>ev", "<cmd>FZF ~/.config/nvim/<cr>", { noremap })
 vim.keymap.set("n", "<leader>sv", "<cmd>source ~/.dotfiles/.config/nvim/init.lua<cr>", { noremap })
 
 vim.keymap.set("n", "<leader>q", "<cmd>bp<bar>bd #<cr>", { noremap })
@@ -56,7 +56,6 @@ vim.keymap.set("n", "<leader>n", vim.lsp.buf.code_action, { noremap, buffer = tr
 vim.keymap.set("n", "<leader>e", vim.lsp.buf.signature_help, { noremap, buffer = true, silent = true })
 
 -- Clean up whitespaces at end of lines
--- vim.keymap.set("n", "<leader>ws", "<cmd>let _s=@/ <Bar> %s/\\s\\+$//e <Bar> let @/=_s <Bar> nohl <Bar> unlet _s <cr>", { noremap, buffer = true, silent = true })
 vim.keymap.set("n", "<leader>ws", function()
   local pos = vim.api.nvim_win_get_cursor(0)
   vim.cmd([[%s/\s\+$//e]])
