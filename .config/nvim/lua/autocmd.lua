@@ -8,7 +8,7 @@ vim.api.nvim_create_autocmd({ "BufEnter","FocusGained", "InsertLeave","WinEnter"
     end
   end
 })
-vim.api.nvim_create_autocmd({ "BufLeave","FocusLost", "InsertEnter","WinLeave" },
+vim.api.nvim_create_autocmd({ "BufLeave","FocusLost","InsertEnter","WinLeave" },
 {
   group = "numbertoggle",
   callback = function()
@@ -53,16 +53,21 @@ vim.api.nvim_create_autocmd("FileType",
     vim.keymap.set("n", "<leader>bt", "<cmd>! RUST_BACKTRACE=1 cargo test <cr>,<bar><s-g>", { noremap })
   end
 })
-vim.api.nvim_create_augroup("python_commands", { clear = true })
-vim.api.nvim_create_autocmd("FileType",
+vim.api.nvim_create_autocmd("TermOpen",
 {
-  group = "python_commands",
-  pattern = { "python" },
   callback = function()
-    vim.keymap.set("n", "<leader>b", "<cmduCbuild<cr><bar><s-g>", { noremap })
-    vim.keymap.set("n", "<leader>i", "<cmd>Cinstall<cr>", { noremap })
-    vim.keymap.set("n", "<leader>t", "<cmd>Ctest -- --nocapture<cr><bar><s-g>", { noremap })
-    vim.keymap.set("n", "<leader>bt", "<cmd>! RUST_BACKTRACE=1 cargo test <cr>,<bar><s-g>", { noremap })
+    vim.o.bufhidden = 'wipe'
+  end
+})
+vim.api.nvim_create_augroup("format_on_save", { clear = true })
+vim.api.nvim_create_autocmd("BufWritePre", {
+  group = "format_on_save",
+  -- pattern = { "*.c", "*.cpp", "*.rs", "*.py", "*.sh" },
+  callback = function()
+    if vim.bo.filetype == "go" then
+      vim.lsp.buf.code_action({ source = { organizeImports = true }})
+    end
+    vim.lsp.buf.format({async = false, timeout = 2000})
   end
 })
 --" Json file settings {{{
