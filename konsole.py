@@ -55,7 +55,8 @@ for pac in packages_for_build:
         break
 
 if args.clean:
-    rmtree(build_dir)
+    if exists(build_dir):
+        rmtree(build_dir)
 
 if args.build:
     if not exists(konsole_dir):

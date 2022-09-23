@@ -1,5 +1,6 @@
 from os.path import expanduser, join, exists, basename
-from os import chdir
+from os import chdir, cpu_count
+from math import floor
 from subprocess import call
 from argparse import ArgumentParser
 from shutil import rmtree
@@ -30,7 +31,8 @@ for pac in packages_for_build:
         break
 
 if args.clean:
-    rmtree(ccls_dir)
+    if exists(ccls_dir):
+        rmtree(ccls_dir)
 
 if args.build:
     if not exists(ccls_dir):
@@ -40,4 +42,4 @@ if args.build:
 
     chdir(ccls_dir)
     call(["cmake", "-H.", "-BRelease", "-DCMAKE_BUILD_TYPE=Release", "-DCMAKE_INSTALL_PREFIX={}".format(ccls_install_dir)])
-    call(["cmake", "--build", "Release", "--target", "install", "--parallel"])
+    call(["cmake", "--build", "Release", "--target", "install", "--parallel", floor(0.75 * cpu_count())])

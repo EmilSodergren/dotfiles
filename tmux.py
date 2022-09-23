@@ -31,7 +31,8 @@ for pac in packages_for_build:
         break
 
 if args.clean:
-    rmtree(tmux_dir)
+    if exists(tmux_dir):
+        rmtree(tmux_dir)
 
 if args.build:
     if not exists(tmux_dir):
