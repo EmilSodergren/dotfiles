@@ -39,10 +39,10 @@ vim.keymap.set("i", "jk", "<esc>", { noremap })
 
 -- Use C-u/d to go up/down the popup menu of deoplete
 vim.keymap.set({"i", "c"}, "<c-d>", function()
-    return vim.fn.pumvisible() == 1 and "<c-n>" or "<c-d>"
+  return vim.fn.pumvisible() == 1 and "<c-n>" or "<c-d>"
 end, { noremap, expr = true })
 vim.keymap.set({"i", "c"}, "<c-u>", function()
-    return vim.fn.pumvisible() == 1 and "<c-p>" or "<c-u>"
+  return vim.fn.pumvisible() == 1 and "<c-p>" or "<c-u>"
 end, { noremap, expr = true })
 
 -- Disable ctrl + Left/Right which deletes stuff
@@ -58,11 +58,11 @@ vim.keymap.set("n", "<leader>e", vim.lsp.buf.signature_help, { noremap, buffer =
 -- Clean up whitespaces at end of lines
 -- vim.keymap.set("n", "<leader>ws", "<cmd>let _s=@/ <Bar> %s/\\s\\+$//e <Bar> let @/=_s <Bar> nohl <Bar> unlet _s <cr>", { noremap, buffer = true, silent = true })
 vim.keymap.set("n", "<leader>ws", function()
-    local pos = vim.api.nvim_win_get_cursor(0)
-    vim.cmd([[%s/\s\+$//e]])
-    vim.api.nvim_set_hl(0, 'visual', {})
-    vim.api.nvim_win_set_cursor(0, pos)
-end, { noremap, buffer = true, silent = true })
+  local pos = vim.api.nvim_win_get_cursor(0)
+  vim.cmd([[%s/\s\+$//e]])
+  vim.api.nvim_set_hl(0, 'visual', {})
+  vim.api.nvim_win_set_cursor(0, pos)
+end, { noremap, silent = true })
 
 -- Delete current selection to the black hole registry before pasting,
 -- keeping the currently pasted text instead of overwriting it.
