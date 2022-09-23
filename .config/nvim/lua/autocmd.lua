@@ -53,6 +53,18 @@ vim.api.nvim_create_autocmd("FileType",
     vim.keymap.set("n", "<leader>bt", "<cmd>! RUST_BACKTRACE=1 cargo test <cr>,<bar><s-g>", { noremap })
   end
 })
+vim.api.nvim_create_augroup("python_commands", { clear = true })
+vim.api.nvim_create_autocmd("FileType",
+{
+  group = "python_commands",
+  pattern = { "python" },
+  callback = function()
+    vim.keymap.set("n", "<leader>b", "<cmduCbuild<cr><bar><s-g>", { noremap })
+    vim.keymap.set("n", "<leader>i", "<cmd>Cinstall<cr>", { noremap })
+    vim.keymap.set("n", "<leader>t", "<cmd>Ctest -- --nocapture<cr><bar><s-g>", { noremap })
+    vim.keymap.set("n", "<leader>bt", "<cmd>! RUST_BACKTRACE=1 cargo test <cr>,<bar><s-g>", { noremap })
+  end
+})
 --" Json file settings {{{
 --augroup FT_python
 --    au!
