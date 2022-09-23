@@ -7,4 +7,5 @@ require("plugins")
 require("color")
 require("options")
 require("keymaps")
+require("autocmd")
 
