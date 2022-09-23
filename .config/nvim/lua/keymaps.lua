@@ -59,7 +59,7 @@ vim.keymap.set("n", "<leader>e", vim.lsp.buf.signature_help, { noremap, buffer =
 -- vim.keymap.set("n", "<leader>ws", "<cmd>let _s=@/ <Bar> %s/\\s\\+$//e <Bar> let @/=_s <Bar> nohl <Bar> unlet _s <cr>", { noremap, buffer = true, silent = true })
 vim.keymap.set("n", "<leader>ws", function()
     local pos = vim.api.nvim_win_get_cursor(0)
-    vim.cmd("%s/\\s\\+$//e")
+    vim.cmd([[%s/\s\+$//e]])
     vim.api.nvim_set_hl(0, 'visual', {})
     vim.api.nvim_win_set_cursor(0, pos)
 end, { noremap, buffer = true, silent = true })
