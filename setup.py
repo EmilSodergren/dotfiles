@@ -7,6 +7,9 @@ from glob import glob
 import re
 import apt
 import os
+import sys
+
+import check_dep_version
 
 dotfilespath = dirname(realpath(__file__))
 homefolder = expanduser("~")
@@ -42,11 +45,10 @@ packages_to_install = [
     "libclang-dev",
     "libssl-dev",
     "make",
-    "nodejs",
-    "npm",
     "python3-jedi",
     "python3-lib2to3",
     "python3-pip",
+    "python3-semver",
     "software-properties-common",
     "ssh-askpass",
     "vim-nox",
@@ -155,6 +157,10 @@ for pac in packages_to_install:
         print("Needs to install packages")
         call(["sudo", "apt-get", "install", "-y", *packages_to_install])
         break
+
+if not check_dep_version.check_programs():
+    print("Error: programs not correct versions")
+    sys.exit(1)
 
 if args.online:
     if not glob("/etc/apt/sources.list.d/kubuntu-ppa*.list"):
