@@ -42,4 +42,4 @@ if args.build:
 
     chdir(ccls_dir)
     call(["cmake", "-H.", "-BRelease", "-DCMAKE_BUILD_TYPE=Release", "-DCMAKE_INSTALL_PREFIX={}".format(ccls_install_dir)])
-    call(["cmake", "--build", "Release", "--target", "install", "--parallel", floor(0.75 * cpu_count())])
+    call(["cmake", "--build", "Release", "--target", "install", "--parallel", str(floor(0.75 * cpu_count()))])
