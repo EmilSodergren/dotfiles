@@ -62,7 +62,6 @@ vim.api.nvim_create_autocmd("TermOpen",
 vim.api.nvim_create_augroup("format_on_save", { clear = true })
 vim.api.nvim_create_autocmd("BufWritePre", {
   group = "format_on_save",
-  -- pattern = { "*.c", "*.cpp", "*.rs", "*.py", "*.sh" },
   callback = function()
     if vim.bo.filetype == "go" then
       vim.lsp.buf.code_action({ source = { organizeImports = true }})
