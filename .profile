@@ -12,6 +12,7 @@ export GOPATH="$HOME/go"
 export GOBIN="$GOPATH/bin"
 
 export PATH="/usr/local/go/bin:$GOBIN:$PATH"
+export PATH="/usr/local/lib/node/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$PATH:$HOME/.fzf/bin/"
 . "$HOME/.cargo/env"
