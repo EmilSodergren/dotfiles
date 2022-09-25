@@ -127,6 +127,9 @@ lspconfig.dockerls.setup{
   cmd = { home.."/.local/node_modules/dockerfile-language-server-nodejs/bin/docker-langserver", "--stdio" }
 }
 lspconfig.gopls.setup{}
+lspconfig.jsonls.setup{
+  cmd = { home.."/.local/node_modules/vscode-langservers-extracted/bin/vscode-json-language-server", "--stdio" }
+}
 lspconfig.pylsp.setup{}
 lspconfig.yamlls.setup{
   cmd = { home.."/.local/node_modules/yaml-language-server/bin/yaml-language-server", "--stdio" },
