@@ -33,6 +33,6 @@ def check_programs():
         is_ok = False
     if not program_is_at_least("node --version", nodever):
         print("Bad version of Node, need at least version {}".format(nodever))
-        print("Get latest version at https://nodejs.org/en/download/current/")
+        print("Get latest version at https://nodejs.org/en/download")
         is_ok = False
     return is_ok
