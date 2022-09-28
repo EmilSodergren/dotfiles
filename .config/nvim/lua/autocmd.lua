@@ -69,9 +69,3 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     vim.lsp.buf.format({async = false, timeout = 2000})
   end
 })
---" Json file settings {{{
---augroup FT_python
---    au!
---    autocmd FileType json setlocal equalprg=python3\ -m\ json.tool
---augroup END
---"" }}}
