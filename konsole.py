@@ -60,7 +60,7 @@ if args.clean:
 
 if args.build:
     if not exists(konsole_dir):
-        call(["git", "clone", "-b", "release/22.08", "https://invent.kde.org/utilities/konsole.git", basename(konsole_dir)])
+        call(["git", "clone", "https://invent.kde.org/utilities/konsole.git", basename(konsole_dir)])
     else:
         call(["git", "-C", konsole_dir, "pull"])
 
