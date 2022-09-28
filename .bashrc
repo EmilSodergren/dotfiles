@@ -170,3 +170,5 @@ if  [ $TMUX_EXIST -eq 0 ] && [ -z $TMUX ]; then
     tmux attach
 fi
 . "$HOME/.cargo/env"
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
