@@ -60,14 +60,14 @@ if args.clean:
 
 if args.build:
     if not exists(konsole_dir):
-        call(["git", "clone", "https://invent.kde.org/utilities/konsole.git", basename(konsole_dir)])
+        call(["git", "clone", "-b", "release/22.08", "https://invent.kde.org/utilities/konsole.git", basename(konsole_dir)])
     else:
         call(["git", "-C", konsole_dir, "pull"])
 
     makedirs(build_dir, exist_ok=True)
     chdir(build_dir)
     # Debian 10 needs tag v19.12.3 in konsole, and kinit-dev package installed
-    call(["cmake", "..", "-DCMAKE_INSTALL_PREFIX={}".format(konsole_install_dir)])
+    call(["cmake", "..", "-DCMAKE_BUILD_TYPE=release", "-DCMAKE_INSTALL_PREFIX={}".format(konsole_install_dir)])
     call(["make", "-j", nproc])
     if apt_cache["konsole"].is_installed:
         call(["sudo", "apt-get", "remove", "-y", "konsole"])
