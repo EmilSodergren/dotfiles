@@ -176,7 +176,10 @@ if args.online:
         if not args.skip_tmux:
             install_program("tmux.py", args.clean)
 
-    call(["nvim", "+PackerSync", "+qall"])
+    packer_plugin = join(homefolder, ".local/share/nvim/site/pack/packer/start/packer.nvim")
+    if not exists(packer_plugin):
+        call(["git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", packer_plugin])
+    call(["nvim", "-u", ".config/nvim/lua/plugins.lua", "--headless", "-c", "autocmd User PackerComplete quitall", "-c", "PackerSync"])
 
     for tmuxpath, tmuxurl in [(join(dotfilespath, "tmux-resurrect"), "https://github.com/tmux-plugins/tmux-resurrect"),
                               (join(dotfilespath, "tmux-continuum"), "https://github.com/tmux-plugins/tmux-continuum"),
