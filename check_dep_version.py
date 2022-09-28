@@ -25,7 +25,7 @@ def program_is_at_least(command, min_version):
 
 def check_programs():
     golangver = "1.18.5"
-    nodever = "17.0.0"
+    nodever = "16.0.0"
     is_ok = True
     if not program_is_at_least("go version", golangver):
         print("Bad version of Golang, need at least version {}".format(golangver))
