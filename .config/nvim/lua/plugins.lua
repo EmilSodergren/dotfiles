@@ -3,7 +3,7 @@ require("packer").startup(function(use)
 
   use "Raimondi/delimitMate"
   use "Shougo/deoplete-lsp"
-  use {"Shougo/deoplete.nvim", cmd = "UpdateRemotePlugins" }
+  use {"Shougo/deoplete.nvim", run = ":UpdateRemotePlugins" }
   use "Shougo/echodoc.vim"
   use "Shougo/neosnippet-snippets"
   use "Shougo/neosnippet.vim"
@@ -13,7 +13,7 @@ require("packer").startup(function(use)
   use "cyberkov/openhab-vim"
   use "dhruvasagar/vim-zoom"
   use {"elzr/vim-json", ft = "json"}
-  use {"fatih/vim-go", cmd = "GoUpdateBinaries"}
+  use {"fatih/vim-go", run = ":GoUpdateBinaries"}
   use {"iamcco/markdown-preview.nvim", run = "cd app && ./install.sh", ft = "markdown"}
   use "jreybert/vimagit"
   use {"junegunn/fzf", run = "./install --no-zsh --no-fish --key-bindings --completion --update-rc" }
