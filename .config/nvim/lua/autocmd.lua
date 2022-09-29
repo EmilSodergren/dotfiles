@@ -22,7 +22,7 @@ vim.api.nvim_create_augroup("tab_overrides", { clear = true })
 vim.api.nvim_create_autocmd("FileType",
 {
   group = "tab_overrides",
-  pattern = { "yaml", "sh", "lua" },
+  pattern = { "sh", "lua" },
   callback = function()
     vim.opt_local.tabstop = 2
     vim.opt_local.softtabstop = 2
