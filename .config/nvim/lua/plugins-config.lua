@@ -98,11 +98,21 @@ lspconfig.yamlls.setup{
   cmd = { home.."/.local/node_modules/yaml-language-server/bin/yaml-language-server", "--stdio" },
   settings = {
     yaml = {
+      format = {
+        enable = true,
+        singleQuote = false,
+      },
+      validate = true,
+      hover = true,
+      editor = {
+        tabSize = 4,
+        formatOnType = true,
+      },
       completion = true,
       schemas = {
-        kubernetes = "*.yaml",
-        ["/home/mre/Downloads/github-workflow.json"] = "mean_bean_ci.yml"
-      }
+        kubernetes = "/*.yaml",
+        ["/home/mre/Downloads/github-workflow.json"] = "mean_bean_ci.yml",
+      },
     }
   }
 }
