@@ -93,7 +93,19 @@ lspconfig.gopls.setup{}
 lspconfig.jsonls.setup{
   cmd = { home.."/.local/node_modules/vscode-langservers-extracted/bin/vscode-json-language-server", "--stdio" }
 }
-lspconfig.pylsp.setup{}
+lspconfig.pylsp.setup{
+  settings = {
+    pylsp = {
+      plugins = {
+        autopep8 = { enabled = false },
+        flake8 = { enabled = false },
+        pydocstyle = { enabled = false },
+        pylint = { enabled = false },
+        yapf = { enabled = true }
+      }
+    }
+  }
+}
 lspconfig.yamlls.setup{
   cmd = { home.."/.local/node_modules/yaml-language-server/bin/yaml-language-server", "--stdio" },
   settings = {

@@ -45,12 +45,9 @@ packages_to_install = [
     "libclang-dev",
     "libssl-dev",
     "make",
-    "pylint",
     "python3-jedi",
     "python3-lib2to3",
     "python3-pip",
-    "python3-autopep8",
-    "python3-pydocstyle",
     "python3-semver",
     "software-properties-common",
     "ssh-askpass",
@@ -228,7 +225,7 @@ if args.font:
 if args.pack or args.artifactory:
     chdir(homefolder)
     call([
-        "tar", "--exclude=*/\.git", "-czf", "dotfiles.tar.gz", ".dotfiles/", "go/bin/", ".cargo/bin/", ".cargo/env", local_bin,
+        "tar", r"--exclude=*/\.git", "-czf", "dotfiles.tar.gz", ".dotfiles/", "go/bin/", ".cargo/bin/", ".cargo/env", local_bin,
         ".local/node_modules", ".local/include", ".local/lib", ".local/share/nvim", ".local/share/konsole", ".fzf"
     ])
     print("")
