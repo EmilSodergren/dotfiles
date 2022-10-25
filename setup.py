@@ -4,6 +4,7 @@ from subprocess import call, Popen, PIPE
 from argparse import ArgumentParser
 from datetime import datetime
 from glob import glob
+from shutil import rmtree
 import re
 import apt
 import os
@@ -49,6 +50,7 @@ packages_to_install = [
     "python3-lib2to3",
     "python3-pip",
     "python3-semver",
+    "python3-venv",
     "software-properties-common",
     "ssh-askpass",
     "vim-nox",
@@ -180,6 +182,14 @@ if args.online:
     if not exists(packer_plugin):
         call(["git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", packer_plugin])
     call(["nvim", "-u", ".config/nvim/lua/plugins.lua", "--headless", "-c", "autocmd User PackerComplete quitall", "-c", "PackerSync"])
+    coq_deps = join(packer_plugin, "../coq-nvim/.vars")
+    if args.clean and exists(coq_deps):
+        rmtree(coq_deps)
+    if not exists(coq_deps):
+        p = Popen(["python3", "-m", "coq", "deps"], cwd=join(coq_deps, ".."))
+        p.wait()
+    for lang in tree_sitter_languages:
+        call(["nvim", "-c", "TSInstallSync! {}".format(lang), "-c", "quitall"])
 
     for tmuxpath, tmuxurl in [(join(dotfilespath, "tmux-resurrect"), "https://github.com/tmux-plugins/tmux-resurrect"),
                               (join(dotfilespath, "tmux-continuum"), "https://github.com/tmux-plugins/tmux-continuum"),

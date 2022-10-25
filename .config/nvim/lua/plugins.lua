@@ -2,11 +2,8 @@ require("packer").startup(function(use)
   use "wbthomason/packer.nvim"
 
   use "Raimondi/delimitMate"
-  use "Shougo/deoplete-lsp"
-  use {"Shougo/deoplete.nvim", run = ":UpdateRemotePlugins" }
-  use "Shougo/echodoc.vim"
-  use "Shougo/neosnippet-snippets"
-  use "Shougo/neosnippet.vim"
+  use "ms-jpq/coq-nvim"
+  use "ms-jpq/coq.artifacts"
   use "airblade/vim-gitgutter"
   use "alec-gibson/nvim-tetris"
   use "cespare/vim-toml"
@@ -22,6 +19,7 @@ require("packer").startup(function(use)
   use "machakann/vim-highlightedyank"
   use "mbbill/undotree"
   use "neovim/nvim-lspconfig"
+  use {"nvim-treesitter/nvim-treesitter", run = ':TSUpdate' }
   use {"plasticboy/vim-markdown", ft = "markdown"}
   use {"rust-lang/rust.vim", ft = "rust"}
   use "simeji/winresizer"

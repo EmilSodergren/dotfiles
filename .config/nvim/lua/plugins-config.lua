@@ -29,23 +29,21 @@ vim.g.airline_right_sep = ""
 vim.g.airline_right_alt_sep = ""
 vim.g.airline_detect_modified = 1
 -- }}}
--- DEOPLETE
-vim.cmd[["airline#parts#define("colnr", {"raw": " %{g:airline_symbols.colnr}:%v ","accent": "bold"})"]]
-vim.g["deoplete#enable_at_startup"] = 1
-vim.g["echodoc#enable_at_startup"] = 1
-vim.g["echodoc#type"] = "signature"
-vim.cmd[["deoplete#custom#option({"auto_complete_delay": 200, "smart_case": v:true, })"]]
-vim.cmd[["deoplete#custom#source("_", "max_abbr_width", 60)"]]
-vim.cmd[["deoplete#custom#var("around", {"range_above": 30, "range_below": 15, "mark_above": "[↑]", "mark_below": "[↓]", "mark_changes": "[*]", })"]]
 
 -- GIT GUTTER
 vim.o.updatetime = 100
 
--- VIM-GO
-vim.g.go_fmt_autosave = 0
-vim.g.go_fmt_command = ""
-vim.g.go_code_completion_enabled = 0
-vim.g.go_mod_fmt_autosave = 0
+-- COQ
+vim.g.coq_settings = { auto_start = 'shut-up',
+                       keymap = {
+                         recommended = false,
+                         jump_to_mark = "<c-l>",
+                       }
+                     }
+
+local coq = require("coq")
+-- Go NVIM
+require('go').setup(coq.lsp_ensure_capabilities({}))
 
 -- Highlighted yank
 vim.g.highlightedyank_highlight_duration = 2000
@@ -81,19 +79,19 @@ vim.g.undotree_SplitWidth = 35
 
 -- NVIM LSP
 local lspconfig = require("lspconfig")
-local home = os.getenv("HOME");
-lspconfig.bashls.setup{
+local home = os.getenv("HOME")
+lspconfig.bashls.setup(coq.lsp_ensure_capabilities({
   cmd = { home.."/.local/node_modules/bash-language-server/bin/main.js", "start" }
-}
-lspconfig.ccls.setup{}
-lspconfig.dockerls.setup{
+}))
+lspconfig.ccls.setup(coq.lsp_ensure_capabilities({}))
+lspconfig.dockerls.setup(coq.lsp_ensure_capabilities({
   cmd = { home.."/.local/node_modules/dockerfile-language-server-nodejs/bin/docker-langserver", "--stdio" }
-}
-lspconfig.gopls.setup{}
-lspconfig.jsonls.setup{
+}))
+lspconfig.gopls.setup(coq.lsp_ensure_capabilities({}))
+lspconfig.jsonls.setup(coq.lsp_ensure_capabilities({
   cmd = { home.."/.local/node_modules/vscode-langservers-extracted/bin/vscode-json-language-server", "--stdio" }
-}
-lspconfig.pylsp.setup{
+}))
+lspconfig.pylsp.setup(coq.lsp_ensure_capabilities({
   settings = {
     pylsp = {
       plugins = {
@@ -105,8 +103,8 @@ lspconfig.pylsp.setup{
       }
     }
   }
-}
-lspconfig.yamlls.setup{
+}))
+lspconfig.yamlls.setup(coq.lsp_ensure_capabilities({
   cmd = { home.."/.local/node_modules/yaml-language-server/bin/yaml-language-server", "--stdio" },
   settings = {
     yaml = {
@@ -127,5 +125,5 @@ lspconfig.yamlls.setup{
       },
     }
   }
-}
+}))
 

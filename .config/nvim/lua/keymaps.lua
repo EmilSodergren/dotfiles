@@ -37,7 +37,8 @@ vim.keymap.set("n", "<c-w>-", "<c-w>s", { noremap })
 
 vim.keymap.set("i", "jk", "<esc>", { noremap })
 
--- Use C-u/d to go up/down the popup menu of deoplete
+-- Use C-u/d to go up/down the popup menu of COQ
+-- This works since we set the setting keymap.recommended = false
 vim.keymap.set({"i", "c"}, "<c-d>", function()
   return vim.fn.pumvisible() == 1 and "<c-n>" or "<c-d>"
 end, { noremap, expr = true })
