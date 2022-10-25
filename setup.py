@@ -15,7 +15,9 @@ import check_dep_version
 dotfilespath = dirname(realpath(__file__))
 homefolder = expanduser("~")
 local_bin = join(".local", "bin")
-bfg_jar = join(homefolder, local_bin, "bfg-1.14.0.jar")
+host_local_bin = join(homefolder, local_bin)
+bfg_jar = join(host_local_bin, "bfg-1.14.0.jar")
+marksman_bin = join(host_local_bin, "marksman")
 antiword = join(local_bin, "antiword")
 ccls_config = join(local_bin, "ccls_config")
 forgit = join(local_bin, "forgit")
@@ -30,6 +32,20 @@ nodejs_language_servers = [
 settingsfiles = [
     ".bash_completion", ".bash_completion.d", ".bash_git", ".bashrc", ".gitconfig", ".profile", ".tmux.conf", ".vim", antiword, ccls_config,
     forgit, konsole_config, neovim_init, pycodestyle_config, write_notes, yapf_config
+]
+tree_sitter_languages = [
+    "bash",
+    "c",
+    "dockerfile",
+    "go",
+    "gomod",
+    "json",
+    "make",
+    "markdown",
+    "python",
+    "rust",
+    "toml",
+    "yaml",
 ]
 rustup_bin = join(homefolder, ".cargo/bin/rustup")
 rust_binaries = ["bat", "cargo-watch", "cargo-edit", "du-dust", "fd-find", "git-delta", "lsd", "ripgrep", "sd", "tokei", "ytop", "zoxide"]
@@ -202,10 +218,13 @@ if args.online:
     call(["npm", "install", "--prefix", join(homefolder, ".local"), *nodejs_language_servers])
     makedirs(local_bin, exist_ok=True)
 
+    # Download Marksman
+    call(["wget", "-N", "-P", dirname(marksman_bin), "https://github.com/artempyanykh/marksman/releases/latest/download/marksman-linux"])
+    call(["chmod", "+x", marksman_bin])
     # Download online resources
     call(["wget", "-N", "-P", dirname(bfg_jar), "https://repo1.maven.org/maven2/com/madgag/bfg/1.14.0/bfg-1.14.0.jar"])
     call(["chmod", "+x", bfg_jar])
-    call(["wget", "-N", "-P", "bin", "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.2/Hack.zip"])
+    call(["wget", "-N", "-P", "bin", "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Hack.zip"])
 
     call(["python3", "-m", "pip", "install", "--upgrade", "python-lsp-server[rope,pyflakes,mccabe,pycodestyle,yapf]"])
     call(["python3", "-m", "pip", "install", "--upgrade", "greenlet"])

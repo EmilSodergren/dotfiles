@@ -7,10 +7,11 @@ require("packer").startup(function(use)
   use "airblade/vim-gitgutter"
   use "alec-gibson/nvim-tetris"
   use "cespare/vim-toml"
+  use {"ckipp01/nvim-jenkinsfile-linter", requires = { "nvim-lua/plenary.nvim" } }
   use "cyberkov/openhab-vim"
   use "dhruvasagar/vim-zoom"
   use {"elzr/vim-json", ft = "json"}
-  use {"fatih/vim-go", run = ":GoUpdateBinaries"}
+  use {"ray-x/go.nvim", run = ":GoUpdateBinaries", requires = { "ray-x/guihua.lua"}}
   use {"iamcco/markdown-preview.nvim", run = "cd app && ./install.sh", ft = "markdown"}
   use "jreybert/vimagit"
   use {"junegunn/fzf", run = "./install --no-zsh --no-fish --key-bindings --completion --update-rc" }
