@@ -16,7 +16,7 @@ dotfilespath = dirname(realpath(__file__))
 homefolder = expanduser("~")
 local_bin = join(".local", "bin")
 host_local_bin = join(homefolder, local_bin)
-bfg_jar = join(host_local_bin, "bfg-1.14.0.jar")
+bfg_jar = join(host_local_bin, "bfg.jar")
 marksman_bin = join(host_local_bin, "marksman")
 antiword = join(local_bin, "antiword")
 ccls_config = join(local_bin, "ccls_config")
@@ -219,10 +219,10 @@ if args.online:
     makedirs(local_bin, exist_ok=True)
 
     # Download Marksman
-    call(["wget", "-N", "-P", dirname(marksman_bin), "https://github.com/artempyanykh/marksman/releases/latest/download/marksman-linux"])
+    call(["wget", "-N", "-O", marksman_bin, "https://github.com/artempyanykh/marksman/releases/latest/download/marksman-linux"])
     call(["chmod", "+x", marksman_bin])
     # Download online resources
-    call(["wget", "-N", "-P", dirname(bfg_jar), "https://repo1.maven.org/maven2/com/madgag/bfg/1.14.0/bfg-1.14.0.jar"])
+    call(["wget", "-N", "-O", bfg_jar, "https://repo1.maven.org/maven2/com/madgag/bfg/1.14.0/bfg-1.14.0.jar"])
     call(["chmod", "+x", bfg_jar])
     call(["wget", "-N", "-P", "bin", "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Hack.zip"])
 
