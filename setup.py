@@ -202,7 +202,7 @@ if args.online:
     if args.clean and exists(coq_deps):
         rmtree(coq_deps)
     if not exists(coq_deps):
-        p = Popen(["python3", "-m", "coq", "deps"], cwd=join(coq_deps, ".."))
+        p = Popen(["python3", "-m", "coq", "deps"], cwd=realpath(join(coq_deps, "..")))
         p.wait()
     for lang in tree_sitter_languages:
         call(["nvim", "-c", "TSInstallSync! {}".format(lang), "-c", "quitall"])
