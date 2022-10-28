@@ -4,7 +4,7 @@ from subprocess import call, Popen, PIPE
 from argparse import ArgumentParser
 from datetime import datetime
 from glob import glob
-from shutil import rmtree
+from shutil import rmtree, move
 import re
 import apt
 import os
@@ -18,6 +18,7 @@ local_bin = join(".local", "bin")
 host_local_bin = join(homefolder, local_bin)
 bfg_jar = join(host_local_bin, "bfg.jar")
 marksman_bin = join(host_local_bin, "marksman")
+ra_bin = join(host_local_bin, "rust-analyzer")
 antiword = join(local_bin, "antiword")
 ccls_config = join(local_bin, "ccls_config")
 forgit = join(local_bin, "forgit")
@@ -49,7 +50,6 @@ tree_sitter_languages = [
 ]
 rustup_bin = join(homefolder, ".cargo/bin/rustup")
 rust_binaries = ["bat", "cargo-watch", "cargo-edit", "du-dust", "fd-find", "git-delta", "lsd", "ripgrep", "sd", "tokei", "ytop", "zoxide"]
-rust_analyzer = ["https://github.com/rust-analyzer/rust-analyzer", "xtask", "rust-analyzer"]
 packages_to_install = [
     "antiword",
     "apt-transport-https",
@@ -205,7 +205,8 @@ if args.online:
         p = Popen(["python3", "-m", "coq", "deps"], cwd=realpath(join(coq_deps, "..")))
         p.wait()
     for lang in tree_sitter_languages:
-        call(["nvim", "-c", "TSInstallSync! {}".format(lang), "-c", "quitall"])
+        pass
+        # call(["nvim", "-c", "TSInstallSync! {}".format(lang), "-c", "quitall"])
 
     for tmuxpath, tmuxurl in [(join(dotfilespath, "tmux-resurrect"), "https://github.com/tmux-plugins/tmux-resurrect"),
                               (join(dotfilespath, "tmux-continuum"), "https://github.com/tmux-plugins/tmux-continuum"),
@@ -220,10 +221,18 @@ if args.online:
 
     # Download Marksman
     call(["wget", "-N", "-O", marksman_bin, "https://github.com/artempyanykh/marksman/releases/latest/download/marksman-linux"])
-    call(["chmod", "+x", marksman_bin])
+    os.chmod(marksman_bin, 0o755)
+    # Download rust-analyzer
+    call([
+        "wget", "-P", "/tmp/",
+        "https://github.com/rust-lang/rust-analyzer/releases/latest/download/rust-analyzer-x86_64-unknown-linux-gnu.gz"
+    ])
+    call(["gunzip", "/tmp/rust-analyzer-x86_64-unknown-linux-gnu.gz"])
+    move("/tmp/rust-analyzer-x86_64-unknown-linux-gnu", ra_bin)
+    os.chmod(ra_bin, 0o755)
     # Download online resources
     call(["wget", "-N", "-O", bfg_jar, "https://repo1.maven.org/maven2/com/madgag/bfg/1.14.0/bfg-1.14.0.jar"])
-    call(["chmod", "+x", bfg_jar])
+    os.chmod(bfg_jar, 0o755)
     call(["wget", "-N", "-P", "bin", "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Hack.zip"])
 
     call(["python3", "-m", "pip", "install", "--upgrade", "python-lsp-server[rope,pyflakes,mccabe,pycodestyle,yapf]"])
@@ -244,7 +253,6 @@ if args.online:
             call(["cargo", "install-update", "-ag"])
         else:
             call(["cargo", "install", *rust_binaries])
-            call(["cargo", "install", "--git", *rust_analyzer])
             call(["cargo", "install", "cargo-update"])
 
 if args.font:
