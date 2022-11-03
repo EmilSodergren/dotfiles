@@ -69,3 +69,13 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     vim.lsp.buf.format({async = false, timeout = 2000})
   end
 })
+vim.api.nvim_create_augroup("Jenkinsfile_filetype", { clear = true })
+vim.api.nvim_create_autocmd({"BufNewFile", "BufRead"},
+{
+  group = "Jenkinsfile_filetype",
+  callback = function()
+    if vim.api.nvim_buf_get_name(0):match(".*/Jenkinsfile$") ~= nil then
+      vim.bo.filetype = 'groovy'
+    end
+  end
+})
