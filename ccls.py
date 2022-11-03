@@ -30,9 +30,8 @@ for pac in packages_for_build:
         call(["sudo", "apt-get", "install", "-y", *packages_for_build])
         break
 
-if args.clean:
-    if exists(ccls_dir):
-        rmtree(ccls_dir)
+if exists(ccls_dir):
+    rmtree(ccls_dir)
 
 if args.build:
     if not exists(ccls_dir):
