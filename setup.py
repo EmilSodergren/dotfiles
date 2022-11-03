@@ -205,8 +205,7 @@ if args.online:
         p = Popen(["python3", "-m", "coq", "deps"], cwd=realpath(join(coq_deps, "..")))
         p.wait()
     for lang in tree_sitter_languages:
-        pass
-        # call(["nvim", "-c", "TSInstallSync! {}".format(lang), "-c", "quitall"])
+        call(["nvim", "-c", "TSInstallSync! {}".format(lang), "-c", "quitall"])
 
     for tmuxpath, tmuxurl in [(join(dotfilespath, "tmux-resurrect"), "https://github.com/tmux-plugins/tmux-resurrect"),
                               (join(dotfilespath, "tmux-continuum"), "https://github.com/tmux-plugins/tmux-continuum"),
