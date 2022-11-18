@@ -69,6 +69,14 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     vim.lsp.buf.format({async = false, timeout = 2000})
   end
 })
+vim.api.nvim_create_augroup("XML_filetype", { clear = true })
+vim.api.nvim_create_autocmd({"BufNewFile", "BufRead"},
+{
+  group = "XML_filetype",
+  callback = function()
+    vim.bo.equalprg = 'xmllint --format --recover - 2>/dev/null'
+  end
+})
 vim.api.nvim_create_augroup("Jenkinsfile_filetype", { clear = true })
 vim.api.nvim_create_autocmd({"BufNewFile", "BufRead"},
 {
