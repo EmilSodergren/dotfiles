@@ -48,13 +48,13 @@ end, { noremap, expr = true })
 
 -- Disable ctrl + Left/Right which deletes stuff
 
-vim.keymap.set("n", "<F2>", vim.lsp.buf.rename, { noremap, buffer = true, silent = true })
-vim.keymap.set("n", "K", vim.lsp.buf.hover, { noremap, buffer = true, silent = true })
-vim.keymap.set("n", "gd", vim.lsp.buf.definition, { noremap, buffer = true, silent = true })
-vim.keymap.set("n", "<leader>r", vim.lsp.buf.references, { noremap, buffer = true, silent = true })
-vim.keymap.set("n", "<leader>f", vim.lsp.buf.format, { noremap, buffer = true, silent = true })
-vim.keymap.set("n", "<leader>n", vim.lsp.buf.code_action, { noremap, buffer = true, silent = true })
-vim.keymap.set("n", "<leader>e", vim.lsp.buf.signature_help, { noremap, buffer = true, silent = true })
+vim.keymap.set("n", "<F2>", vim.lsp.buf.rename, { noremap, silent = true })
+vim.keymap.set("n", "K", vim.lsp.buf.hover, { noremap, silent = true })
+vim.keymap.set("n", "gd", vim.lsp.buf.definition, { noremap, silent = true })
+vim.keymap.set("n", "<leader>r", vim.lsp.buf.references, { noremap, silent = true })
+vim.keymap.set("n", "<leader>f", vim.lsp.buf.format, { noremap, silent = true })
+vim.keymap.set("n", "<leader>n", vim.lsp.buf.code_action, { noremap, silent = true })
+vim.keymap.set("n", "<leader>e", vim.lsp.buf.signature_help, { noremap, silent = true })
 
 -- Clean up whitespaces at end of lines
 vim.keymap.set("n", "<leader>ws", function()
