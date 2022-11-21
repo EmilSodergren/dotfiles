@@ -73,10 +73,19 @@ vim.api.nvim_create_autocmd("BufWritePre",
 vim.api.nvim_create_augroup("XML_filetype", { clear = true })
 vim.api.nvim_create_autocmd({"BufNewFile", "BufRead"},
 {
+  pattern = "*.xml",
   group = "XML_filetype",
   callback = function()
     vim.bo.equalprg = 'xmllint --format --recover - 2>/dev/null'
   end
+})
+vim.api.nvim_create_autocmd("BufWritePre",
+{
+  pattern = "*.xml",
+  group = "XML_filetype",
+    callback = function()
+      vim.cmd(vim.api.nvim_replace_termcodes("normal gg=G", true, true, true))
+    end
 })
 vim.api.nvim_create_augroup("Jenkinsfile_filetype", { clear = true })
 vim.api.nvim_create_autocmd({"BufNewFile", "BufRead"},
