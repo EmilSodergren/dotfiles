@@ -72,7 +72,7 @@ packages_to_install = [
     "vim-nox",
     "wl-clipboard",
     "xclip",
-    "xmllint",
+    "libxml2-utils",
 ]
 apt_cache = apt.Cache()
 

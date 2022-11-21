@@ -1,6 +1,6 @@
 [user]
     name = Emil Sodergren
-    email =
+    email = EmilSodergren@users.noreply.github.com
 [push]
     default = simple
     followTags = true
