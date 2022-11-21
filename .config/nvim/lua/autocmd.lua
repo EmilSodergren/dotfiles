@@ -60,7 +60,8 @@ vim.api.nvim_create_autocmd("TermOpen",
   end
 })
 vim.api.nvim_create_augroup("format_on_save", { clear = true })
-vim.api.nvim_create_autocmd("BufWritePre", {
+vim.api.nvim_create_autocmd("BufWritePre",
+{
   group = "format_on_save",
   callback = function()
     if vim.bo.filetype == "go" then
