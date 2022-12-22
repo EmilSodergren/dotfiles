@@ -37,6 +37,7 @@ if args.clean:
 if args.build:
     if not exists(tmux_dir):
         call(["git", "clone", "https://github.com/tmux/tmux.git", basename(tmux_dir)])
+        call(["git", "-C", tmux_dir, "checkout", "1536b7e2"])
     else:
         call(["git", "-C", tmux_dir, "pull"])
 
