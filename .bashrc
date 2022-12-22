@@ -155,6 +155,7 @@ fi
 `command -v tmux &> /dev/null`; TMUX_EXIST=$?
 `/usr/bin/pgrep tmux &> /dev/null`; TMUX_IS_RUNNING=$?
 `command -v kubectl &> /dev/null`; KUBECTL_EXIST=$?
+`command -v helm &> /dev/null`; HELM_EXIST=$?
 
 if [ $TMUX_EXIST -eq 0 ] && [ $TMUX_IS_RUNNING -eq 1 ]; then
     echo "Starting tmux server"
@@ -164,6 +165,9 @@ fi
 
 if [ $KUBECTL_EXIST -eq 0 ]; then
   . <(kubectl completion bash)
+fi
+if [ $HELM_EXIST -eq 0 ]; then
+  . <(helm completion bash)
 fi
 
 if  [ $TMUX_EXIST -eq 0 ] && [ -z $TMUX ]; then
