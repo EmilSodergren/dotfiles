@@ -199,6 +199,7 @@ if args.online:
     if not exists(packer_plugin):
         call(["git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", packer_plugin])
     call(["nvim", "-u", ".config/nvim/lua/plugins.lua", "--headless", "-c", "autocmd User PackerComplete quitall", "-c", "PackerSync"])
+    call(["nvim", "--headless", "-c", ":lua require('go.install').update_all_sync()", "-c", "quitall"])
     coq_deps = join(packer_plugin, "../coq-nvim/.vars")
     if args.clean and exists(coq_deps):
         rmtree(coq_deps)
