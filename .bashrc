@@ -99,22 +99,13 @@ fi
 
 # colored GCC warnings and errors
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-maybenvim() {
-    args=${@:1}
-    if [[ $TERM == screen-256color ]]; then
-        nvim $args
-    else
-        vim $args
-    fi
-}
-# some more ls aliases
+
+# some more aliases
 command -v lsd &> /dev/null && alias ll='lsd -lh' || alias ll='ls -lh'
 alias clock='date'
 alias g='git'
 alias k='kubectl'
 alias 9g='9lvgit'
-alias gonvim='GOPATH=`pwd` GOBIN=`pwd`/bin nvim'
-alias nvim=maybenvim
 alias notes='nvim -c MarkdownPreview ~/Documents/notes.md'
 # alias cd='echo "!cd is for noobs!" && sleep 2 && cd'
 #alias grep='rg'
