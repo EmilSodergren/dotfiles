@@ -49,7 +49,9 @@ tree_sitter_languages = [
     "yaml",
 ]
 rustup_bin = join(homefolder, ".cargo/bin/rustup")
-rust_binaries = ["bat", "cargo-watch", "cargo-edit", "du-dust", "fd-find", "git-delta", "lsd", "ripgrep", "sd", "tokei", "ytop", "zoxide"]
+rust_binaries = [
+    "bat", "cargo-watch", "cargo-edit", "cargo-update", "du-dust", "fd-find", "git-delta", "lsd", "ripgrep", "sd", "tokei", "ytop", "zoxide"
+]
 packages_to_install = [
     "antiword",
     "apt-transport-https",
@@ -108,6 +110,8 @@ def rust_binary_mapper(f):
         return "rg"
     if f == "cargo-edit":
         return "cargo-add"
+    if f == "cargo-update":
+        return "cargo-install-update"
     return f
 
 
