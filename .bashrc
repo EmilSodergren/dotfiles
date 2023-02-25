@@ -102,6 +102,7 @@ fi
 
 # some more aliases
 command -v lsd &> /dev/null && alias ll='lsd -lh' || alias ll='ls -lh'
+command -v bat &> /dev/null && alias cat='bat'
 alias clock='date'
 alias g='git'
 alias k='kubectl'
