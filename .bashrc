@@ -143,29 +143,24 @@ if ! shopt -oq posix; then
 fi
 
 if command -v zoxide &> /dev/null; then
-    eval "$(zoxide init bash)"
+  eval "$(zoxide init bash)"
 fi
+
 `command -v tmux &> /dev/null`; TMUX_EXIST=$?
 `/usr/bin/pgrep tmux &> /dev/null`; TMUX_IS_RUNNING=$?
 `command -v kubectl &> /dev/null`; KUBECTL_EXIST=$?
 `command -v helm &> /dev/null`; HELM_EXIST=$?
 
 if [ $TMUX_EXIST -eq 0 ] && [ $TMUX_IS_RUNNING -eq 1 ]; then
-    echo "Starting tmux server"
-    nohup tmux -2 new-session -d -t emil </dev/null &> /dev/null &
-    sleep .5
+  echo "Starting tmux server"
+  nohup tmux -2 new-session -d -t emil </dev/null &> /dev/null &
+  sleep .5
 fi
 
-if [ $KUBECTL_EXIST -eq 0 ]; then
-  . <(kubectl completion bash)
-fi
-if [ $HELM_EXIST -eq 0 ]; then
-  . <(helm completion bash)
-fi
+[ $TMUX_EXIST -eq 0 ] && [ -z $TMUX ] && tmux attach
+[ $KUBECTL_EXIST -eq 0 ] && . <(kubectl completion bash)
+[ $HELM_EXIST -eq 0 ] && . <(helm completion bash)
 
-if  [ $TMUX_EXIST -eq 0 ] && [ -z $TMUX ]; then
-    tmux attach
-fi
 . "$HOME/.cargo/env"
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
