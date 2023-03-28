@@ -18,6 +18,8 @@ vim.o.inccommand = "split"
 vim.o.incsearch = true
 vim.o.laststatus = 2
 vim.opt.mouse = {}
+vim.opt.undodir = os.getenv("HOME") .. "/.nvim_undo"
+vim.opt.undofile = true
 vim.o.ruler = false
 vim.o.swapfile = false
 vim.o.wrap = false
@@ -31,5 +33,6 @@ vim.o.smartindent = true
 vim.o.softtabstop = 4
 vim.o.t_Co = 256
 vim.o.tabstop = 4
+vim.o.updatetime = 50
 vim.o.textwidth = 0
 
