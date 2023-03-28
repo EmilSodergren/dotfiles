@@ -209,6 +209,7 @@ if args.online:
     if not coq_deps.exists():
         p = Popen(["python3", "-m", "coq", "deps"], cwd=(coq_deps / "..").resolve())
         p.wait()
+    call(["nvim", "--headless", "-c", "TSUpdateSync", "-c", "quitall"])
     for lang in tree_sitter_languages:
         call(["nvim", "--headless", "-c", "TSInstallSync! {}".format(lang), "-c", "quitall"])
 
