@@ -25,12 +25,26 @@ vim.keymap.set("n", "N", "Nzzzv", { noremap })
 vim.keymap.set("n", "j", "gj", { noremap })
 vim.keymap.set("n", "k", "gk", { noremap })
 
+vim.keymap.set("n", "J", "mzJ`z", { noremap })
+
+vim.keymap.set({"n", "v"}, "<leader>y", "\"+y", { noremap })
+vim.keymap.set("n", "<leader>Y", "\"+Y", { noremap })
+
+vim.keymap.set("n", "J", "mzJ`z", { noremap })
+
+vim.keymap.set("n", "Q", "<nop>")
+
 vim.keymap.set("n", "<down>", "3jzz", { noremap })
 vim.keymap.set("n", "<up>", "3kzz", { noremap })
 vim.keymap.set("n", "<s-h>", "<cmd>bp<cr>", { noremap })
 vim.keymap.set("n", "<s-l>", "<cmd>bn<cr>", { noremap })
 
 vim.keymap.set("n", "<c-g>", "1<c-g>", { noremap })
+
+vim.keymap.set("n", "<leader>sr", ":%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>", { noremap })
+
+vim.keymap.set("n", "<c-d>", "<c-d>zz", { noremap })
+vim.keymap.set("n", "<c-u>", "<c-u>zz", { noremap })
 
 vim.keymap.set("n", "<c-w><bar>", "<c-w>v", { noremap })
 vim.keymap.set("n", "<c-w>-", "<c-w>s", { noremap })
@@ -66,7 +80,10 @@ end, { noremap, silent = true })
 
 -- Delete current selection to the black hole registry before pasting,
 -- keeping the currently pasted text instead of overwriting it.
-vim.keymap.set("v", "p", '"_dP', { noremap })
+vim.keymap.set({"v", "x"}, "p", '"_dP', { noremap })
+
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { noremap })
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { noremap })
 
 -- save file with sudo permissions
 vim.keymap.set("c", "w!!", "w !sudo tee > /dev/null %")
