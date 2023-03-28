@@ -1,10 +1,10 @@
-from os.path import dirname, realpath, expanduser, join, exists, islink
-from os import symlink, remove, chdir, makedirs, system
+from os import chdir, system
 from subprocess import call, Popen, PIPE
 from argparse import ArgumentParser
 from datetime import datetime
 from glob import glob
 from shutil import rmtree, move
+from pathlib import Path
 import re
 import apt
 import os
@@ -12,27 +12,26 @@ import sys
 
 import check_dep_version
 
-dotfilespath = dirname(realpath(__file__))
-homefolder = expanduser("~")
-local_bin = join(".local", "bin")
-host_local_bin = join(homefolder, local_bin)
-bfg_jar = join(host_local_bin, "bfg.jar")
-marksman_bin = join(host_local_bin, "marksman")
-ra_bin = join(host_local_bin, "rust-analyzer")
-antiword = join(local_bin, "antiword")
-ccls_config = join(local_bin, "ccls_config")
-forgit = join(local_bin, "forgit")
-write_notes = join(local_bin, "write_notes")
-konsole_config = join(".local", "share", "konsole", "Emil.profile")
-neovim_init = join(".config", "nvim")
-pycodestyle_config = join(".config", "pycodestyle")
-yapf_config = join(".config", "yapf", "style")
+dotfilespath = Path().resolve()
+local_bin = Path(".local") / "bin"
+host_local_bin = Path.home() / local_bin
+bfg_jar = host_local_bin / "bfg.jar"
+marksman_bin = host_local_bin / "marksman"
+ra_bin = host_local_bin / "rust-analyzer"
+antiword = host_local_bin / "antiword"
+ccls_config = local_bin / "ccls_config"
+forgit = local_bin / "forgit"
+write_notes = local_bin / "write_notes"
+konsole_config = Path(".local") / "share" / "konsole" / "Emil.profile"
+neovim_init = Path(".config") / "nvim"
+pycodestyle_config = Path(".config") / "pycodestyle"
+yapf_config = Path(".config") / "yapf" / "style"
 nodejs_language_servers = [
     "yaml-language-server", "dockerfile-language-server-nodejs", "bash-language-server", "neovim", "vscode-langservers-extracted"
 ]
 settingsfiles = [
-    ".bash_completion", ".bash_completion.d", ".bash_git", ".bashrc", ".gitconfig", ".profile", ".tmux.conf", ".vim", antiword, ccls_config,
-    forgit, konsole_config, neovim_init, pycodestyle_config, write_notes, yapf_config
+    ".bash_completion", ".bash_completion.d", ".bash_git", ".bashrc", ".gitconfig", ".profile", ".tmux.conf", antiword, ccls_config, forgit,
+    konsole_config, neovim_init, pycodestyle_config, write_notes, yapf_config
 ]
 tree_sitter_languages = [
     "bash",
@@ -48,7 +47,7 @@ tree_sitter_languages = [
     "toml",
     "yaml",
 ]
-rustup_bin = join(homefolder, ".cargo/bin/rustup")
+rustup_bin = Path.home() / ".cargo/bin/rustup"
 rust_binaries = [
     "bat", "cargo-watch", "cargo-edit", "cargo-update", "du-dust", "fd-find", "git-delta", "lsd", "ripgrep", "sd", "tokei", "ytop", "zoxide"
 ]
@@ -117,13 +116,13 @@ def rust_binary_mapper(f):
 
 def exists_all(path, files):
     for f in files:
-        if not exists(join(path, rust_binary_mapper(f))):
+        if not (path / rust_binary_mapper(f)).exists():
             return False
     return True
 
 
 def install_brave_browser():
-    if not exists("/etc/apt/sources.list.d/brave-browser-release.list"):
+    if not Path("/etc/apt/sources.list.d/brave-browser-release.list").exists():
         call([
             "sudo", "curl", "-fsSLo", "/usr/share/keyrings/brave-browser-archive-keyring.gpg",
             "https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg"
@@ -145,15 +144,15 @@ def install_program(script_name, with_clean):
 
 
 for stuff in settingsfiles:
-    linkpath = join(homefolder, stuff)
-    sourcepath = join(dotfilespath, stuff)
-    if islink(linkpath):
-        remove(linkpath)
-    if not exists(dirname(linkpath)):
-        makedirs(dirname(linkpath), exist_ok=True)
-    symlink(sourcepath, linkpath)
+    linkpath = Path.home() / stuff
+    sourcepath = dotfilespath / stuff
+    if linkpath.is_symlink():
+        linkpath.unlink()
+    if not linkpath.parent.exists():
+        linkpath.parent.mkdir(exist_ok=True)
+    linkpath.symlink_to(sourcepath)
 
-gitconfig_path = join(dotfilespath, ".gitconfig")
+gitconfig_path = dotfilespath / ".gitconfig"
 regex = re.compile(r"email =( ?)(.*)$")
 replace_line = ""
 old_email = ""
@@ -199,30 +198,30 @@ if args.online:
         if not args.skip_tmux:
             install_program("tmux.py", args.clean)
 
-    packer_plugin = join(homefolder, ".local/share/nvim/site/pack/packer/start/packer.nvim")
-    if not exists(packer_plugin):
+    packer_plugin = Path.home() / ".local/share/nvim/site/pack/packer/start/packer.nvim"
+    if not packer_plugin.exists():
         call(["git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", packer_plugin])
     call(["nvim", "-u", ".config/nvim/lua/plugins.lua", "--headless", "-c", "autocmd User PackerComplete quitall", "-c", "PackerSync"])
     call(["nvim", "--headless", "-c", ":lua require('go.install').update_all_sync()", "-c", "quitall"])
-    coq_deps = join(packer_plugin, "../coq-nvim/.vars")
-    if args.clean and exists(coq_deps):
+    coq_deps = (packer_plugin / "../coq-nvim/.vars").resolve()
+    if args.clean and coq_deps.exists():
         rmtree(coq_deps)
-    if not exists(coq_deps):
-        p = Popen(["python3", "-m", "coq", "deps"], cwd=realpath(join(coq_deps, "..")))
+    if not coq_deps.exists():
+        p = Popen(["python3", "-m", "coq", "deps"], cwd=(coq_deps / "..").resolve())
         p.wait()
     for lang in tree_sitter_languages:
         call(["nvim", "--headless", "-c", "TSInstallSync! {}".format(lang), "-c", "quitall"])
 
-    for tmuxpath, tmuxurl in [(join(dotfilespath, "tmux-resurrect"), "https://github.com/tmux-plugins/tmux-resurrect"),
-                              (join(dotfilespath, "tmux-continuum"), "https://github.com/tmux-plugins/tmux-continuum"),
-                              (join(dotfilespath, "tmux-notify"), "https://github.com/ChanderG/tmux-notify")]:
-        if exists(tmuxpath):
+    for tmuxpath, tmuxurl in [(dotfilespath / "tmux-resurrect", "https://github.com/tmux-plugins/tmux-resurrect"),
+                              (dotfilespath / "tmux-continuum", "https://github.com/tmux-plugins/tmux-continuum"),
+                              (dotfilespath / "tmux-notify", "https://github.com/ChanderG/tmux-notify")]:
+        if tmuxpath.exists():
             call(["git", "-C", tmuxpath, "pull"])
         else:
             call(["git", "clone", tmuxurl, tmuxpath])
 
-    call(["npm", "install", "--prefix", join(homefolder, ".local"), *nodejs_language_servers])
-    makedirs(local_bin, exist_ok=True)
+    call(["npm", "install", "--prefix", Path.home() / ".local", *nodejs_language_servers])
+    (Path.home() / local_bin).mkdir(exist_ok=True)
 
     # Download Marksman
     call(["wget", "-N", "-O", marksman_bin, "https://github.com/artempyanykh/marksman/releases/latest/download/marksman-linux"])
@@ -254,28 +253,28 @@ if args.online:
         call([rustup_bin, "component", "add", "rust-src"])
         call([rustup_bin, "component", "add", "clippy"])
 
-        if exists_all(join(homefolder, ".cargo", "bin"), rust_binaries):
+        if exists_all(Path.home() / ".cargo" / "bin", rust_binaries):
             call(["cargo", "install-update", "-ag"])
         else:
             call(["cargo", "install", *rust_binaries])
             call(["cargo", "install", "cargo-update"])
 
 if args.font:
-    call(["sudo", "unzip", "-o", join(dotfilespath, "bin", "Hack.zip"), "-d", "/usr/local/share/fonts/"])
+    call(["sudo", "unzip", "-o", dotfilespath / "bin" / "Hack.zip", "-d", "/usr/local/share/fonts/"])
     call(["fc-cache", "-f", "-v"])
 
 if args.pack or args.artifactory:
-    chdir(homefolder)
+    chdir(Path.home())
     call([
         "tar", r"--exclude=*/\.git", "-czf", "dotfiles.tar.gz", ".dotfiles/", "go/bin/", ".cargo/bin/", ".cargo/env", local_bin,
         ".local/node_modules", ".local/include", ".local/lib", ".local/share/nvim", ".local/share/konsole", "konsole", ".fzf.bash"
     ])
     print("")
-    print(".dotfiles has been packed into " + join(homefolder, "dotfiles.tar.gz"))
+    print(".dotfiles has been packed into " + Path.home() / "dotfiles.tar.gz")
 
-    auth_file = join(homefolder, ".dotfiles", "auth.json")
+    auth_file = Path.home() / ".dotfiles" / "auth.json"
     if args.artifactory:
-        command = ["jfrog", "rt", "u", join(homefolder, "dotfiles.tar.gz"), "ace-generic-prod-se-blu-sync/u009893/dotfiles.tar.gz"]
+        command = ["jfrog", "rt", "u", Path.home() / "dotfiles.tar.gz", "ace-generic-prod-se-blu-sync/u009893/dotfiles.tar.gz"]
         os.system(" ".join(command))
 
 print("Finished: {}".format(datetime.now().strftime("%H:%M:%S")))

@@ -1,13 +1,12 @@
-from os.path import expanduser, join, exists, basename
 from os import chdir, cpu_count
 from subprocess import call
 from argparse import ArgumentParser
 from shutil import rmtree
+from pathlib import Path
 import apt
 
-homefolder = expanduser("~")
-tmux_install_dir = join(homefolder, ".local")
-tmux_dir = join(homefolder, "tmux")
+tmux_install_dir = Path.home() / ".local"
+tmux_dir = Path.home() / "tmux"
 apt_cache = apt.Cache()
 nproc = str(cpu_count())
 
@@ -22,7 +21,7 @@ parser.add_argument('-b', '--build', action='store_true', help='Download/Update 
 parser.add_argument('-c', '--clean', action='store_true', help='Clean before build')
 args = parser.parse_args()
 
-chdir(homefolder)
+chdir(Path.home())
 # Install packages only if needed
 for pac in packages_for_build:
     if not apt_cache[pac].is_installed:
@@ -31,17 +30,17 @@ for pac in packages_for_build:
         break
 
 if args.clean:
-    if exists(tmux_dir):
+    if tmux_dir.exists():
         rmtree(tmux_dir)
 
 if args.build:
-    if not exists(tmux_dir):
-        call(["git", "clone", "https://github.com/tmux/tmux.git", basename(tmux_dir)])
+    if not tmux_dir.exists():
+        call(["git", "clone", "https://github.com/tmux/tmux.git", tmux_dir])
         call(["git", "-C", tmux_dir, "checkout", "1536b7e2"])
     else:
         call(["git", "-C", tmux_dir, "pull"])
 
-    chdir(basename(tmux_dir))
+    chdir(tmux_dir)
     call(["sh", "autogen.sh"])
     call(["./configure", "--prefix={}".format(tmux_install_dir)])
     call(["make", "-j", nproc])

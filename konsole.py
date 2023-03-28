@@ -1,14 +1,13 @@
-from os.path import expanduser, join, exists, basename
-from os import chdir, makedirs, cpu_count
+from os import chdir, cpu_count
 from subprocess import call
 from argparse import ArgumentParser
 from shutil import rmtree
+from pathlib import Path
 import apt
 
-homefolder = expanduser("~")
-konsole_install_dir = join(homefolder, ".local")
-konsole_dir = join(homefolder, "konsole")
-build_dir = join(konsole_dir, "build")
+konsole_install_dir = Path.home() / ".local"
+konsole_dir = Path.home() / "konsole"
+build_dir = konsole_dir / "build"
 apt_cache = apt.Cache()
 nproc = str(cpu_count())
 
@@ -21,14 +20,14 @@ packages_for_build = [
     "libkf5auth-dev",
     "libkf5config-dev",
     "libkf5coreaddons-dev",
+    "libkf5crash-dev",
     "libkf5declarative-dev",
     "libkf5i18n-dev",
     "libkf5kcmutils-dev",
+    "libkf5newstuff-dev",
     "libkf5notifications-dev",
     "libkf5notifyconfig-dev",
     "libkf5package-dev",
-    "libkf5newstuff-dev",
-    "libkf5crash-dev",
     "libkf5parts-dev",
     "libkf5pty-dev",
     "libqt5core5a",
@@ -36,17 +35,18 @@ packages_for_build = [
     "libqt5qml5",
     "libqt5widgets5",
     "make",
-    "qtchooser",
     "qt5-qmake",
-    "qtbase5-dev-tools",
     "qtbase5-dev",
+    "qtbase5-dev-tools",
+    "qtchooser",
+    "qtmultimedia5-dev",
 ]
 
 parser.add_argument('-b', '--build', action='store_true', help='Download/Update sources and build/install')
 parser.add_argument('-c', '--clean', action='store_true', help='Clean before build')
 args = parser.parse_args()
 
-chdir(homefolder)
+chdir(Path.home())
 # Install packages only if needed
 for pac in packages_for_build:
     if not apt_cache[pac].is_installed:
@@ -54,17 +54,16 @@ for pac in packages_for_build:
         call(["sudo", "apt-get", "install", "-y", *packages_for_build])
         break
 
-if args.clean:
-    if exists(build_dir):
-        rmtree(build_dir)
+if args.clean and build_dir.exists():
+    rmtree(build_dir)
 
 if args.build:
-    if not exists(konsole_dir):
-        call(["git", "clone", "https://invent.kde.org/utilities/konsole.git", basename(konsole_dir)])
+    if not konsole_dir.exists():
+        call(["git", "clone", "https://invent.kde.org/utilities/konsole.git", konsole_dir])
     else:
         call(["git", "-C", konsole_dir, "pull"])
 
-    makedirs(build_dir, exist_ok=True)
+    build_dir.mkdir(exist_ok=True)
     chdir(build_dir)
     # Debian 10 needs tag v19.12.3 in konsole, and kinit-dev package installed
     call(["cmake", "..", "-DCMAKE_BUILD_TYPE=release", "-DCMAKE_INSTALL_PREFIX={}".format(konsole_install_dir)])

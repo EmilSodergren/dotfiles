@@ -1,12 +1,11 @@
-from os.path import expanduser, join, exists, basename
 from os import chdir
 from subprocess import call
 from argparse import ArgumentParser
+from pathlib import Path
 import apt
 
-homefolder = expanduser("~")
-nvim_install_dir = join(homefolder, ".local")
-neovimdir = join(homefolder, "neovim")
+nvim_install_dir = Path.home() / ".local"
+neovimdir = Path.home() / "neovim"
 apt_cache = apt.Cache()
 
 parser = ArgumentParser(description='Setup the neovim program')
@@ -20,11 +19,11 @@ parser.add_argument('-b', '--build', action='store_true', help='Download/Update 
 args = parser.parse_args()
 
 if args.uninstall:
-    call(["rm", "-f", join(nvim_install_dir, "bin", "nvim")])
-    call(["rm", "-fr", join(nvim_install_dir, "share", "nvim")])
-    call(["rm", "-fr", join(nvim_install_dir, "lib", "nvim")])
+    call(["rm", "-f", nvim_install_dir / "bin" / "nvim"])
+    call(["rm", "-fr", nvim_install_dir / "share" / "nvim"])
+    call(["rm", "-fr", nvim_install_dir / "lib" / "nvim"])
 
-chdir(homefolder)
+chdir(Path.home())
 # Install packages only if needed
 for pac in packages_for_build:
     if not apt_cache[pac].is_installed:
@@ -32,13 +31,13 @@ for pac in packages_for_build:
         call(["sudo", "apt-get", "install", "-y", *packages_for_build])
         break
 
-if args.clean and exists(neovimdir):
+if args.clean and neovimdir.exists():
     chdir(neovimdir)
     call(["make", "distclean"])
 
 if args.build:
-    if not exists(neovimdir):
-        call(["git", "clone", "https://github.com/neovim/neovim.git", basename(neovimdir)])
+    if not neovimdir.exists():
+        call(["git", "clone", "https://github.com/neovim/neovim.git", neovimdir.parent])
     else:
         call(["git", "-C", neovimdir, "pull"])
 
