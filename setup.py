@@ -115,6 +115,7 @@ def rust_binary_mapper(f):
 
 
 def exists_all(path, files):
+
     for f in files:
         if not (path / rust_binary_mapper(f)).exists():
             return False

@@ -53,10 +53,10 @@ vim.keymap.set("i", "jk", "<esc>", { noremap })
 
 -- Use C-u/d to go up/down the popup menu of COQ
 -- This works since we set the setting keymap.recommended = false
-vim.keymap.set({"i", "c"}, "<c-d>", function()
+vim.keymap.set({"i", "c", "n", "o"}, "<c-d>", function()
   return vim.fn.pumvisible() == 1 and "<c-n>" or "<c-d>"
 end, { noremap, expr = true })
-vim.keymap.set({"i", "c"}, "<c-u>", function()
+vim.keymap.set({"i", "c", "n", "o"}, "<c-u>", function()
   return vim.fn.pumvisible() == 1 and "<c-p>" or "<c-u>"
 end, { noremap, expr = true })
 
