@@ -272,11 +272,11 @@ if args.pack or args.artifactory:
         ".local/node_modules", ".local/include", ".local/lib", ".local/share/nvim", ".local/share/konsole", "konsole", ".fzf.bash"
     ])
     print("")
-    print(".dotfiles has been packed into " + Path.home() / "dotfiles.tar.gz")
+    print(".dotfiles has been packed into " + str(Path.home() / "dotfiles.tar.gz"))
 
     auth_file = Path.home() / ".dotfiles" / "auth.json"
     if args.artifactory:
-        command = ["jfrog", "rt", "u", Path.home() / "dotfiles.tar.gz", "ace-generic-prod-se-blu-sync/u009893/dotfiles.tar.gz"]
+        command = ["jfrog", "rt", "u", str(Path.home() / "dotfiles.tar.gz"), "ace-generic-prod-se-blu-sync/u009893/dotfiles.tar.gz"]
         os.system(" ".join(command))
 
 print("Finished: {}".format(datetime.now().strftime("%H:%M:%S")))
