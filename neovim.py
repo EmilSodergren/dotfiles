@@ -37,7 +37,7 @@ if args.clean and neovimdir.exists():
 
 if args.build:
     if not neovimdir.exists():
-        call(["git", "clone", "https://github.com/neovim/neovim.git", neovimdir.parent])
+        call(["git", "clone", "https://github.com/neovim/neovim.git", neovimdir])
     else:
         call(["git", "-C", neovimdir, "pull"])
 
