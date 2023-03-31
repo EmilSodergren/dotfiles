@@ -17,6 +17,7 @@ packages_for_build = [
     "extra-cmake-modules",
     "g++",
     "git",
+    "libicu-dev",
     "libkf5auth-dev",
     "libkf5config-dev",
     "libkf5coreaddons-dev",
