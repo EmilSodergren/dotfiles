@@ -21,6 +21,7 @@ require("packer").startup(function(use)
   use "mbbill/undotree"
   use "neovim/nvim-lspconfig"
   use {"nvim-treesitter/nvim-treesitter" }
+  use {"nvim-treesitter/nvim-treesitter-context" }
   use {"plasticboy/vim-markdown", ft = "markdown"}
   use {"rust-lang/rust.vim", ft = "rust"}
   use "simeji/winresizer"
