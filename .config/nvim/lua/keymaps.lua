@@ -43,9 +43,6 @@ vim.keymap.set("n", "<c-g>", "1<c-g>", { noremap })
 
 vim.keymap.set("n", "<leader>sr", ":%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>", { noremap })
 
-vim.keymap.set("n", "<c-d>", "<c-d>zz", { noremap })
-vim.keymap.set("n", "<c-u>", "<c-u>zz", { noremap })
-
 vim.keymap.set("n", "<c-w><bar>", "<c-w>v", { noremap })
 vim.keymap.set("n", "<c-w>-", "<c-w>s", { noremap })
 
@@ -54,10 +51,10 @@ vim.keymap.set("i", "jk", "<esc>", { noremap })
 -- Use C-u/d to go up/down the popup menu of COQ
 -- This works since we set the setting keymap.recommended = false
 vim.keymap.set({"i", "c", "n", "o"}, "<c-d>", function()
-  return vim.fn.pumvisible() == 1 and "<c-n>" or "<c-d>"
+  return vim.fn.pumvisible() == 1 and "<c-n>" or "<c-d>zz"
 end, { noremap, expr = true })
 vim.keymap.set({"i", "c", "n", "o"}, "<c-u>", function()
-  return vim.fn.pumvisible() == 1 and "<c-p>" or "<c-u>"
+  return vim.fn.pumvisible() == 1 and "<c-p>" or "<c-u>zz"
 end, { noremap, expr = true })
 
 -- Disable ctrl + Left/Right which deletes stuff
