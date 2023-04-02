@@ -1,5 +1,5 @@
 from os import chdir, system
-from subprocess import call, Popen, PIPE
+from subprocess import run, Popen, PIPE
 from argparse import ArgumentParser
 from datetime import datetime
 from glob import glob
@@ -62,18 +62,19 @@ packages_to_install = [
     "git",
     "libclang-dev",
     "libssl-dev",
+    "libxml2-utils",
     "make",
     "python3-jedi",
     "python3-lib2to3",
     "python3-pip",
     "python3-semver",
     "python3-venv",
+    "shellcheck",
     "software-properties-common",
     "ssh-askpass",
     "vim-nox",
     "wl-clipboard",
     "xclip",
-    "libxml2-utils",
 ]
 apt_cache = apt.Cache()
 
@@ -124,7 +125,7 @@ def exists_all(path, files):
 
 def install_brave_browser():
     if not Path("/etc/apt/sources.list.d/brave-browser-release.list").exists():
-        call([
+        run([
             "sudo", "curl", "-fsSLo", "/usr/share/keyrings/brave-browser-archive-keyring.gpg",
             "https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg"
         ])
@@ -132,9 +133,9 @@ def install_brave_browser():
             f.write(
                 "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main"
             )
-        call(["sudo", "mv", "/tmp/brave-browser-release.list", "/etc/apt/sources.list.d/brave-browser-release.list"])
-        call(["sudo", "apt-get", "update"])
-        call(["sudo", "apt-get", "install", "-y", "brave-browser"])
+        run(["sudo", "mv", "/tmp/brave-browser-release.list", "/etc/apt/sources.list.d/brave-browser-release.list"])
+        run(["sudo", "apt-get", "update"])
+        run(["sudo", "apt-get", "install", "-y", "brave-browser"])
 
 
 def install_program(script_name, with_clean):
@@ -178,7 +179,7 @@ with open(gitconfig_path, "wt") as fout:
 for pac in packages_to_install:
     if not apt_cache[pac].is_installed:
         print("Needs to install packages")
-        call(["sudo", "apt-get", "install", "-y", *packages_to_install])
+        run(["sudo", "apt-get", "install", "-y", *packages_to_install])
         break
 
 if not check_dep_version.check_programs():
@@ -187,7 +188,7 @@ if not check_dep_version.check_programs():
 
 if args.online:
     if not glob("/etc/apt/sources.list.d/kubuntu-ppa*.list"):
-        call(["sudo", "add-apt-repository", "-y", "ppa:kubuntu-ppa/backports"])
+        run(["sudo", "add-apt-repository", "-y", "ppa:kubuntu-ppa/backports"])
     install_brave_browser()
     if not args.skip_all:
         if not args.skip_neovim:
@@ -201,73 +202,74 @@ if args.online:
 
     packer_plugin = Path.home() / ".local/share/nvim/site/pack/packer/start/packer.nvim"
     if not packer_plugin.exists():
-        call(["git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", packer_plugin])
-    call(["nvim", "-u", ".config/nvim/lua/plugins.lua", "--headless", "-c", "autocmd User PackerComplete quitall", "-c", "PackerSync"])
-    call(["nvim", "--headless", "-c", ":lua require('go.install').update_all_sync()", "-c", "quitall"])
+        run(["git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", packer_plugin])
+    run(["nvim", "-u", ".config/nvim/lua/plugins.lua", "--headless", "-c", "autocmd User PackerComplete quitall", "-c", "PackerSync"])
+    run(["nvim", "--headless", "-c", ":lua require('go.install').update_all_sync()", "-c", "quitall"])
     coq_deps = (packer_plugin / "../coq-nvim/.vars").resolve()
     if args.clean and coq_deps.exists():
         rmtree(coq_deps)
     if not coq_deps.exists():
         p = Popen(["python3", "-m", "coq", "deps"], cwd=(coq_deps / "..").resolve())
         p.wait()
-    call(["nvim", "--headless", "-c", "TSUpdateSync", "-c", "quitall"])
+    run(["nvim", "--headless", "-c", "TSUpdateSync", "-c", "quitall"])
     for lang in tree_sitter_languages:
-        call(["nvim", "--headless", "-c", "TSInstallSync! {}".format(lang), "-c", "quitall"])
+        run(["nvim", "--headless", "-c", "TSInstallSync! {}".format(lang), "-c", "quitall"])
 
     for tmuxpath, tmuxurl in [(dotfilespath / "tmux-resurrect", "https://github.com/tmux-plugins/tmux-resurrect"),
                               (dotfilespath / "tmux-continuum", "https://github.com/tmux-plugins/tmux-continuum"),
                               (dotfilespath / "tmux-notify", "https://github.com/ChanderG/tmux-notify")]:
         if tmuxpath.exists():
-            call(["git", "-C", tmuxpath, "pull"])
+            run(["git", "-C", tmuxpath, "pull"])
         else:
-            call(["git", "clone", tmuxurl, tmuxpath])
+            run(["git", "clone", tmuxurl, tmuxpath])
 
-    call(["npm", "install", "--prefix", Path.home() / ".local", *nodejs_language_servers])
+    run(["npm", "install", "--prefix", Path.home() / ".local", *nodejs_language_servers])
+    run(["npm", "audit", "fix", "--force"], cwd=Path.home() / ".local")
     (Path.home() / local_bin).mkdir(exist_ok=True)
 
     # Download Marksman
-    call(["wget", "-N", "-O", marksman_bin, "https://github.com/artempyanykh/marksman/releases/latest/download/marksman-linux"])
+    run(["wget", "-N", "-O", marksman_bin, "https://github.com/artempyanykh/marksman/releases/latest/download/marksman-linux"])
     os.chmod(marksman_bin, 0o755)
     # Download rust-analyzer
-    call([
+    run([
         "wget", "-P", "/tmp/",
         "https://github.com/rust-lang/rust-analyzer/releases/latest/download/rust-analyzer-x86_64-unknown-linux-gnu.gz"
     ])
-    call(["gunzip", "/tmp/rust-analyzer-x86_64-unknown-linux-gnu.gz"])
+    run(["gunzip", "/tmp/rust-analyzer-x86_64-unknown-linux-gnu.gz"])
     move("/tmp/rust-analyzer-x86_64-unknown-linux-gnu", ra_bin)
     os.chmod(ra_bin, 0o755)
     # Download online resources
-    call(["wget", "-N", "-O", bfg_jar, "https://repo1.maven.org/maven2/com/madgag/bfg/1.14.0/bfg-1.14.0.jar"])
+    run(["wget", "-N", "-O", bfg_jar, "https://repo1.maven.org/maven2/com/madgag/bfg/1.14.0/bfg-1.14.0.jar"])
     os.chmod(bfg_jar, 0o755)
-    call(["wget", "-N", "-P", "bin", "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Hack.zip"])
+    run(["wget", "-N", "-P", "bin", "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Hack.zip"])
 
-    call(["python3", "-m", "pip", "install", "--upgrade", "python-lsp-server[rope,pyflakes,mccabe,pycodestyle,yapf]"])
-    call(["python3", "-m", "pip", "install", "--upgrade", "greenlet"])
-    call(["python3", "-m", "pip", "install", "--upgrade", "msgpack"])
-    call(["python3", "-m", "pip", "install", "--upgrade", "pynvim"])
+    run(["python3", "-m", "pip", "install", "--upgrade", "python-lsp-server[rope,pyflakes,mccabe,pycodestyle,yapf]"])
+    run(["python3", "-m", "pip", "install", "--upgrade", "greenlet"])
+    run(["python3", "-m", "pip", "install", "--upgrade", "msgpack"])
+    run(["python3", "-m", "pip", "install", "--upgrade", "pynvim"])
 
     if not args.skip_all and not args.skip_rust:
         ps = Popen(["curl", "--proto", "=https", "--tlsv1.2", "-sSf", "https://sh.rustup.rs"], stdout=PIPE)
-        call(["sh", "-s", "--", "--default-toolchain", "none", "-y"], stdin=ps.stdout)
+        run(["sh", "-s", "--", "--default-toolchain", "none", "-y"], stdin=ps.stdout)
         ps.wait()
-        call([rustup_bin, "update", "stable"])
-        call([rustup_bin, "component", "add", "rustfmt"])
-        call([rustup_bin, "component", "add", "rust-src"])
-        call([rustup_bin, "component", "add", "clippy"])
+        run([rustup_bin, "update", "stable"])
+        run([rustup_bin, "component", "add", "rustfmt"])
+        run([rustup_bin, "component", "add", "rust-src"])
+        run([rustup_bin, "component", "add", "clippy"])
 
         if exists_all(Path.home() / ".cargo" / "bin", rust_binaries):
-            call(["cargo", "install-update", "-ag"])
+            run(["cargo", "install-update", "-ag"])
         else:
-            call(["cargo", "install", *rust_binaries])
-            call(["cargo", "install", "cargo-update"])
+            run(["cargo", "install", *rust_binaries])
+            run(["cargo", "install", "cargo-update"])
 
 if args.font:
-    call(["sudo", "unzip", "-o", dotfilespath / "bin" / "Hack.zip", "-d", "/usr/local/share/fonts/"])
-    call(["fc-cache", "-f", "-v"])
+    run(["sudo", "unzip", "-o", dotfilespath / "bin" / "Hack.zip", "-d", "/usr/local/share/fonts/"])
+    run(["fc-cache", "-f", "-v"])
 
 if args.pack or args.artifactory:
     chdir(Path.home())
-    call([
+    run([
         "tar", r"--exclude=*/\.git", "-czf", "dotfiles.tar.gz", ".dotfiles/", "go/bin/", ".cargo/bin/", ".cargo/env", local_bin,
         ".local/node_modules", ".local/include", ".local/lib", ".local/share/nvim", ".local/share/konsole", "konsole", ".fzf.bash"
     ])
