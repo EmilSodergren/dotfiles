@@ -148,10 +148,10 @@ if command -v zoxide &> /dev/null; then
   eval "$(zoxide init bash)"
 fi
 
-`command -v tmux &> /dev/null`; TMUX_EXIST=$?
-`/usr/bin/pgrep tmux &> /dev/null`; TMUX_IS_RUNNING=$?
-`command -v kubectl &> /dev/null`; KUBECTL_EXIST=$?
-`command -v helm &> /dev/null`; HELM_EXIST=$?
+eval "command -v tmux" &> /dev/null; TMUX_EXIST=$?
+eval "/usr/bin/pgrep tmux" &> /dev/null; TMUX_IS_RUNNING=$?
+eval "command -v kubectl" &> /dev/null; KUBECTL_EXIST=$?
+eval "command -v helm" &> /dev/null; HELM_EXIST=$?
 
 if [ $TMUX_EXIST -eq 0 ] && [ $TMUX_IS_RUNNING -eq 1 ]; then
   echo "Starting tmux server"
@@ -159,10 +159,10 @@ if [ $TMUX_EXIST -eq 0 ] && [ $TMUX_IS_RUNNING -eq 1 ]; then
   sleep .5
 fi
 
-[ $TMUX_EXIST -eq 0 ] && [ -z $TMUX ] && tmux attach
+[ $TMUX_EXIST -eq 0 ] && [ -z "$TMUX" ] && tmux attach
 [ $KUBECTL_EXIST -eq 0 ] && . <(kubectl completion bash)
 [ $HELM_EXIST -eq 0 ] && . <(helm completion bash)
 
-. "$HOME/.cargo/env"
+. ~/.cargo/env
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
