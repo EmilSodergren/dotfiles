@@ -125,7 +125,7 @@ fi
 complete -cf sudo
 
 export TERM=screen-256color
-export MYVIMRC="$HOME/.config/nvim/init.vim"
+export MYVIMRC="$HOME/.config/nvim/init.lua"
 export EDITOR=nvim
 export SUDO_ASKPASS=/usr/bin/ssh-askpass
 export FZF_DEFAULT_COMMAND='fd --type file --follow --hidden --exclude .git'
