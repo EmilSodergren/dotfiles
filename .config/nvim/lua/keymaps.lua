@@ -4,12 +4,6 @@ vim.keymap.set("n", "<leader>sh", "<cmd>FZF ~<cr>", { noremap })
 vim.keymap.set("n", "<leader>sg", "<cmd>GFiles<cr>", { noremap })
 vim.keymap.set("n", "<leader>sl", "<cmd>Lines<cr>", { noremap })
 
-vim.g.bash_ctrl_j="off"
-vim.g.python_host_prog="/usr/bin/python2"
-vim.g.python3_host_prog="/usr/bin/python3"
-vim.g.python3_host_skip_check = 1
-vim.g.netrw_dirhistmax = 0
-
 vim.keymap.set("n", "<leader>ev", "<cmd>FZF ~/.config/nvim/<cr>", { noremap })
 vim.keymap.set("n", "<leader>sv", "<cmd>source ~/.dotfiles/.config/nvim/init.lua<cr>", { noremap })
 

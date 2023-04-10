@@ -1,3 +1,9 @@
+vim.g.bash_ctrl_j="off"
+vim.g.python_host_prog="/usr/bin/python2"
+vim.g.python3_host_prog="/usr/bin/python3"
+vim.g.python3_host_skip_check = 1
+vim.g.netrw_dirhistmax = 0
+
 vim.o.autoindent = true
 vim.o.backspace = 2
 vim.o.clipboard = unnamed
