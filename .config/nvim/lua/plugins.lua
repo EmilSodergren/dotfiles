@@ -15,7 +15,7 @@ require("packer").startup(function(use)
   use {"iamcco/markdown-preview.nvim", run = "cd app && ./install.sh", ft = "markdown"}
   use "jreybert/vimagit"
   use {"junegunn/fzf", run = "./install --no-zsh --no-fish --key-bindings --completion --update-rc" }
-  use "junegunn/fzf.vim"
+  use "ibhagwan/fzf-lua"
   use {"lepture/vim-jinja", ft = "jinja"}
   use "machakann/vim-highlightedyank"
   use "mbbill/undotree"

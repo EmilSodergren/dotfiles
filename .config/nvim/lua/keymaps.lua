@@ -1,11 +1,11 @@
-vim.keymap.set("n", "<leader>p", "<cmd>FZF<cr>", { noremap })
-vim.keymap.set("n", "<leader>sf", "<cmd>FZF<cr>", { noremap })
-vim.keymap.set("n", "<leader>sh", "<cmd>FZF ~<cr>", { noremap })
-vim.keymap.set("n", "<leader>sg", "<cmd>GFiles<cr>", { noremap })
-vim.keymap.set("n", "<leader>sl", "<cmd>Lines<cr>", { noremap })
+fzf = require('fzf-lua')
 
-vim.keymap.set("n", "<leader>ev", "<cmd>FZF ~/.config/nvim/<cr>", { noremap })
-vim.keymap.set("n", "<leader>sv", "<cmd>source ~/.dotfiles/.config/nvim/init.lua<cr>", { noremap })
+vim.keymap.set("n", "<leader>sf", function() return fzf.files() end, { noremap })
+vim.keymap.set("n", "<leader>sh", function() return fzf.files({ prompt = "~/", cwd = "~/" }) end, { noremap })
+vim.keymap.set("n", "<leader>sg", function() return fzf.git_files({ prompt="GIT> " }) end, { noremap })
+vim.keymap.set("n", "<leader>sr", function() return fzf.live_grep({ prompt="rg> " }) end, { noremap })
+vim.keymap.set("i", "<C-x><C-f>", function() return fzf.complete_path({ cmd = "rg --files --hidden -g '!.git/'"}) end, { silent = true, noremap })
+vim.keymap.set("n", "<leader>ev", function() return fzf.files({ cwd = "~/.config/nvim/" }) end, { noremap })
 
 vim.keymap.set("n", "<leader>q", "<cmd>bp<bar>bd #<cr>", { noremap })
 vim.keymap.set("n", "<c-h>", "<c-w>h", { noremap })
@@ -33,7 +33,7 @@ vim.keymap.set("n", "<s-l>", "<cmd>bn<cr>", { noremap })
 
 vim.keymap.set("n", "<c-g>", "1<c-g>", { noremap })
 
-vim.keymap.set("n", "<leader>sr", ":%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>", { noremap })
+vim.keymap.set("n", "<leader>rr", ":%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>", { noremap })
 
 vim.keymap.set("n", "<c-w><bar>", "<c-w>v", { noremap })
 vim.keymap.set("n", "<c-w>-", "<c-w>s", { noremap })
