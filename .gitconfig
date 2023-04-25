@@ -33,6 +33,7 @@
 [core]
     editor = nvim
     pager = delta --dark --diff-so-fancy
+    hooksPath = .githooks
 [delta]
     hunk-header-style = "normal"
     zero-style = "normal"
