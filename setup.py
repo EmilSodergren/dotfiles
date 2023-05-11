@@ -224,7 +224,6 @@ if args.online:
             run(["git", "clone", tmuxurl, tmuxpath])
 
     run(["npm", "install", "--prefix", Path.home() / ".local", *nodejs_language_servers])
-    run(["npm", "audit", "fix", "--force"], cwd=Path.home() / ".local")
     (Path.home() / local_bin).mkdir(exist_ok=True)
 
     # Download Marksman
