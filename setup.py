@@ -280,4 +280,4 @@ if args.pack or args.artifactory:
         command = ["jfrog", "rt", "u", str(Path.home() / "dotfiles.tar.gz"), "ace-generic-prod-se-blu-sync/u009893/dotfiles.tar.gz"]
         os.system(" ".join(command))
 
-print("Finished: {}".format(datetime.now().strftime("%H:%M:%S")))
+print("Finished: {}".format(datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
