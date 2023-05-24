@@ -59,6 +59,7 @@ packages_to_install = [
     "docx2txt",
     "flameshot",
     "fonts-powerline",
+    "gawk",
     "git",
     "libclang-dev",
     "libssl-dev",
@@ -73,9 +74,10 @@ packages_to_install = [
     "software-properties-common",
     "ssh-askpass",
     "vim-nox",
-    "wl-clipboard",
     "xclip",
 ]
+packages_to_install_wayland = ["wl-clipboard"]
+
 apt_cache = apt.Cache()
 
 parser = ArgumentParser(description='Setup the machine')
@@ -182,6 +184,13 @@ for pac in packages_to_install:
         run(["sudo", "apt-get", "install", "-y", *packages_to_install])
         break
 
+if os.environ.get("XDG_SESSION_TYPE") == "wayland":
+    for pac in packages_to_install_wayland:
+        if not apt_cache[pac].is_installed:
+            print("Needs to install packages")
+            run(["sudo", "apt-get", "install", "-y", *packages_to_install_wayland])
+            break
+
 if not check_dep_version.check_programs():
     print("Error: programs not correct versions")
     sys.exit(1)
@@ -215,13 +224,17 @@ if args.online:
     for lang in tree_sitter_languages:
         run(["nvim", "--headless", "-c", "TSInstallSync! {}".format(lang), "-c", "quitall"])
 
-    for tmuxpath, tmuxurl in [(dotfilespath / "tmux-resurrect", "https://github.com/tmux-plugins/tmux-resurrect"),
-                              (dotfilespath / "tmux-continuum", "https://github.com/tmux-plugins/tmux-continuum"),
-                              (dotfilespath / "tmux-notify", "https://github.com/ChanderG/tmux-notify")]:
+    for tmuxpath, tmuxurl in [
+        (dotfilespath / "tmux-resurrect", "https://github.com/tmux-plugins/tmux-resurrect"),
+        (dotfilespath / "tmux-continuum", "https://github.com/tmux-plugins/tmux-continuum"),
+        (dotfilespath / "tmux-notify", "https://github.com/ChanderG/tmux-notify"),
+        (dotfilespath / "tmux-fingers", "https://github.com/Morantron/tmux-fingers"),
+        (dotfilespath / "tmux-power", "https://github.com/wfxr/tmux-power.git"),
+    ]:
         if tmuxpath.exists():
             run(["git", "-C", tmuxpath, "pull"])
         else:
-            run(["git", "clone", tmuxurl, tmuxpath])
+            run(["git", "clone", "--recursive", tmuxurl, tmuxpath])
 
     run(["npm", "install", "--prefix", Path.home() / ".local", *nodejs_language_servers])
     (Path.home() / local_bin).mkdir(exist_ok=True)

@@ -1,6 +1,4 @@
-tmux-resurrect/
-tmux-continuum/
-tmux-notify/
+tmux-*/
 bin/Hack.zip
 auth.json
 packer_compiled.lua
