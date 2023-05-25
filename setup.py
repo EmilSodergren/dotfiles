@@ -49,7 +49,8 @@ tree_sitter_languages = [
 ]
 rustup_bin = Path.home() / ".cargo/bin/rustup"
 rust_binaries = [
-    "bat", "cargo-watch", "cargo-edit", "cargo-update", "du-dust", "fd-find", "git-delta", "lsd", "ripgrep", "sd", "tokei", "ytop", "zoxide"
+    "bat", "cargo-watch", "cargo-edit", "cargo-update", "du-dust", "fd-find", "git-delta", "lsd", "ripgrep", "sd", "tokei", "watchexec-cli",
+    "ytop", "zoxide"
 ]
 packages_to_install = [
     "antiword",
@@ -229,7 +230,7 @@ if args.online:
         (dotfilespath / "tmux-continuum", "https://github.com/tmux-plugins/tmux-continuum"),
         (dotfilespath / "tmux-notify", "https://github.com/ChanderG/tmux-notify"),
         (dotfilespath / "tmux-fingers", "https://github.com/Morantron/tmux-fingers"),
-        (dotfilespath / "tmux-power", "https://github.com/wfxr/tmux-power.git"),
+        (dotfilespath / "tmux-power", "https://github.com/wfxr/tmux-power"),
     ]:
         if tmuxpath.exists():
             run(["git", "-C", tmuxpath, "pull"])
