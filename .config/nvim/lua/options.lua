@@ -5,7 +5,7 @@ vim.g.python3_host_skip_check = 1
 vim.g.netrw_dirhistmax = 0
 
 vim.o.autoindent = true
-vim.o.backspace = 2
+vim.o.backspace = "indent"
 vim.o.clipboard = unnamed
 vim.o.cmdheight = 2
 vim.opt.completeopt:append {"menuone", "noinsert", "noselect" }
