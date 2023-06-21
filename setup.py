@@ -228,7 +228,7 @@ if args.online:
     for tmuxpath, tmuxurl in [
         (dotfilespath / "tmux-resurrect", "https://github.com/tmux-plugins/tmux-resurrect"),
         (dotfilespath / "tmux-continuum", "https://github.com/tmux-plugins/tmux-continuum"),
-        (dotfilespath / "tmux-notify", "https://github.com/ChanderG/tmux-notify"),
+        (dotfilespath / "tmux-notify", "https://github.com/rickstaa/tmux-notify"),
         (dotfilespath / "tmux-fingers", "https://github.com/Morantron/tmux-fingers"),
         (dotfilespath / "tmux-power", "https://github.com/wfxr/tmux-power"),
     ]:
