@@ -5,6 +5,7 @@ from datetime import datetime
 from glob import glob
 from shutil import rmtree, move
 from pathlib import Path
+import platform
 import re
 import apt
 import os
@@ -254,10 +255,14 @@ if args.online:
     os.chmod(bfg_jar, 0o755)
     run(["wget", "-N", "-P", "bin", "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Hack.zip"])
 
-    run(["python3", "-m", "pip", "install", "--upgrade", "python-lsp-server[rope,pyflakes,mccabe,pycodestyle,yapf]"])
-    run(["python3", "-m", "pip", "install", "--upgrade", "greenlet"])
-    run(["python3", "-m", "pip", "install", "--upgrade", "msgpack"])
-    run(["python3", "-m", "pip", "install", "--upgrade", "pynvim"])
+    import semver
+    extra_pip_flags = ["--user", "--break-system-packages"]
+    if semver.compare(platform.python_version(), "3.11.0") == -1:
+        extra_pip_flags = []
+    run(["python3", "-m", "pip", "install", "--upgrade", *extra_pip_flags, "python-lsp-server[rope,pyflakes,mccabe,pycodestyle,yapf]"])
+    run(["python3", "-m", "pip", "install", "--upgrade", *extra_pip_flags, "greenlet"])
+    run(["python3", "-m", "pip", "install", "--upgrade", *extra_pip_flags, "msgpack"])
+    run(["python3", "-m", "pip", "install", "--upgrade", *extra_pip_flags, "pynvim"])
 
     if not args.skip_all and not args.skip_rust:
         ps = Popen(["curl", "--proto", "=https", "--tlsv1.2", "-sSf", "https://sh.rustup.rs"], stdout=PIPE)
