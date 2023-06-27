@@ -218,9 +218,7 @@ if args.online:
     coq_deps = (packer_plugin / "../coq-nvim/.vars").resolve()
     if args.clean and coq_deps.exists():
         rmtree(coq_deps)
-    if not coq_deps.exists():
-        p = Popen(["python3", "-m", "coq", "deps"], cwd=(coq_deps / "..").resolve())
-        p.wait()
+    run(["python3", "-m", "coq", "deps"], cwd=(coq_deps / "..").resolve())
     run(["nvim", "--headless", "-c", "TSUpdateSync", "-c", "quitall"])
     for lang in tree_sitter_languages:
         run(["nvim", "--headless", "-c", "TSInstallSync! {}".format(lang), "-c", "quitall"])
