@@ -34,18 +34,19 @@ vim.g.airline_detect_modified = 1
 vim.o.updatetime = 100
 
 -- COQ
-vim.g.coq_settings = { auto_start = 'shut-up',
-                       keymap = {
-                         recommended = false,
-                         jump_to_mark = "<c-l>",
-                         manual_complete = "<c-x><c-o>"
-                       },
-                       clients = {
-                         lsp = {
-                           enabled = true,
-                         }
-                       }
-                     }
+vim.g.coq_settings = {
+  auto_start = 'shut-up',
+  keymap = {
+    recommended = false,
+    jump_to_mark = "<c-l>",
+    manual_complete = "<c-x><c-o>"
+  },
+  clients = {
+    lsp = {
+      enabled = true,
+    }
+  }
+}
 
 local coq = require("coq")
 -- Go NVIM
