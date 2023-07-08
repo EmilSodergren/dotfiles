@@ -257,6 +257,7 @@ if args.online:
 
     import semver
     extra_pip_flags = ["--user", "--break-system-packages"]
+    # For python version older than 3.11
     if semver.compare(platform.python_version(), "3.11.0") == -1:
         extra_pip_flags = []
     run(["python3", "-m", "pip", "install", "--upgrade", *extra_pip_flags, "python-lsp-server[rope,pyflakes,mccabe,pycodestyle,yapf]"])
