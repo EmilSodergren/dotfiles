@@ -228,7 +228,7 @@ if args.online:
         (dotfilespath / "tmux-resurrect", "https://github.com/tmux-plugins/tmux-resurrect"),
         (dotfilespath / "tmux-continuum", "https://github.com/tmux-plugins/tmux-continuum"),
         (dotfilespath / "tmux-notify", "https://github.com/rickstaa/tmux-notify"),
-        (dotfilespath / "tmux-fingers", "https://github.com/Morantron/tmux-fingers"),
+        (dotfilespath / "tmux-thumbs", "https://github.com/fcsonline/tmux-thumbs"),
         (dotfilespath / "tmux-power", "https://github.com/wfxr/tmux-power"),
     ]:
         if tmuxpath.exists():
@@ -279,6 +279,7 @@ if args.online:
         else:
             run(["cargo", "install", *rust_binaries])
             run(["cargo", "install", "cargo-update"])
+    run(["cargo", "build", "--release"], cwd=dotfilespath / "tmux-thumbs")
 
 if args.font:
     run(["sudo", "unzip", "-o", dotfilespath / "bin" / "Hack.zip", "-d", "/usr/local/share/fonts/"])
