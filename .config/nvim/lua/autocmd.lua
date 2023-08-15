@@ -64,7 +64,9 @@ vim.api.nvim_create_autocmd("BufWritePre",
 {
   group = "format_on_save",
   callback = function()
-    vim.lsp.buf.code_action({ context = { only = { 'source.organizeImports' } }, apply = true})
+    if vim.bo.filetype == "go" then
+      vim.lsp.buf.code_action({ context = { only = { 'source.organizeImports' } }, apply = true})
+    end
     vim.lsp.buf.format({async = false, timeout = 2000})
   end
 })
