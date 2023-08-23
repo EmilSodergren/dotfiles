@@ -107,7 +107,7 @@ vim.g.undotree_SplitWidth = 35
 local lspconfig = require("lspconfig")
 local home = os.getenv("HOME")
 lspconfig.bashls.setup(coq.lsp_ensure_capabilities({
-  cmd = { home.."/.local/node_modules/bash-language-server/bin/main.js", "start" }
+  cmd = { home.."/.local/node_modules/bash-language-server/out/cli.js", "start" }
 }))
 lspconfig.ccls.setup(coq.lsp_ensure_capabilities({}))
 lspconfig.dockerls.setup(coq.lsp_ensure_capabilities({
