@@ -63,11 +63,12 @@ vim.api.nvim_create_augroup("format_on_save", { clear = true })
 vim.api.nvim_create_autocmd("BufWritePre",
 {
   pattern = "*",
-  group = "format_on_save",
+  group = 'format_on_save',
   callback = function()
-    vim.lsp.buf.format({async = false, timeout = 2000})
     if vim.bo.filetype == "go" then
-      vim.lsp.buf.code_action({ context = { only = { 'source.organizeImports' } }, apply = true})
+      require('go.format').goimport()
+    else
+      vim.lsp.buf.format({async = false, timeout = 2000})
     end
   end
 })

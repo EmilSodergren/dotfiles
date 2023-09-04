@@ -69,7 +69,10 @@ require("flash").setup({
 
 local coq = require("coq")
 -- Go NVIM
-require('go').setup(coq.lsp_ensure_capabilities({}))
+require('go').setup(coq.lsp_ensure_capabilities({
+  goimport = 'goimports',
+  lsp_gofumpt = true,
+}))
 
 -- Highlighted yank
 vim.g.highlightedyank_highlight_duration = 2000
