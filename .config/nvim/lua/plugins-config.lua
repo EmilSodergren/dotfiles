@@ -139,7 +139,7 @@ lspconfig.yamlls.setup(coq.lsp_ensure_capabilities({
     yaml = {
       format = {
         enable = true,
-        singleQuote = false,
+        singleQuote = true,
       },
       validate = true,
       hover = true,
