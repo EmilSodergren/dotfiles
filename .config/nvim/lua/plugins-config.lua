@@ -48,25 +48,6 @@ vim.g.coq_settings = {
   }
 }
 
--- Flash
-require("flash").setup({
-  search = {
-    incremental = true,
-  },
-  modes = {
-    char = {
-      enabled = {}
-    },
-  },
-  jump = {
-    autojump = true,
-  },
-  label = {
-    after = false,
-    before = true
-  }
-})
-
 local coq = require("coq")
 -- Go NVIM
 require('go').setup(coq.lsp_ensure_capabilities({

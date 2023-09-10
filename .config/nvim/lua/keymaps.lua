@@ -85,21 +85,3 @@ vim.keymap.set("n", "ysss", "<Plug>Yssurround <s><cr>I* <esc>f*xx")
 vim.keymap.set("n", "<leader>u", "<cmd>UndotreeToggle<cr>", { noremap })
 
 vim.keymap.set({"n", "v"}, "<space>", "za", { noremap })
-
-local Config = require("flash.config")
-local Char = require("flash.plugins.char")
-for _, motion in ipairs({ "f", "F", "T" }) do
-  vim.keymap.set({ "n", "x", "o" }, motion, function()
-    require("flash").jump(Config.get({
-      mode = "char",
-      search = {
-        mode = Char.mode(motion),
-        max_length = 3,
-      },
-      label = {
-        after = false,
-        before = true,
-      },
-    }, Char.motions[motion]))
-  end)
-end
