@@ -58,6 +58,10 @@ require('go').setup(coq.lsp_ensure_capabilities({
 -- Highlighted yank
 vim.g.highlightedyank_highlight_duration = 2000
 
+-- LEAP
+require('leap').add_default_mappings()
+require('leap').opts.safe_labels = {}
+
 -- MAGIT
 vim.g.magit_auto_close = 1
 vim.g.magit_scrolloff = 0

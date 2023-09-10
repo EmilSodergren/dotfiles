@@ -11,8 +11,8 @@ require("packer").startup(function(use)
   use "cyberkov/openhab-vim"
   use "dhruvasagar/vim-zoom"
   use {"elzr/vim-json", ft = "json"}
-  use "ggandor/lightspeed.nvim"
-  use {"ray-x/go.nvim", requires = { "ray-x/guihua.lua"}}
+  use "ggandor/leap.nvim"
+  use {"ray-x/go.nvim", requires = { "ray-x/guihua.lua" } }
   use {"iamcco/markdown-preview.nvim", run = "cd app && ./install.sh", ft = "markdown"}
   use "jreybert/vimagit"
   use {"junegunn/fzf", run = "./install --no-zsh --no-fish --key-bindings --completion --update-rc" }
