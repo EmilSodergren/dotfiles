@@ -5,6 +5,7 @@ from datetime import datetime
 from glob import glob
 from shutil import rmtree, move
 from pathlib import Path
+import json
 import platform
 import re
 import apt
@@ -250,9 +251,19 @@ if args.online:
     run(["gunzip", "/tmp/rust-analyzer-x86_64-unknown-linux-gnu.gz"])
     move("/tmp/rust-analyzer-x86_64-unknown-linux-gnu", ra_bin)
     os.chmod(ra_bin, 0o755)
-    # Download online resources
-    run(["wget", "-N", "-O", bfg_jar, "https://repo1.maven.org/maven2/com/madgag/bfg/1.14.0/bfg-1.14.0.jar"])
+    # Download Lua LS
+    ps = Popen(['curl', 'https://api.github.com/repos/LuaLS/lua-language-server/releases/latest'], stdout=PIPE)
+    latest_lua_version = json.load(ps.stdout).get('name')
+    ps.wait()
+    lua_tar_name = f'lua-language-server-{latest_lua_version}-linux-x64.tar.gz'
+    luals_dl_url = f'https://github.com/LuaLS/lua-language-server/releases/download/{latest_lua_version}/{lua_tar_name}'
+    run(['wget', '-P', '/tmp/', luals_dl_url])
+    run(['tar', 'zxf', Path('/tmp/') / lua_tar_name, Path('bin') / 'lua-language-server'], cwd=Path.home() / '.local')
+    os.remove(Path('/tmp/') / lua_tar_name)
+    # Download bfg.jar
+    run(["wget", "-O", bfg_jar, "https://repo1.maven.org/maven2/com/madgag/bfg/1.14.0/bfg-1.14.0.jar"])
     os.chmod(bfg_jar, 0o755)
+    # Download Hack font zip file
     run(["wget", "-N", "-P", "bin", "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Hack.zip"])
 
     import semver

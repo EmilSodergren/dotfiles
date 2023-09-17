@@ -101,6 +101,9 @@ lspconfig.ccls.setup(coq.lsp_ensure_capabilities({}))
 lspconfig.dockerls.setup(coq.lsp_ensure_capabilities({
   cmd = { home.."/.local/node_modules/dockerfile-language-server-nodejs/bin/docker-langserver", "--stdio" }
 }))
+lspconfig.lua_ls.setup(coq.lsp_ensure_capabilities({
+  cmd = { home.."/.local/bin/lua-language-server"}
+}))
 lspconfig.gopls.setup(coq.lsp_ensure_capabilities({}))
 lspconfig.jsonls.setup(coq.lsp_ensure_capabilities({
   cmd = { home.."/.local/node_modules/vscode-langservers-extracted/bin/vscode-json-language-server", "--stdio" }
