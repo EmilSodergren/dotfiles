@@ -242,7 +242,7 @@ if args.online:
     (Path.home() / local_bin).mkdir(exist_ok=True)
 
     # Download Marksman
-    run(["wget", "-N", "-O", marksman_bin, "https://github.com/artempyanykh/marksman/releases/latest/download/marksman-linux"])
+    run(["wget", "-N", "-O", marksman_bin, "https://github.com/artempyanykh/marksman/releases/latest/download/marksman-linux-x64"])
     os.chmod(marksman_bin, 0o755)
     # Download rust-analyzer
     run([

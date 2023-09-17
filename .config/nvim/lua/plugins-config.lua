@@ -107,6 +107,9 @@ lspconfig.dockerls.setup(coq.lsp_ensure_capabilities({
 lspconfig.lua_ls.setup(coq.lsp_ensure_capabilities({
   cmd = { home.."/.local/bin/lua-language-server"}
 }))
+lspconfig.marksman.setup(coq.lsp_ensure_capabilities({
+  cmd = { home.."/.local/bin/marksman", "server" }
+}))
 lspconfig.gopls.setup(coq.lsp_ensure_capabilities({}))
 lspconfig.jsonls.setup(coq.lsp_ensure_capabilities({
   cmd = { home.."/.local/node_modules/vscode-langservers-extracted/bin/vscode-json-language-server", "--stdio" }
