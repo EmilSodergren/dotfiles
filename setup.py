@@ -29,7 +29,8 @@ neovim_init = Path(".config") / "nvim"
 pycodestyle_config = Path(".config") / "pycodestyle"
 yapf_config = Path(".config") / "yapf" / "style"
 nodejs_language_servers = [
-    "yaml-language-server", "dockerfile-language-server-nodejs", "bash-language-server", "neovim", "vscode-langservers-extracted"
+    "yaml-language-server", "dockerfile-language-server-nodejs", "bash-language-server", "neovim", "vscode-langservers-extracted",
+    "ansible-language-server"
 ]
 settingsfiles = [
     ".bash_completion", ".bash_completion.d", ".bash_git", ".bashrc", ".gitconfig", ".profile", ".tmux.conf", antiword, ccls_config, forgit,

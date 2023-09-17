@@ -20,6 +20,7 @@ require("packer").startup(function(use)
   use {"lepture/vim-jinja", ft = "jinja"}
   use "machakann/vim-highlightedyank"
   use "mbbill/undotree"
+  use "mfussenegger/nvim-ansible"
   use "neovim/nvim-lspconfig"
   use {"nvim-treesitter/nvim-treesitter" }
   use {"nvim-treesitter/nvim-treesitter-context" }

@@ -94,6 +94,9 @@ vim.g.undotree_SplitWidth = 35
 -- NVIM LSP
 local lspconfig = require("lspconfig")
 local home = os.getenv("HOME")
+lspconfig.ansiblels.setup(coq.lsp_ensure_capabilities({
+  cmd = { home.."/.local/node_modules/ansible-language-server/bin/ansible-language-server", "--stdio" }
+}))
 lspconfig.bashls.setup(coq.lsp_ensure_capabilities({
   cmd = { home.."/.local/node_modules/bash-language-server/out/cli.js", "start" }
 }))
