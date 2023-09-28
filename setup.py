@@ -3,7 +3,7 @@ from subprocess import run, Popen, PIPE
 from argparse import ArgumentParser
 from datetime import datetime
 from glob import glob
-from shutil import rmtree, move
+from shutil import rmtree, move, copy2
 from pathlib import Path
 import json
 import platform
@@ -122,7 +122,6 @@ def rust_binary_mapper(f):
 
 
 def exists_all(path, files):
-
     for f in files:
         if not (path / rust_binary_mapper(f)).exists():
             return False
@@ -149,6 +148,21 @@ def install_program(script_name, with_clean):
         system("python3 {} -b -c".format(script_name))
     else:
         system("python3 {} -b".format(script_name))
+
+
+# To minimize the footprint the tmux-thumbs is built
+def install_tmux_thumbs(install_path, url):
+    build_path = Path.home() / ".cargo" / "src" / "tmux-thumbs"
+    if build_path.exists():
+        run(["git", "pull"], cwd=build_path)
+    else:
+        build_path.mkdir(parents=True, exist_ok=True)
+        run(["git", "clone", url], cwd=build_path.parent)
+    run(["cargo", "build", "--release"], cwd=build_path)
+    # Install binaries
+    (install_path / "target" / "release").mkdir(parents=True, exist_ok=True)
+    for file in ["Cargo.toml", "tmux-thumbs.tmux", "tmux-thumbs.sh", "target/release/thumbs", "target/release/tmux-thumbs"]:
+        copy2(build_path / file, install_path / file)
 
 
 for stuff in settingsfiles:
@@ -230,7 +244,6 @@ if args.online:
         (dotfilespath / "tmux-resurrect", "https://github.com/tmux-plugins/tmux-resurrect"),
         (dotfilespath / "tmux-continuum", "https://github.com/tmux-plugins/tmux-continuum"),
         (dotfilespath / "tmux-notify", "https://github.com/rickstaa/tmux-notify"),
-        (dotfilespath / "tmux-thumbs", "https://github.com/fcsonline/tmux-thumbs"),
         (dotfilespath / "tmux-power", "https://github.com/wfxr/tmux-power"),
     ]:
         if tmuxpath.exists():
@@ -291,7 +304,8 @@ if args.online:
         else:
             run(["cargo", "install", *rust_binaries])
             run(["cargo", "install", "cargo-update"])
-    run(["cargo", "build", "--release"], cwd=dotfilespath / "tmux-thumbs")
+    # Fix tmux-thumbs
+    install_tmux_thumbs(dotfilespath / "tmux-thumbs", "https://github.com/fcsonline/tmux-thumbs"),
 
 if args.font:
     run(["sudo", "unzip", "-o", dotfilespath / "bin" / "Hack.zip", "-d", "/usr/local/share/fonts/"])
