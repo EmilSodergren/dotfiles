@@ -306,7 +306,6 @@ if args.pack or args.artifactory:
     print("")
     print(".dotfiles has been packed into " + str(Path.home() / "dotfiles.tar.gz"))
 
-    auth_file = Path.home() / ".dotfiles" / "auth.json"
     if args.artifactory:
         command = ["jfrog", "rt", "u", str(Path.home() / "dotfiles.tar.gz"), "ace-generic-prod-se-blu-sync/u009893/dotfiles.tar.gz"]
         os.system(" ".join(command))
