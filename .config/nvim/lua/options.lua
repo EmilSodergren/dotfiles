@@ -37,7 +37,6 @@ vim.o.signcolumn = "yes"
 vim.o.smartcase = true
 vim.o.smartindent = true
 vim.o.softtabstop = 4
-vim.o.t_Co = 256
 vim.o.tabstop = 4
 vim.o.updatetime = 50
 vim.o.textwidth = 0
