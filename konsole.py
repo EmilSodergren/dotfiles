@@ -36,6 +36,7 @@ packages_for_build = [
     "libqt5qml5",
     "libqt5widgets5",
     "make",
+    "qttools5-dev",
     "qt5-qmake",
     "qtbase5-dev",
     "qtbase5-dev-tools",
@@ -60,7 +61,7 @@ if args.clean and build_dir.exists():
 
 if args.build:
     if not konsole_dir.exists():
-        call(["git", "clone", "https://invent.kde.org/utilities/konsole.git", konsole_dir])
+        call(["git", "clone", "-b", "v23.08.2", "https://invent.kde.org/utilities/konsole.git", konsole_dir])
     else:
         call(["git", "-C", konsole_dir, "pull"])
 
