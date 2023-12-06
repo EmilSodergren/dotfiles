@@ -12,8 +12,6 @@ import apt
 import os
 import sys
 
-import check_dep_version
-
 dotfilespath = Path().resolve()
 local_bin = Path(".local") / "bin"
 host_local_bin = Path.home() / local_bin
@@ -209,6 +207,7 @@ if os.environ.get("XDG_SESSION_TYPE") == "wayland":
             run(["sudo", "apt-get", "install", "-y", *packages_to_install_wayland])
             break
 
+import check_dep_version
 if not check_dep_version.check_programs():
     print("Error: programs not correct versions")
     sys.exit(1)
