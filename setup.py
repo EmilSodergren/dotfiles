@@ -128,14 +128,10 @@ def exists_all(path, files):
 
 def install_brave_browser():
     if not Path("/etc/apt/sources.list.d/brave-browser-release.list").exists():
-        run([
-            "sudo", "curl", "-fsSLo", "/usr/share/keyrings/brave-browser-archive-keyring.gpg",
-            "https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg"
-        ])
-        with open("/tmp/brave-browser-release.list", "w") as f:
-            f.write(
-                "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main"
-            )
+        keyring = "/usr/share/keyrings/brave-browser-archive-keyring.gpg"
+        run(["sudo", "curl", "-fsSLo", keyring, "https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg"])
+        Path("/tmp/brave-browser-release.list").write_text(
+            f"deb [signed-by={keyring} arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main")
         run(["sudo", "mv", "/tmp/brave-browser-release.list", "/etc/apt/sources.list.d/brave-browser-release.list"])
         run(["sudo", "apt-get", "update"])
         run(["sudo", "apt-get", "install", "-y", "brave-browser"])
