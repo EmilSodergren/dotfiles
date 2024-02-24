@@ -238,8 +238,11 @@ if args.online:
     for tmuxpath, tmuxurl in [
         (dotfilespath / "tmux-resurrect", "https://github.com/tmux-plugins/tmux-resurrect"),
         (dotfilespath / "tmux-continuum", "https://github.com/tmux-plugins/tmux-continuum"),
+        (dotfilespath / "tmux-cowboy", "https://github.com/tmux-plugins/tmux-cowboy"),
+        (dotfilespath / "tmux-ssh-split", "https://github.com/pschmitt/tmux-ssh-split"),
         (dotfilespath / "tmux-notify", "https://github.com/rickstaa/tmux-notify"),
         (dotfilespath / "tmux-power", "https://github.com/wfxr/tmux-power"),
+        # Tmux Thumbs installed futher down
     ]:
         if tmuxpath.exists():
             run(["git", "-C", tmuxpath, "pull"])
