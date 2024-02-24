@@ -10,6 +10,8 @@ tmux_dir = Path.home() / "tmux"
 apt_cache = apt.Cache()
 nproc = str(cpu_count())
 
+build_tag = "3.4"
+
 parser = ArgumentParser(description='Build the tmux program')
 packages_for_build = [
     "make",
@@ -35,10 +37,10 @@ if args.clean:
 
 if args.build:
     if not tmux_dir.exists():
-        call(["git", "clone", "https://github.com/tmux/tmux.git", tmux_dir])
-        call(["git", "-C", tmux_dir, "checkout", "1536b7e2"])
+        call(["git", "clone", "-b", build_tag, "https://github.com/tmux/tmux.git", tmux_dir])
     else:
         call(["git", "-C", tmux_dir, "pull"])
+        call(["git", "-C", tmux_dir, "checkout", build_tag])
 
     chdir(tmux_dir)
     call(["sh", "autogen.sh"])
