@@ -13,6 +13,8 @@ packages_for_build = [
     "ninja-build", "gettext", "libtool", "libtool-bin", "autoconf", "automake", "cmake", "g++", "pkg-config", "unzip", "wget", "curl"
 ]
 
+build_tag = 'master'
+
 parser.add_argument('-c', '--clean', action='store_true', help='Clean before build and install')
 parser.add_argument('-u', '--uninstall', action='store_true', help='Uninstall neovim local install path')
 parser.add_argument('-b', '--build', action='store_true', help='Download/Update sources and build/install')
@@ -37,9 +39,10 @@ if args.clean and neovimdir.exists():
 
 if args.build:
     if not neovimdir.exists():
-        call(["git", "clone", "https://github.com/neovim/neovim.git", neovimdir])
+        call(["git", "clone", "-b", build_tag, "https://github.com/neovim/neovim.git", neovimdir])
     else:
         call(["git", "-C", neovimdir, "pull"])
+        call(["git", "-C", neovimdir, "checkout", build_tag])
 
     chdir(neovimdir)
     call(["make", "deps"])

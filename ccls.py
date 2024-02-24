@@ -13,6 +13,8 @@ apt_cache = apt.Cache()
 parser = ArgumentParser(description='Setup the ccls program')
 packages_for_build = ["clang", "cmake", "libclang-dev", "llvm-dev", "rapidjson-dev"]
 
+build_tag = 'master'
+
 parser.add_argument('-u', '--uninstall', action='store_true', help='Uninstall ccls local install path')
 parser.add_argument('-b', '--build', action='store_true', help='Download/Update sources and build/install')
 parser.add_argument('-c', '--clean', action='store_true', help='Clean before build')
@@ -34,9 +36,10 @@ if ccls_dir.exists():
 
 if args.build:
     if not ccls_dir.exists():
-        call(["git", "clone", "--depth=1", "--recursive", "https://github.com/MaskRay/ccls", ccls_dir])
+        call(["git", "clone", "-b", build_tag, "--depth=1", "--recursive", "https://github.com/MaskRay/ccls", ccls_dir])
     else:
         call(["git", "-C", ccls_dir, "pull"])
+        call(["git", "-C", ccls_dir, "checkout", build_tag])
 
     chdir(ccls_dir)
     call(["cmake", "-H.", "-BRelease", "-DCMAKE_BUILD_TYPE=Release", "-DCMAKE_INSTALL_PREFIX={}".format(ccls_install_dir)])
