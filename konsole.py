@@ -11,6 +11,8 @@ build_dir = konsole_dir / "build"
 apt_cache = apt.Cache()
 nproc = str(cpu_count())
 
+build_tag = "v23.08.5"
+
 parser = ArgumentParser(description='Setup the konsole program')
 packages_for_build = [
     "cmake",
@@ -61,9 +63,10 @@ if args.clean and build_dir.exists():
 
 if args.build:
     if not konsole_dir.exists():
-        call(["git", "clone", "-b", "v23.08.4", "https://invent.kde.org/utilities/konsole.git", konsole_dir])
+        call(["git", "clone", "-b", build_tag, "https://invent.kde.org/utilities/konsole.git", konsole_dir])
     else:
         call(["git", "-C", konsole_dir, "pull"])
+        call(["git", "-C", konsole_dir, "checkout", build_tag])
 
     build_dir.mkdir(exist_ok=True)
     chdir(build_dir)
