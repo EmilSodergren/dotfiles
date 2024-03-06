@@ -154,13 +154,15 @@ eval "/usr/bin/pgrep tmux" &> /dev/null; TMUX_IS_RUNNING=$?
 eval "command -v kubectl" &> /dev/null; KUBECTL_EXIST=$?
 eval "command -v helm" &> /dev/null; HELM_EXIST=$?
 
-if [ $TMUX_EXIST -eq 0 ] && [ $TMUX_IS_RUNNING -eq 1 ]; then
-  echo "Starting tmux server"
-  nohup tmux -2 new-session -d -t emil </dev/null &> /dev/null &
-  sleep 3
+if [ $TMUX_EXIST -eq 0 ] &&  [ -z "$WORKSPACE" ]; then
+  if [ $TMUX_IS_RUNNING -eq 1 ];  then
+    echo "Starting tmux server"
+    nohup tmux -2 new-session -d -t emil </dev/null &> /dev/null &
+    sleep 3
+  fi
+  [ -z "$TMUX" ] && tmux attach
 fi
 
-[ $TMUX_EXIST -eq 0 ] && [ -z "$TMUX" ] && tmux attach
 [ $KUBECTL_EXIST -eq 0 ] && . <(kubectl completion bash)
 [ $HELM_EXIST -eq 0 ] && . <(helm completion bash)
 
