@@ -1,14 +1,14 @@
-vim.g.bash_ctrl_j="off"
-vim.g.python_host_prog="/usr/bin/python2"
-vim.g.python3_host_prog="/usr/bin/python3"
+vim.g.bash_ctrl_j = "off"
+vim.g.python_host_prog = "/usr/bin/python2"
+vim.g.python3_host_prog = "/usr/bin/python3"
 vim.g.python3_host_skip_check = 1
 vim.g.netrw_dirhistmax = 0
 
 vim.o.autoindent = true
 vim.o.backspace = "indent"
-vim.o.clipboard = unnamed
+vim.o.clipboard = "unnamedplus"
 vim.o.cmdheight = 2
-vim.opt.completeopt:append {"menuone", "noinsert", "noselect" }
+vim.opt.completeopt:append { "menuone", "noinsert", "noselect" }
 vim.opt.completeopt:remove { "preview" }
 vim.o.conceallevel = 2
 vim.o.encoding = "utf-8"
@@ -40,4 +40,3 @@ vim.o.softtabstop = 4
 vim.o.tabstop = 4
 vim.o.updatetime = 50
 vim.o.textwidth = 0
-
