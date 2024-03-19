@@ -209,6 +209,21 @@ if not check_dep_version.check_programs():
     sys.exit(1)
 
 if args.online:
+    # Get, update and install southernlights color theme
+    colortheme_path = dotfilespath / ".local" / "share" / "southernlights"
+    colortheme_url = "https://github.com/jalvesaq/southernlights.git"
+    colortheme_link = neovim_init / "colors" / "southernlights.vim"
+
+    if colortheme_path.exists():
+        run(["git", "pull"], cwd=colortheme_path)
+    else:
+        colortheme_path.parent.mkdir(parents=True, exist_ok=True)
+        run(["git", "clone", colortheme_url], cwd=colortheme_path.parent)
+
+    if not colortheme_link.exists():
+        colortheme_link.parent.mkdir(parents=True, exist_ok=True)
+        colortheme_link.symlink_to(colortheme_path / "colors" / "southernlights.vim")
+
     if not glob("/etc/apt/sources.list.d/kubuntu-ppa*.list"):
         run(["sudo", "add-apt-repository", "-y", "ppa:kubuntu-ppa/backports"])
     install_brave_browser()
@@ -242,7 +257,7 @@ if args.online:
         (dotfilespath / "tmux-ssh-split", "https://github.com/pschmitt/tmux-ssh-split"),
         (dotfilespath / "tmux-notify", "https://github.com/rickstaa/tmux-notify"),
         (dotfilespath / "tmux-power", "https://github.com/wfxr/tmux-power"),
-        # Tmux Thumbs installed futher down
+            # Tmux Thumbs installed futher down
     ]:
         if tmuxpath.exists():
             run(["git", "-C", tmuxpath, "pull"])
