@@ -105,7 +105,14 @@ lspconfig.dockerls.setup(coq.lsp_ensure_capabilities({
   cmd = { home.."/.local/node_modules/dockerfile-language-server-nodejs/bin/docker-langserver", "--stdio" }
 }))
 lspconfig.lua_ls.setup(coq.lsp_ensure_capabilities({
-  cmd = { home.."/.local/bin/lua-language-server"}
+  cmd = { home.."/.local/bin/lua-language-server"},
+  settings = {
+    Lua = {
+      diagnostics = {
+        globals = { 'vim' }
+      }
+    }
+  }
 }))
 lspconfig.marksman.setup(coq.lsp_ensure_capabilities({
   cmd = { home.."/.local/bin/marksman", "server" }
