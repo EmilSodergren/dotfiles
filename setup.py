@@ -246,7 +246,7 @@ if args.online:
     if args.clean and coq_deps.exists():
         rmtree(coq_deps)
     run(["python3", "-m", "coq", "deps"], cwd=(coq_deps / "..").resolve())
-    run(["nvim", "--headless", "-c", "TSUpdateSync", "-c", "quitall"])
+    # run(["nvim", "--headless", "-c", "TSUpdateSync", "-c", "quitall"])
     for lang in tree_sitter_languages:
         run(["nvim", "--headless", "-c", "TSInstallSync! {}".format(lang), "-c", "quitall"])
 
