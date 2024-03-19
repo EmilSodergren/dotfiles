@@ -284,9 +284,12 @@ if args.online:
     ps.wait()
     lua_tar_name = f'lua-language-server-{latest_lua_version}-linux-x64.tar.gz'
     luals_dl_url = f'https://github.com/LuaLS/lua-language-server/releases/download/{latest_lua_version}/{lua_tar_name}'
+    lua_install_dir = Path.home() / '.local' / 'lib' / 'lua-language-server'
     run(['wget', '-P', '/tmp/', luals_dl_url])
-    run(['tar', 'zxf', Path('/tmp/') / lua_tar_name, Path('bin') / 'lua-language-server'], cwd=Path.home() / '.local')
+    lua_install_dir.mkdir(parents=True, exist_ok=True)
+    run(['tar', 'zxf', Path('/tmp/') / lua_tar_name], cwd=lua_install_dir)
     os.remove(Path('/tmp/') / lua_tar_name)
+    (host_local_bin / 'lua-language-server').symlink_to(lua_install_dir / 'bin' / 'lua-language-server')
     # Download bfg.jar
     run(["wget", "-O", bfg_jar, "https://repo1.maven.org/maven2/com/madgag/bfg/1.14.0/bfg-1.14.0.jar"])
     os.chmod(bfg_jar, 0o755)
