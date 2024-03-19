@@ -1,5 +1,4 @@
-function init_packer ()
-
+function init_packer()
   local fn = vim.fn
   local homedir = os.getenv("HOME")
   local packerdir = homedir .. '/.local/share/nvim/site/pack/packer/start/packer.nvim/'
@@ -16,5 +15,4 @@ function init_packer ()
     vim.cmd [[packadd packer.nvim]]
   end
   vim.cmd "autocmd BufWritePost plugins.lua source <afile> | PackerCompile"
-
 end

@@ -3,12 +3,14 @@ require("rust-tools").setup({})
 
 -- COMMENT
 require("Comment").setup(
-{
-  toggler = { line = "gc" },
-  mappings = { basic = true,
-               extra = false,
-               extended = false}
-})
+  {
+    toggler = { line = "gc" },
+    mappings = {
+      basic = true,
+      extra = false,
+      extended = false
+    }
+  })
 
 -- AIRLINE {{{
 vim.g.airline_theme = "dark"
@@ -77,13 +79,13 @@ vim.g.mkdp_auto_close = 0
 -- WIN RESIZE
 vim.g.winresizer_start_key = "<c-a>"
 -- vim.keymap.set("n", "<c-w>z", function () vim.cmd[[<Plug>(zoom-toggle)]] end, { remap })
-vim.cmd[[nmap <c-w>z <Plug>(zoom-toggle)]]
+vim.cmd [[nmap <c-w>z <Plug>(zoom-toggle)]]
 
 -- RUST VIM
 vim.g.rustfmt_autosave = 0
 
 -- NEOSNIPPET
-vim.keymap.set("i", "<c-k>", function() vim.cmd[[<Plug>(neosnippet_expand_or_jump)]] end)
+vim.keymap.set("i", "<c-k>", function() vim.cmd [[<Plug>(neosnippet_expand_or_jump)]] end)
 
 -- UNDOTREE
 vim.g.undotree_ShortIndicators = 1
@@ -95,31 +97,31 @@ vim.g.undotree_SplitWidth = 35
 local lspconfig = require("lspconfig")
 local home = os.getenv("HOME")
 lspconfig.ansiblels.setup(coq.lsp_ensure_capabilities({
-  cmd = { home.."/.local/node_modules/ansible-language-server/bin/ansible-language-server", "--stdio" }
+  cmd = { home .. "/.local/node_modules/ansible-language-server/bin/ansible-language-server", "--stdio" }
 }))
 lspconfig.bashls.setup(coq.lsp_ensure_capabilities({
-  cmd = { home.."/.local/node_modules/bash-language-server/out/cli.js", "start" }
+  cmd = { home .. "/.local/node_modules/bash-language-server/out/cli.js", "start" }
 }))
 lspconfig.ccls.setup(coq.lsp_ensure_capabilities({}))
 lspconfig.dockerls.setup(coq.lsp_ensure_capabilities({
-  cmd = { home.."/.local/node_modules/dockerfile-language-server-nodejs/bin/docker-langserver", "--stdio" }
+  cmd = { home .. "/.local/node_modules/dockerfile-language-server-nodejs/bin/docker-langserver", "--stdio" }
 }))
 lspconfig.lua_ls.setup(coq.lsp_ensure_capabilities({
-  cmd = { home.."/.local/bin/lua-language-server"},
+  cmd = { home .. "/.local/bin/lua-language-server" },
   settings = {
     Lua = {
       diagnostics = {
-        globals = { 'vim' }
+        globals = { "vim" },
       }
     }
   }
 }))
 lspconfig.marksman.setup(coq.lsp_ensure_capabilities({
-  cmd = { home.."/.local/bin/marksman", "server" }
+  cmd = { home .. "/.local/bin/marksman", "server" }
 }))
 lspconfig.gopls.setup(coq.lsp_ensure_capabilities({}))
 lspconfig.jsonls.setup(coq.lsp_ensure_capabilities({
-  cmd = { home.."/.local/node_modules/vscode-langservers-extracted/bin/vscode-json-language-server", "--stdio" }
+  cmd = { home .. "/.local/node_modules/vscode-langservers-extracted/bin/vscode-json-language-server", "--stdio" }
 }))
 lspconfig.pylsp.setup(coq.lsp_ensure_capabilities({
   settings = {
@@ -135,7 +137,7 @@ lspconfig.pylsp.setup(coq.lsp_ensure_capabilities({
   }
 }))
 lspconfig.yamlls.setup(coq.lsp_ensure_capabilities({
-  cmd = { home.."/.local/node_modules/yaml-language-server/bin/yaml-language-server", "--stdio" },
+  cmd = { home .. "/.local/node_modules/yaml-language-server/bin/yaml-language-server", "--stdio" },
   settings = {
     yaml = {
       format = {
@@ -156,4 +158,3 @@ lspconfig.yamlls.setup(coq.lsp_ensure_capabilities({
     }
   }
 }))
-

@@ -7,5 +7,5 @@ vim.cmd("hi Keyword ctermfg=193 guifg=#ffff5f")
 vim.cmd("hi Number	ctermfg=223	guifg=#ffb9a7")
 vim.cmd("hi link jsonKeyword Keyword")
 vim.cmd("hi Include	ctermfg=219	cterm=NONE guifg=#ff00ff	gui=NONE")
-vim.cmd("hi EndingWhiteSpace ctermbg=52")
-vim.cmd[[match EndingWhiteSpace /\s\+\%#\@<!$/")]]
+vim.cmd("hi EndingWhiteSpace ctermbg=52 guibg=#5f0000")
+vim.cmd [[match EndingWhiteSpace /\s\+\%#\@<!$/")]]
