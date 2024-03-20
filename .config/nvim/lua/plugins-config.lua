@@ -32,9 +32,6 @@ vim.g.airline_right_alt_sep = ""
 vim.g.airline_detect_modified = 1
 -- }}}
 
--- GIT GUTTER
-vim.o.updatetime = 100
-
 -- COQ
 vim.g.coq_settings = {
   auto_start = 'shut-up',
@@ -50,6 +47,46 @@ vim.g.coq_settings = {
   }
 }
 
+require("gitsigns").setup({
+  on_attach = function(bufnr)
+    local gs = package.loaded.gitsigns
+
+    local function map(mode, l, r, opts)
+      opts = opts or {}
+      opts.buffer = bufnr
+      vim.keymap.set(mode, l, r, opts)
+    end
+
+    -- Navigation
+    map('n', ']c', function()
+      if vim.wo.diff then return ']c' end
+      vim.schedule(function() gs.next_hunk() end)
+      return '<Ignore>'
+    end, { expr = true })
+
+    map('n', '[c', function()
+      if vim.wo.diff then return '[c' end
+      vim.schedule(function() gs.prev_hunk() end)
+      return '<Ignore>'
+    end, { expr = true })
+
+    -- Actions
+    map('n', '<leader>hs', gs.stage_hunk)
+    map('n', '<leader>hr', gs.reset_hunk)
+    map('v', '<leader>hs', function() gs.stage_hunk { vim.fn.line('.'), vim.fn.line('v') } end)
+    map('v', '<leader>hr', function() gs.reset_hunk { vim.fn.line('.'), vim.fn.line('v') } end)
+    map('n', '<leader>hS', gs.stage_buffer)
+    map('n', '<leader>hu', gs.undo_stage_hunk)
+    map('n', '<leader>hR', gs.reset_buffer)
+    map('n', '<leader>hp', gs.preview_hunk)
+    map('n', '<leader>hb', function() gs.blame_line { full = true } end)
+    map('n', '<leader>tb', gs.toggle_current_line_blame)
+    map('n', '<leader>hd', gs.diffthis)
+    map('n', '<leader>hD', function() gs.diffthis('~') end)
+    map('n', '<leader>td', gs.toggle_deleted)
+  end
+})
+
 local coq = require("coq")
 -- Go NVIM
 require('go').setup(coq.lsp_ensure_capabilities({
@@ -64,9 +101,6 @@ vim.g.highlightedyank_highlight_duration = 2000
 require('leap').add_default_mappings()
 require('leap').opts.safe_labels = {}
 
--- MAGIT
-vim.g.magit_auto_close = 1
-vim.g.magit_scrolloff = 0
 
 -- MARKDOWN
 vim.g.vim_markdown_folding_disabled = 1
@@ -83,6 +117,16 @@ vim.cmd [[nmap <c-w>z <Plug>(zoom-toggle)]]
 
 -- RUST VIM
 vim.g.rustfmt_autosave = 0
+
+-- NEOGIT
+require("neogit").setup(coq.lsp_ensure_capabilities({
+  mappings = {
+    status = {
+      ["<space>"] = "Toggle",
+    }
+  },
+  commit_editor = { kind = "split" }
+}))
 
 -- NEOSNIPPET
 vim.keymap.set("i", "<c-k>", function() vim.cmd [[<Plug>(neosnippet_expand_or_jump)]] end)

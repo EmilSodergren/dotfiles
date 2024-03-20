@@ -60,6 +60,10 @@ vim.keymap.set("n", "<leader>f", vim.lsp.buf.format, { noremap = true, silent = 
 vim.keymap.set("n", "<leader>n", vim.lsp.buf.code_action, { noremap = true, silent = true })
 vim.keymap.set("n", "<leader>e", vim.lsp.buf.signature_help, { noremap = true, silent = true })
 
+-- Start Neogit
+vim.keymap.set("n", "<leader>m", function() require("neogit").open({ kind = "vsplit" }) end,
+  { noremap = true, silent = true })
+
 -- Clean up whitespaces at end of lines
 vim.keymap.set("n", "<leader>ws", function()
   local pos = vim.api.nvim_win_get_cursor(0)
