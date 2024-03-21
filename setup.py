@@ -41,6 +41,7 @@ tree_sitter_languages = [
     "go",
     "gomod",
     "json",
+    "lua",
     "make",
     "markdown",
     "python",
