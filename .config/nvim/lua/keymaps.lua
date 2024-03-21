@@ -90,3 +90,6 @@ vim.keymap.set("n", "ysss", "<Plug>Yssurround <s><cr>I* <esc>f*xx")
 vim.keymap.set("n", "<leader>u", "<cmd>UndotreeToggle<cr>", { noremap = true })
 
 vim.keymap.set({ "n", "v" }, "<space>", "za", { noremap = true })
+
+vim.api.nvim_create_user_command('WhatColor',
+  function() vim.cmd([[echo synIDattr(synIDtrans(synID(line("."), col("."), 1)), "name")]]) end, {})
