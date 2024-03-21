@@ -90,7 +90,7 @@ require("gitsigns").setup({
 local coq = require("coq")
 -- Go NVIM
 require('go').setup(coq.lsp_ensure_capabilities({
-  goimport = 'goimports',
+  goimports = 'goimports',
   lsp_gofumpt = true,
 }))
 
