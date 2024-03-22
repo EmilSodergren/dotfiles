@@ -92,4 +92,11 @@ vim.keymap.set("n", "<leader>u", "<cmd>UndotreeToggle<cr>", { noremap = true })
 vim.keymap.set({ "n", "v" }, "<space>", "za", { noremap = true })
 
 vim.api.nvim_create_user_command('WhatColor',
-  function() vim.cmd([[echo synIDattr(synIDtrans(synID(line("."), col("."), 1)), "name")]]) end, {})
+  function()
+    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    col = col + 1 -- Love off-by-one
+    local id = vim.fn.synID(row, col, 1)
+    local colorName = vim.fn.synIDattr(id, "name")
+    local transColorName = vim.fn.synIDattr(vim.fn.synIDtrans(id), "name")
+    print("Name: " .. colorName .. " TName: " .. transColorName)
+  end, {})
