@@ -1,4 +1,5 @@
 vim.cmd.colorscheme("southernlights")
+vim.cmd("hi Constant ctermfg=209 guifg=#ff875f")
 vim.cmd("hi GitSignsAdd ctermfg=40 ctermbg=None guifg=#55EE33 guibg=#131313")
 vim.cmd("hi GitSignsChange ctermfg=40 ctermbg=None guifg=#EEC933 guibg=#131313")
 vim.cmd("hi GitSignsDelete ctermfg=40 ctermbg=None guifg=#EE3333 guibg=#131313")
