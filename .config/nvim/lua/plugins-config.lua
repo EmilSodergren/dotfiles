@@ -37,7 +37,7 @@ vim.g.coq_settings = {
   auto_start = 'shut-up',
   keymap = {
     recommended = false,
-    jump_to_mark = "<c-;>",
+    jump_to_mark = "<c-g>",
     manual_complete = "<c-x><c-o>"
   },
   clients = {
@@ -47,6 +47,7 @@ vim.g.coq_settings = {
   }
 }
 
+-- GITSIGNS
 require("gitsigns").setup({
   on_attach = function(bufnr)
     local gs = package.loaded.gitsigns
@@ -136,9 +137,6 @@ require("neogit").setup(coq.lsp_ensure_capabilities({
   },
   commit_editor = { kind = "split" }
 }))
-
--- NEOSNIPPET
-vim.keymap.set("i", "<c-k>", function() vim.cmd [[<Plug>(neosnippet_expand_or_jump)]] end)
 
 -- UNDOTREE
 vim.g.undotree_ShortIndicators = 1
