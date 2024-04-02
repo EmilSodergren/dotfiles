@@ -22,12 +22,14 @@ require("packer").startup(function(use)
   use "mfussenegger/nvim-ansible"
   use { "neogitOrg/neogit", branch = "nightly", requires = { "nvim-lua/plenary.nvim", "sindrets/diffview.nvim" } }
   use "neovim/nvim-lspconfig"
+  use { "nvim-tree/nvim-web-devicons" }
   use { "nvim-treesitter/nvim-treesitter" }
   use { "nvim-treesitter/nvim-treesitter-context" }
   use { "plasticboy/vim-markdown", ft = "markdown" }
   use { "rust-lang/rust.vim", ft = "rust" }
   use "simeji/winresizer"
   use "simrat39/rust-tools.nvim"
+  use "stevearc/oil.nvim"
   use "numToStr/Comment.nvim"
   use "tpope/vim-fugitive"
   use "tpope/vim-surround"

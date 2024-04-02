@@ -64,6 +64,9 @@ vim.keymap.set("n", "<leader>e", vim.lsp.buf.signature_help, { noremap = true, s
 vim.keymap.set("n", "<leader>m", function() require("neogit").open({ kind = "vsplit" }) end,
   { noremap = true, silent = true })
 
+-- Start Oil
+vim.keymap.set("n", "-", ":Oil --float<CR>", { desc = "Open parent directory" })
+
 -- Clean up whitespaces at end of lines
 vim.keymap.set("n", "<leader>ws", function()
   local pos = vim.api.nvim_win_get_cursor(0)

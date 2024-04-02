@@ -101,6 +101,15 @@ vim.g.highlightedyank_highlight_duration = 2000
 require('leap').add_default_mappings()
 require('leap').opts.safe_labels = {}
 
+-- OIL
+require("oil").setup({
+  skip_confirm_for_simple_edits = true,
+  float = {
+    padding = 3,
+    max_width = 100,
+    max_height = 50,
+  }
+})
 
 -- MARKDOWN
 vim.g.vim_markdown_folding_disabled = 1
