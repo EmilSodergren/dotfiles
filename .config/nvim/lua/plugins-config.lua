@@ -37,7 +37,7 @@ vim.g.coq_settings = {
   auto_start = 'shut-up',
   keymap = {
     recommended = false,
-    jump_to_mark = "<c-m>",
+    jump_to_mark = "<leader>,",
     manual_complete = "<c-x><c-o>"
   },
   clients = {
