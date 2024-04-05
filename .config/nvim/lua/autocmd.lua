@@ -53,6 +53,13 @@ vim.api.nvim_create_autocmd("FileType",
       vim.keymap.set("n", "<leader>bt", "<cmd>! RUST_BACKTRACE=1 cargo test <cr>,<bar><s-g>", { noremap = true })
     end
   })
+vim.api.nvim_create_augroup("json_indent", { clear = true })
+vim.api.nvim_create_autocmd({ "FileType" },
+  {
+    group = "json_indent",
+    pattern = "json",
+    command = "setlocal shiftwidth=2 tabstop=2 softtabstop=2"
+  })
 vim.api.nvim_create_autocmd("TermOpen",
   {
     callback = function()
