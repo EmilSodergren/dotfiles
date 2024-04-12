@@ -138,6 +138,14 @@ require("neogit").setup(coq.lsp_ensure_capabilities({
   commit_editor = { kind = "split" }
 }))
 
+-- TREESITTER
+require("nvim-treesitter.configs").setup({
+  highlight = {
+    enable = true,
+    additional_vim_regex_highlighting = false,
+  }
+})
+
 -- UNDOTREE
 vim.g.undotree_ShortIndicators = 1
 vim.g.undotree_DiffpanelHeight = 16
