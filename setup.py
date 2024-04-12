@@ -40,7 +40,6 @@ tree_sitter_languages = [
     "csv",
     "dockerfile",
     "git_rebase",
-    "gitcommit",
     "gitignore",
     "go",
     "gomod",
