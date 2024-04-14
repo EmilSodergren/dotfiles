@@ -109,7 +109,11 @@ require("oil").setup({
     padding = 3,
     max_width = 100,
     max_height = 50,
-  }
+  },
+  columns = {
+    "icon",
+    "permissions"
+  },
 })
 
 -- MARKDOWN
