@@ -166,5 +166,6 @@ fi
 [ $KUBECTL_EXIST -eq 0 ] && . <(kubectl completion bash)
 [ $HELM_EXIST -eq 0 ] && . <(helm completion bash)
 
+[ -f ~/qmk_firmware/util/qmk_tab_complete.sh ] && source ~/qmk_firmware/util/qmk_tab_complete.sh
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 . "$HOME/.cargo/env"
