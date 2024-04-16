@@ -1,4 +1,5 @@
 from os import chdir, system
+
 from subprocess import run, Popen, PIPE
 from argparse import ArgumentParser
 from datetime import datetime
@@ -67,6 +68,7 @@ packages_to_install = [
     "docx2txt",
     "flameshot",
     "fonts-powerline",
+    "fswatch",
     "gawk",
     "git",
     "libclang-dev",
