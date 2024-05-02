@@ -72,8 +72,11 @@ vim.api.nvim_create_autocmd("BufWritePre",
     pattern = "*",
     group = 'format_on_save',
     callback = function()
+      local filename = vim.api.nvim_buf_get_name(0):match("^.+/(.+)$")
       if vim.bo.filetype == "go" then
         require('go.format').goimport()
+      elseif filename == "keymap.c" then
+        -- do nothing for now
       else
         vim.lsp.buf.format({ async = false, timeout = 2000 })
       end
