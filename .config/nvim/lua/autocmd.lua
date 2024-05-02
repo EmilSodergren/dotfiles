@@ -76,7 +76,25 @@ vim.api.nvim_create_autocmd("BufWritePre",
       if vim.bo.filetype == "go" then
         require('go.format').goimport()
       elseif filename == "keymap.c" then
-        -- do nothing for now
+        if vim.fn.executable('go-qmk-keymap') ~= 1 then
+          return
+        end
+        local buf = vim.api.nvim_get_current_buf()
+        -- Write formatting to temp file
+        local handle = io.popen("go-qmk-keymap > keymap.c.tmp", "w")
+        local content = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+        handle:write(table.concat(content, "\n"))
+        handle:close()
+        -- Read back the formatted value to the buffer
+        local handle = io.open("keymap.c.tmp", "r")
+        local form_content = handle:read("*a")
+        handle:close()
+        local t = {}
+        for line in string.gmatch(form_content, "(.-)%c") do
+          table.insert(t, line)
+        end
+        vim.api.nvim_buf_set_text(buf, 0, 0, -1, -1, t)
+        os.remove("keymap.c.tmp")
       else
         vim.lsp.buf.format({ async = false, timeout = 2000 })
       end
