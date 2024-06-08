@@ -25,7 +25,8 @@ vim.keymap.set("n", "J", "mzJ`z", { noremap = true })
 vim.keymap.set({ "n", "v" }, "<leader>y", "\"+y", { noremap = true })
 vim.keymap.set("n", "<leader>Y", "\"+Y", { noremap = true })
 
-vim.keymap.set("n", "Q", "<nop>")
+vim.keymap.set("n", "Q", "@q")
+vim.keymap.set({ "n", "v" }, "q:", "<nop>")
 
 vim.keymap.set("n", "<down>", "3jzz", { noremap = true })
 vim.keymap.set("n", "<up>", "3kzz", { noremap = true })
