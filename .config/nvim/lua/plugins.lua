@@ -20,7 +20,7 @@ require("packer").startup(function(use)
   use "machakann/vim-highlightedyank"
   use "mbbill/undotree"
   use "mfussenegger/nvim-ansible"
-  use { "neogitOrg/neogit", branch = "nightly", requires = { "nvim-lua/plenary.nvim", "sindrets/diffview.nvim" } }
+  use { "neogitOrg/neogit", requires = { "nvim-lua/plenary.nvim", "sindrets/diffview.nvim" } }
   use "neovim/nvim-lspconfig"
   use { "nvim-tree/nvim-web-devicons" }
   use { "nvim-treesitter/nvim-treesitter" }
