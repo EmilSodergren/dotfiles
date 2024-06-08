@@ -80,8 +80,9 @@ vim.api.nvim_create_autocmd("BufWritePre",
           return
         end
         local buf = vim.api.nvim_get_current_buf()
+        local workdir = vim.api.nvim_buf_get_name(0):match("(.*[/\\])")
         -- Write formatting to temp file
-        local handle = io.popen("go-qmk-keymap > keymap.c.tmp", "w")
+        local handle = io.popen(string.format("go-qmk-keymap -workdir %s > keymap.c.tmp", workdir), "w")
         local content = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
         handle:write(table.concat(content, "\n"))
         handle:close()
