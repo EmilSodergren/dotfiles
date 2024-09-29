@@ -66,6 +66,46 @@ vim.api.nvim_create_autocmd("TermOpen",
       vim.o.bufhidden = 'wipe'
     end
   })
+
+-- This function uses the go-qmk-keymap formatter to format the current buffer
+local function format_keymap_c()
+  if vim.fn.executable('go-qmk-keymap') ~= 1 then
+    return
+  end
+  local buf = vim.api.nvim_get_current_buf()
+  local workdir = vim.api.nvim_buf_get_name(0):match("(.*[/\\])")
+  -- Write formatting to temp file
+  local handle = io.popen(string.format("go-qmk-keymap -workdir %s > keymap.c.tmp", workdir), "w")
+  local content = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+  handle:write(table.concat(content, "\n"))
+  handle:close()
+  -- Read back the formatted value to the buffer
+  local handle = io.open("keymap.c.tmp", "r")
+  local form_content = handle:read("*a")
+  handle:close()
+  local t = {}
+  for line in string.gmatch(form_content, "(.-)%c") do
+    table.insert(t, line)
+  end
+  vim.api.nvim_buf_set_text(buf, 0, 0, -1, -1, t)
+  os.remove("keymap.c.tmp")
+end
+
+-- Organize Go imports, as found on gopls on github
+local function organize_go_imports()
+  local params = vim.lsp.util.make_range_params()
+  params.context = { only = { "source.organizeImports" } }
+  local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, 2000)
+  for cid, res in pairs(result or {}) do
+    for _, r in pairs(res.result or {}) do
+      if r.edit then
+        local enc = (vim.lsp.get_client_by_id(cid) or {}).offset_encoding or "utf-16"
+        vim.lsp.util.apply_workspace_edit(r.edit, enc)
+      end
+    end
+  end
+end
+
 vim.api.nvim_create_augroup("format_on_save", { clear = true })
 vim.api.nvim_create_autocmd("BufWritePre",
   {
@@ -73,30 +113,13 @@ vim.api.nvim_create_autocmd("BufWritePre",
     group = 'format_on_save',
     callback = function()
       local filename = vim.api.nvim_buf_get_name(0):match("^.+/(.+)$")
-      if vim.bo.filetype == "go" then
-        require('go.format').goimport()
-      elseif filename == "keymap.c" then
-        if vim.fn.executable('go-qmk-keymap') ~= 1 then
-          return
-        end
-        local buf = vim.api.nvim_get_current_buf()
-        local workdir = vim.api.nvim_buf_get_name(0):match("(.*[/\\])")
-        -- Write formatting to temp file
-        local handle = io.popen(string.format("go-qmk-keymap -workdir %s > keymap.c.tmp", workdir), "w")
-        local content = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
-        handle:write(table.concat(content, "\n"))
-        handle:close()
-        -- Read back the formatted value to the buffer
-        local handle = io.open("keymap.c.tmp", "r")
-        local form_content = handle:read("*a")
-        handle:close()
-        local t = {}
-        for line in string.gmatch(form_content, "(.-)%c") do
-          table.insert(t, line)
-        end
-        vim.api.nvim_buf_set_text(buf, 0, 0, -1, -1, t)
-        os.remove("keymap.c.tmp")
+      if filename == "keymap.c" then
+        format_keymap_c()
+        return
       else
+        if vim.bo.filetype == "go" then
+          organize_go_imports()
+        end
         vim.lsp.buf.format({ async = false, timeout = 2000 })
       end
     end
