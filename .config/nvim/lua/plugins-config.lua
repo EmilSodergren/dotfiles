@@ -90,10 +90,7 @@ require("gitsigns").setup({
 
 local coq = require("coq")
 -- Go NVIM
-require('go').setup(coq.lsp_ensure_capabilities({
-  goimports = 'goimports',
-  lsp_gofumpt = true,
-}))
+require('go').setup(coq.lsp_ensure_capabilities({}))
 
 -- Highlighted yank
 vim.g.highlightedyank_highlight_duration = 2000
@@ -182,7 +179,17 @@ lspconfig.lua_ls.setup(coq.lsp_ensure_capabilities({
 lspconfig.marksman.setup(coq.lsp_ensure_capabilities({
   cmd = { home .. "/.local/bin/marksman", "server" }
 }))
-lspconfig.gopls.setup(coq.lsp_ensure_capabilities({}))
+lspconfig.gopls.setup(coq.lsp_ensure_capabilities({
+  settings = {
+    analyses = {
+      unusedparams = true,
+    },
+    gopls = {
+      staticcheck = true,
+      gofumpt = true,
+    }
+  }
+}))
 lspconfig.jsonls.setup(coq.lsp_ensure_capabilities({
   cmd = { home .. "/.local/node_modules/vscode-langservers-extracted/bin/vscode-json-language-server", "--stdio" }
 }))
