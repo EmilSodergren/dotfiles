@@ -27,9 +27,9 @@ konsole_config = Path(".local") / "share" / "konsole" / "Emil.profile"
 neovim_init = Path(".config") / "nvim"
 pycodestyle_config = Path(".config") / "pycodestyle"
 yapf_config = Path(".config") / "yapf" / "style"
-nodejs_language_servers = [
+yarn_packages = [
     "yaml-language-server", "dockerfile-language-server-nodejs", "bash-language-server", "neovim", "vscode-langservers-extracted",
-    "ansible-language-server"
+    "ansible/ansible-language-server"
 ]
 settingsfiles = [
     ".bash_completion", ".bash_completion.d", ".bash_git", ".bashrc", ".gitconfig", ".profile", ".tmux.conf", antiword, ccls_config, forgit,
@@ -272,7 +272,11 @@ if args.online:
         else:
             run(["git", "clone", "--recursive", tmuxurl, tmuxpath])
 
-    run(["npm", "install", "--prefix", Path.home() / ".local", *nodejs_language_servers])
+    run(["npm", "install", "--prefix", Path.home() / ".local", "yarn"])
+    yarn_bin = Path.home() / ".local" / "node_modules" / "yarn" / "bin" / "yarn"
+    # Remove and add to get latest versions, ugly but works
+    run([yarn_bin, "remove", *yarn_packages], cwd=Path.home() / ".local")
+    run([yarn_bin, "add", *yarn_packages], cwd=Path.home() / ".local")
     (Path.home() / local_bin).mkdir(exist_ok=True)
 
     # Download Marksman
