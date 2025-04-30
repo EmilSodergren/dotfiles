@@ -6,6 +6,8 @@
     followTags = true
     autoSetupRemote = true
 [status]
+    branch = true
+    showStash = true
     showUntrackedFiles = all
 [http]
     sslcapath = /etc/ldap/certs/
@@ -32,6 +34,9 @@
         | cut -c 1-12,41- \
         | $(command -v gnumfmt || echo numfmt) --field=2 --to=iec-i --suffix=B --padding=7 --round=nearest
 [core]
+    compression = 9
+    whitespace = error
+    preloadindex = true
     editor = nvim
     pager = delta --dark --diff-so-fancy
 [delta]
@@ -45,15 +50,19 @@
     minus-emph-style = "#F04F4F #5F0000 bold"
     whitespace-error-style = "red reverse"
 [interactive]
-    diffFilter = delta --color-only
+    diffFilter = delta --dark --color-only
+    singlekey = true
 [merge]
     tool = fugitive
+    conflictStyle = diff3
 [mergetool]
     prompt = false
 [mergetool "fugitive"]
     cmd = nvim -f -c \"Gvdiffsplit!\" \"$MERGED\"
 [diff]
+    context = 3
     colorMoved = default
+    renames = copies
 [color "diff"]
     whitespace = red reverse
     meta = yellow
@@ -69,8 +78,8 @@
     newNormal = green bold
     newHighlight = green bold 22
 [init]
-	defaultBranch = main
+    defaultBranch = main
 [rebase]
-	autoStash = true
+    autoStash = true
 [advice]
-	detachedHead = false
+    detachedHead = false
