@@ -27,6 +27,7 @@ konsole_config = Path(".local") / "share" / "konsole" / "Emil.profile"
 neovim_init = Path(".config") / "nvim"
 pycodestyle_config = Path(".config") / "pycodestyle"
 yapf_config = Path(".config") / "yapf" / "style"
+kwalletrc = Path.home() / ".config" / "kwalletrc"
 yarn_packages = [
     "yaml-language-server", "dockerfile-language-server-nodejs", "bash-language-server", "neovim", "vscode-langservers-extracted",
     "ansible/ansible-language-server"
@@ -195,6 +196,9 @@ with open(gitconfig_path, "rt") as f:
 
 with open(gitconfig_path, "wt") as fout:
     fout.write(file_content)
+
+if kwalletrc.exists() and "Enabled=false" not in kwalletrc.read_text():
+    kwalletrc.write_text("Enabled=false")
 
 # Install good stuff, and nodejs
 # Install packages only if needed

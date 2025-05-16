@@ -153,6 +153,7 @@ eval "command -v tmux" &> /dev/null; TMUX_EXIST=$?
 eval "/usr/bin/pgrep tmux" &> /dev/null; TMUX_IS_RUNNING=$?
 eval "command -v kubectl" &> /dev/null; KUBECTL_EXIST=$?
 eval "command -v helm" &> /dev/null; HELM_EXIST=$?
+eval "command -v golangci-lint" &> /dev/null; GOLANGCI_LINT_EXIST=$?
 
 if [ $TMUX_EXIST -eq 0 ] &&  [ -z "$WORKSPACE" ]; then
   if [ $TMUX_IS_RUNNING -eq 1 ];  then
@@ -165,6 +166,7 @@ fi
 
 [ $KUBECTL_EXIST -eq 0 ] && . <(kubectl completion bash)
 [ $HELM_EXIST -eq 0 ] && . <(helm completion bash)
+[ $GOLANGCI_LINT_EXIST -eq 0 ] && . <(golangci-lint completion bash)
 
 [ -f ~/qmk_firmware/util/qmk_tab_complete.sh ] && source ~/qmk_firmware/util/qmk_tab_complete.sh
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
