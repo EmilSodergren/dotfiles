@@ -6,7 +6,6 @@
     followTags = true
     autoSetupRemote = true
 [status]
-    branch = true
     showStash = true
     showUntrackedFiles = all
 [http]
