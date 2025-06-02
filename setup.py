@@ -33,8 +33,8 @@ yarn_packages = [
     "ansible/ansible-language-server"
 ]
 settingsfiles = [
-    ".bash_completion", ".bash_completion.d", ".bash_git", ".bashrc", ".gitconfig", ".profile", ".tmux.conf", antiword, ccls_config, forgit,
-    konsole_config, neovim_init, pycodestyle_config, write_notes, yapf_config
+    ".bash_completion", ".bash_completion.d", ".bash_git", ".bashrc", ".gitconfig", ".golangci.yaml", ".profile", ".tmux.conf", antiword,
+    ccls_config, forgit, konsole_config, neovim_init, pycodestyle_config, write_notes, yapf_config
 ]
 tree_sitter_languages = [
     "bash",

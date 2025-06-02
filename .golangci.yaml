@@ -1,0 +1,19 @@
+version: '2'
+linters:
+  default: all
+  disable:
+    - nlreturn
+    - prealloc
+    - nolintlint
+    - lll
+    - gomoddirectives
+    - depguard
+    - gosec
+  settings:
+    varnamelen:
+      ignore-decls:
+        - wg sync.WaitGroup
+        - wg *sync.WaitGroup
+        - h hash.Hash
+    perfsprint:
+      strconcat: false
