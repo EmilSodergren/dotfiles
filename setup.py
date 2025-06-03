@@ -258,6 +258,8 @@ if args.online:
         run(["git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", packer_plugin])
     run(["nvim", "-u", ".config/nvim/lua/plugins.lua", "--headless", "-c", "autocmd User PackerComplete quitall", "-c", "PackerSync"])
     run(["nvim", "--headless", "-c", ":lua require('go.install').update_all_sync()", "-c", "quitall"])
+    run(["go", "install", "github.com/nametake/golangci-lint-langserver@latest"])
+    run(["go", "install", "golang.org/x/tools/cmd/godoc@latest"])
     coq_deps = (packer_plugin / "../coq-nvim/.vars").resolve()
     if args.clean and coq_deps.exists():
         rmtree(coq_deps)
