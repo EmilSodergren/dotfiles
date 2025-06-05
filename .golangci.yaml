@@ -19,3 +19,5 @@ linters:
         - h hash.Hash
     perfsprint:
       strconcat: false
+    gosmopolitan:
+      allow-time-local: true
