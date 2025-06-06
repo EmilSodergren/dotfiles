@@ -193,9 +193,6 @@ lspconfig.gopls.setup(coq.lsp_ensure_capabilities({
 lspconfig.golangci_lint_ls.setup(coq.lsp_ensure_capabilities({
   cmd = { home .. "/go/bin/golangci-lint-langserver" },
   root_dir = lspconfig.util.root_pattern("go.mod", ".git"),
-  settings = {
-    init_options = { command = { home .. "/go/bin/golangci-lint", "run", "--fast-only", "--output.json.path=stdout", "--show-stats=false" } }
-  }
 }))
 lspconfig.jsonls.setup(coq.lsp_ensure_capabilities({
   cmd = { home .. "/.local/node_modules/vscode-langservers-extracted/bin/vscode-json-language-server", "--stdio" }

@@ -21,3 +21,6 @@ linters:
       strconcat: false
     gosmopolitan:
       allow-time-local: true
+output:
+  # Needed since the config file is a symlink
+  path-prefix: '..'
