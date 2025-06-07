@@ -21,6 +21,18 @@ linters:
       strconcat: false
     gosmopolitan:
       allow-time-local: true
+    mnd:
+      ignored-numbers:
+        - '0o600'
+        - '0o640'
+        - '0o644'
+        - '0o666'
+        - '0o700'
+        - '0o740'
+        - '0o744'
+        - '0o750'
+        - '0o755'
+        - '2'
 output:
   # Needed since the config file is a symlink
   path-prefix: '..'
