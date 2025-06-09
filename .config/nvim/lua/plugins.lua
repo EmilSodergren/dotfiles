@@ -2,8 +2,8 @@ require("packer").startup(function(use)
   use "wbthomason/packer.nvim"
 
   use "Raimondi/delimitMate"
-  use "ms-jpq/coq-nvim"
-  use "ms-jpq/coq.artifacts"
+  use { "ms-jpq/coq-nvim", branch = 'coq' }
+  use { "ms-jpq/coq.artifacts", branch = 'artifacts' }
   use "alec-gibson/nvim-tetris"
   use "cespare/vim-toml"
   use { "ckipp01/nvim-jenkinsfile-linter", requires = { "nvim-lua/plenary.nvim" } }
