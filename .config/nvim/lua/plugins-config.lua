@@ -90,7 +90,7 @@ require("gitsigns").setup({
 
 local coq = require("coq")
 -- Go NVIM
-require('go').setup(coq.lsp_ensure_capabilities({}))
+require('go').setup()
 
 -- Highlighted yank
 vim.g.highlightedyank_highlight_duration = 2000
@@ -130,14 +130,14 @@ vim.cmd [[nmap <c-w>z <Plug>(zoom-toggle)]]
 vim.g.rustfmt_autosave = 0
 
 -- NEOGIT
-require("neogit").setup(coq.lsp_ensure_capabilities({
+require("neogit").setup({
   mappings = {
     status = {
       ["<space>"] = "Toggle",
     }
   },
   commit_editor = { kind = "split" }
-}))
+})
 
 -- TREESITTER
 require("nvim-treesitter.configs").setup({
@@ -156,17 +156,26 @@ vim.g.undotree_SplitWidth = 35
 -- NVIM LSP
 local lspconfig = require("lspconfig")
 local home = os.getenv("HOME")
-lspconfig.ansiblels.setup(coq.lsp_ensure_capabilities({
+
+vim.lsp.config("ansiblels", coq.lsp_ensure_capabilities({
   cmd = { home .. "/.local/node_modules/@ansible/ansible-language-server/bin/ansible-language-server", "--stdio" }
 }))
-lspconfig.bashls.setup(coq.lsp_ensure_capabilities({
+vim.lsp.enable("ansiblels")
+
+vim.lsp.config("bashls", coq.lsp_ensure_capabilities({
   cmd = { home .. "/.local/node_modules/bash-language-server/out/cli.js", "start" }
 }))
-lspconfig.ccls.setup(coq.lsp_ensure_capabilities({}))
-lspconfig.dockerls.setup(coq.lsp_ensure_capabilities({
+vim.lsp.enable("bashls")
+
+vim.lsp.config("ccls", coq.lsp_ensure_capabilities({}))
+vim.lsp.enable("ccls")
+
+vim.lsp.config("dockerls", coq.lsp_ensure_capabilities({
   cmd = { home .. "/.local/node_modules/dockerfile-language-server-nodejs/bin/docker-langserver", "--stdio" }
 }))
-lspconfig.lua_ls.setup(coq.lsp_ensure_capabilities({
+vim.lsp.enable("dockerls")
+
+vim.lsp.config("lua_ls", coq.lsp_ensure_capabilities({
   cmd = { home .. "/.local/bin/lua-language-server" },
   settings = {
     Lua = {
@@ -176,10 +185,14 @@ lspconfig.lua_ls.setup(coq.lsp_ensure_capabilities({
     }
   }
 }))
-lspconfig.marksman.setup(coq.lsp_ensure_capabilities({
+vim.lsp.enable("lua_ls")
+
+vim.lsp.config("marksman", coq.lsp_ensure_capabilities({
   cmd = { home .. "/.local/bin/marksman", "server" }
 }))
-lspconfig.gopls.setup(coq.lsp_ensure_capabilities({
+vim.lsp.enable("marksman")
+
+vim.lsp.config("gopls", coq.lsp_ensure_capabilities({
   settings = {
     analyses = {
       unusedparams = true,
@@ -190,14 +203,25 @@ lspconfig.gopls.setup(coq.lsp_ensure_capabilities({
     }
   }
 }))
-lspconfig.golangci_lint_ls.setup(coq.lsp_ensure_capabilities({
+vim.lsp.enable("gopls")
+
+vim.lsp.config("golangci_lint_ls", coq.lsp_ensure_capabilities({
   cmd = { home .. "/go/bin/golangci-lint-langserver" },
-  root_dir = lspconfig.util.root_pattern("go.mod", ".git"),
+  root_markers = { "go.mod", "go.work", ".git" },
+  settings = {
+    init_options = {
+      command = { 'golangci-lint', 'run', '--fast-only', '--output.json.path=stdout', '--show-stats=false' },
+    }
+  }
 }))
-lspconfig.jsonls.setup(coq.lsp_ensure_capabilities({
+vim.lsp.enable("golangci_lint_ls")
+
+vim.lsp.config("jsonls", coq.lsp_ensure_capabilities({
   cmd = { home .. "/.local/node_modules/vscode-langservers-extracted/bin/vscode-json-language-server", "--stdio" }
 }))
-lspconfig.pylsp.setup(coq.lsp_ensure_capabilities({
+vim.lsp.enable("jsonls")
+
+vim.lsp.config("pylsp", coq.lsp_ensure_capabilities({
   settings = {
     pylsp = {
       plugins = {
@@ -210,7 +234,9 @@ lspconfig.pylsp.setup(coq.lsp_ensure_capabilities({
     }
   }
 }))
-lspconfig.yamlls.setup(coq.lsp_ensure_capabilities({
+vim.lsp.enable("pylsp")
+
+vim.lsp.config("yamlls", coq.lsp_ensure_capabilities({
   cmd = { home .. "/.local/node_modules/yaml-language-server/bin/yaml-language-server", "--stdio" },
   settings = {
     yaml = {
@@ -232,3 +258,4 @@ lspconfig.yamlls.setup(coq.lsp_ensure_capabilities({
     }
   }
 }))
+vim.lsp.enable("yamlls")
