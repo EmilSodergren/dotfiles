@@ -76,12 +76,11 @@ packages_to_install = [
     "gawk",
     "git",
     "libclang-dev",
-    "liblz4-tool",
+    "lz4",
     "libssl-dev",
     "libxml2-utils",
     "make",
     "python3-jedi",
-    "python3-lib2to3",
     "python3-pip",
     "python3-semver",
     "python3-venv",
@@ -214,7 +213,7 @@ for pac in packages_to_install:
 
 if os.environ.get("XDG_SESSION_TYPE") == "wayland":
     for pac in packages_to_install_wayland:
-        if not apt_cache[pac].is_installed:
+        if not apt_cache.get(pac).is_installed:
             print("Needs to install packages")
             run(["sudo", "apt-get", "install", "-y", *packages_to_install_wayland])
             break
