@@ -33,6 +33,5 @@ linters:
         - '0o750'
         - '0o755'
         - '2'
-output:
-  # Needed since the config file is a symlink
-  path-prefix: '..'
+run:
+  relative-path-mode: 'gomod'
