@@ -208,10 +208,8 @@ vim.lsp.enable("gopls")
 vim.lsp.config("golangci_lint_ls", coq.lsp_ensure_capabilities({
   cmd = { home .. "/go/bin/golangci-lint-langserver" },
   root_markers = { "go.mod", "go.work", ".git" },
-  settings = {
-    init_options = {
-      command = { 'golangci-lint', 'run', '--fast-only', '--output.json.path=stdout', '--show-stats=false' },
-    }
+  init_options = {
+    command = { 'golangci-lint', 'run', '--output.json.path=stdout', '--show-stats=false' },
   }
 }))
 vim.lsp.enable("golangci_lint_ls")
