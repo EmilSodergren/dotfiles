@@ -1,10 +1,10 @@
 from os import chdir, system
 
-from subprocess import run, Popen, PIPE
+from subprocess import run, Popen, PIPE, TimeoutExpired
 from argparse import ArgumentParser
 from datetime import datetime
 from glob import glob
-from shutil import rmtree, move, copy2
+from shutil import move, copy2
 from pathlib import Path
 import json
 import platform
@@ -19,6 +19,7 @@ host_local_bin = Path.home() / local_bin
 bfg_jar = host_local_bin / "bfg.jar"
 marksman_bin = host_local_bin / "marksman"
 ra_bin = host_local_bin / "rust-analyzer"
+hado_bin = host_local_bin / "hadolint"
 antiword = local_bin / "antiword"
 ccls_config = local_bin / "ccls_config"
 forgit = local_bin / "forgit"
@@ -30,17 +31,18 @@ yapf_config = Path(".config") / "yapf" / "style"
 kwalletrc = Path.home() / ".config" / "kwalletrc"
 yarn_packages = [
     "yaml-language-server", "dockerfile-language-server-nodejs", "bash-language-server", "neovim", "vscode-langservers-extracted",
-    "ansible/ansible-language-server"
+    "ansible/ansible-language-server", "markdownlint-cli2"
 ]
 settingsfiles = [
-    ".bash_completion", ".bash_completion.d", ".bash_git", ".bashrc", ".gitconfig", ".golangci.yaml", ".profile", ".tmux.conf", antiword,
-    ccls_config, forgit, konsole_config, neovim_init, pycodestyle_config, write_notes, yapf_config
+    ".bash_completion", ".bash_completion.d", ".bash_git", ".bashrc", ".gitconfig", ".golangci.yaml", ".profile", ".hadolint.yaml",
+    ".tmux.conf", antiword, ccls_config, forgit, konsole_config, neovim_init, pycodestyle_config, write_notes, yapf_config
 ]
 tree_sitter_languages = [
     "bash",
     "c",
     "comment",
     "csv",
+    "diff",
     "dockerfile",
     "gitignore",
     "go",
@@ -48,15 +50,30 @@ tree_sitter_languages = [
     "gosum",
     "gotmpl",
     "gowork",
+    "html",
+    "javascript",
+    "jsdoc",
     "json",
+    "jsonc",
     "lua",
+    "luadoc",
+    "luap",
     "make",
     "markdown",
+    "markdown_inline",
+    "printf",
     "python",
+    "query",
+    "regex",
     "rust",
     "sql",
     "tmux",
     "toml",
+    "tsx",
+    "typescript",
+    "vim",
+    "vimdoc",
+    "xml",
     "yaml",
 ]
 rustup_bin = Path.home() / ".cargo/bin/rustup"
@@ -225,21 +242,6 @@ if not check_dep_version.check_programs():
     sys.exit(1)
 
 if args.online:
-    # Get, update and install southernlights color theme
-    colortheme_path = dotfilespath / ".local" / "share" / "southernlights"
-    colortheme_url = "https://github.com/jalvesaq/southernlights.git"
-    colortheme_link = neovim_init / "colors" / "southernlights.vim"
-
-    if colortheme_path.exists():
-        run(["git", "pull"], cwd=colortheme_path)
-    else:
-        colortheme_path.parent.mkdir(parents=True, exist_ok=True)
-        run(["git", "clone", colortheme_url], cwd=colortheme_path.parent)
-
-    if not colortheme_link.exists():
-        colortheme_link.parent.mkdir(parents=True, exist_ok=True)
-        colortheme_link.symlink_to(colortheme_path / "colors" / "southernlights.vim")
-
     if not glob("/etc/apt/sources.list.d/kubuntu-ppa*.list"):
         run(["sudo", "add-apt-repository", "-y", "ppa:kubuntu-ppa/backports"])
     install_brave_browser()
@@ -253,20 +255,8 @@ if args.online:
         if not args.skip_tmux:
             install_program("tmux.py", args.clean)
 
-    packer_plugin = Path.home() / ".local/share/nvim/site/pack/packer/start/packer.nvim"
-    if not packer_plugin.exists():
-        run(["git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", packer_plugin])
-    run(["nvim", "-u", ".config/nvim/lua/plugins.lua", "--headless", "-c", "autocmd User PackerComplete quitall", "-c", "PackerSync"])
-    run(["nvim", "--headless", "-c", ":lua require('go.install').update_all_sync()", "-c", "quitall"])
     run(["go", "install", "github.com/nametake/golangci-lint-langserver@latest"])
     run(["go", "install", "golang.org/x/tools/cmd/godoc@latest"])
-    coq_deps = (packer_plugin / "../coq-nvim/.vars").resolve()
-    if args.clean and coq_deps.exists():
-        rmtree(coq_deps)
-    run(["python3", "-m", "coq", "deps"], cwd=(coq_deps / "..").resolve())
-    # run(["nvim", "--headless", "-c", "TSUpdateSync", "-c", "quitall"])
-    for lang in tree_sitter_languages:
-        run(["nvim", "--headless", "-c", "TSInstallSync! {}".format(lang), "-c", "quitall"])
 
     for tmuxpath, tmuxurl in [
         (dotfilespath / "tmux-resurrect", "https://github.com/tmux-plugins/tmux-resurrect"),
@@ -287,8 +277,12 @@ if args.online:
     # Remove and add to get latest versions, ugly but works
     run([yarn_bin, "remove", *yarn_packages], cwd=Path.home() / ".local")
     run([yarn_bin, "add", *yarn_packages], cwd=Path.home() / ".local")
-    (Path.home() / local_bin).mkdir(exist_ok=True)
+    markdownlint_cli2 = host_local_bin / "markdownlint-cli2"
+    if markdownlint_cli2.is_symlink():
+        markdownlint_cli2.unlink()
+    markdownlint_cli2.symlink_to(Path.home() / ".local" / "node_modules" / "markdownlint-cli2" / "markdownlint-cli2-bin")
 
+    (Path.home() / local_bin).mkdir(exist_ok=True)
     # Download Marksman
     run(["wget", "-N", "-O", marksman_bin, "https://github.com/artempyanykh/marksman/releases/latest/download/marksman-linux-x64"])
     os.chmod(marksman_bin, 0o755)
@@ -316,6 +310,13 @@ if args.online:
     if lua_linkpath.is_symlink():
         lua_linkpath.unlink()
     lua_linkpath.symlink_to(lua_install_dir / 'bin' / 'lua-language-server')
+
+    # Download hadolint
+    hadolint_url = 'https://github.com/hadolint/hadolint/releases/latest/download/hadolint-Linux-x86_64'
+    run(['wget', '-P', '/tmp/', hadolint_url])
+    move("/tmp/hadolint-Linux-x86_64", hado_bin)
+    os.chmod(hado_bin, 0o755)
+
     # Download bfg.jar
     run(["wget", "-O", bfg_jar, "https://repo1.maven.org/maven2/com/madgag/bfg/1.14.0/bfg-1.14.0.jar"])
     os.chmod(bfg_jar, 0o755)
@@ -348,6 +349,16 @@ if args.online:
             run(["cargo", "install", "cargo-update"])
     # Fix tmux-thumbs
     install_tmux_thumbs(dotfilespath / "tmux-thumbs", "https://github.com/fcsonline/tmux-thumbs"),
+    run(["nvim", "-u", neovim_init / "init.lua", "-c", "quitall"])
+    run(["nvim", "-u", neovim_init / "init.lua", "--headless", "-c", "Lazy! install", "-c", "quitall"])
+    run(["nvim", "--headless", "-c", "Lazy! sync", "-c", "quitall"])
+    for lang in tree_sitter_languages:
+        run(["nvim", "--headless", "-c", f"TSInstallSync! {lang}", "-c", "quitall"])
+    try:
+        run(["nvim"], timeout=10)
+    except TimeoutExpired:
+        run(["reset"], shell=True)
+        pass
 
 if args.font:
     run(["sudo", "unzip", "-o", dotfilespath / "bin" / "Hack.zip", "-d", "/usr/local/share/fonts/"])

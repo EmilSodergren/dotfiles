@@ -5,6 +5,7 @@ vim.g.python3_host_skip_check = 1
 vim.g.netrw_dirhistmax = 0
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_perl_provider = 0
+vim.g.timeoutlen = 600
 
 vim.o.autoindent = true
 vim.o.backspace = "indent"

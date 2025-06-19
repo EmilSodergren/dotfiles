@@ -1,0 +1,3 @@
+return {
+  "cyberkov/openhab-vim"
+}
