@@ -2,6 +2,7 @@ require("packer").startup(function(use)
   use "wbthomason/packer.nvim"
 
   use "Raimondi/delimitMate"
+  use "alexghergh/nvim-tmux-navigation"
   use { "ms-jpq/coq-nvim", branch = 'coq' }
   use { "ms-jpq/coq.artifacts", branch = 'artifacts' }
   use "alec-gibson/nvim-tetris"

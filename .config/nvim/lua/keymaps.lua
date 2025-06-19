@@ -9,10 +9,6 @@ vim.keymap.set("i", "<C-x><C-f>", function() return fzf.complete_path({ cmd = "r
 vim.keymap.set("n", "<leader>ev", function() return fzf.files({ cwd = "~/.config/nvim/" }) end, { noremap = true })
 
 vim.keymap.set("n", "<leader>q", "<cmd>bp<bar>bd #<cr>", { noremap = true })
-vim.keymap.set("n", "<c-h>", "<c-w>h", { noremap = true })
-vim.keymap.set("n", "<c-j>", "<c-w>j", { noremap = true })
-vim.keymap.set("n", "<c-k>", "<c-w>k", { noremap = true })
-vim.keymap.set("n", "<c-l>", "<c-w>l", { noremap = true })
 
 vim.keymap.set("n", "n", "nzzzv", { noremap = true })
 vim.keymap.set("n", "N", "Nzzzv", { noremap = true })
