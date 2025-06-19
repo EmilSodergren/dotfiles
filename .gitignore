@@ -1,7 +1,8 @@
 tmux-*/
 bin/Hack.zip
 auth.json
-packer_compiled.lua
 __pycache__
 .local/share/southernlights
 .config/nvim/colors/southernlights.vim
+.config/nvim/lazy-lock.json
+.config/nvim/lazyvim.json
