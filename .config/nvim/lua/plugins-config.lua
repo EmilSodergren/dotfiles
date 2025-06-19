@@ -37,7 +37,6 @@ vim.g.coq_settings = {
   auto_start = 'shut-up',
   keymap = {
     recommended = false,
-    jump_to_mark = "<leader>,",
     manual_complete = "<c-x><c-o>"
   },
   clients = {
@@ -146,6 +145,18 @@ require("nvim-treesitter.configs").setup({
     additional_vim_regex_highlighting = false,
   }
 })
+
+-- VIM TMUX NAVIGATOR
+local nvim_tmux_nav = require('nvim-tmux-navigation')
+nvim_tmux_nav.setup {
+  disable_when_zoomed = true,
+  keybindings = {
+    left = "<M-h>",
+    down = "<M-j>",
+    up = "<M-k>",
+    right = "<M-l>",
+  }
+}
 
 -- UNDOTREE
 vim.g.undotree_ShortIndicators = 1
