@@ -1,18 +1,16 @@
-vim.keymap.set("n", "<leader>q", "<cmd>bp<bar>bd #<cr>", { noremap = true })
+local map = vim.keymap.set
+map("i", "jk", "<esc>", { noremap = true })
+map("n", "<leader>q", "<cmd>bp<bar>bd #<cr>", { noremap = true })
 
 vim.keymap.set("n", "n", "nzzzv", { noremap = true })
 vim.keymap.set("n", "N", "Nzzzv", { noremap = true })
 
-vim.keymap.set("n", "j", "gj", { noremap = true })
-vim.keymap.set("n", "k", "gk", { noremap = true })
-
 vim.keymap.set("n", "J", "mzJ`z", { noremap = true })
-
 vim.keymap.set({ "n", "v" }, "<leader>y", '"+y', { noremap = true })
 vim.keymap.set("n", "<leader>Y", '"+Y', { noremap = true })
 
 vim.keymap.set("n", "Q", "@q")
-vim.keymap.set({ "n", "v" }, "q:", "<nop>")
+vim.keymap.set({ "n", "v" }, "q:", "<nop>", { remap = true })
 
 vim.keymap.set("n", "<down>", "3jzz", { noremap = true })
 vim.keymap.set("n", "<up>", "3kzz", { noremap = true })
@@ -26,7 +24,6 @@ vim.keymap.set("n", "<leader>rr", ":%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left
 vim.keymap.set("n", "<c-w><bar>", "<c-w>v", { noremap = true })
 vim.keymap.set("n", "<c-w>-", "<c-w>s", { noremap = true })
 
-vim.keymap.set("i", "jk", "<esc>", { noremap = true })
 
 vim.keymap.set({ "n", "o" }, "<c-d>", "<c-d>M", { noremap = true })
 vim.keymap.set({ "n", "o" }, "<c-u>", "<c-u>M", { noremap = true })

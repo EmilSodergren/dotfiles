@@ -1,5 +1,6 @@
 vim.g.mapleader = ","
 vim.g.maplocalleader = "\\"
+vim.g.snacks_animage = false
 
 -- vim.g.bash_ctrl_j = "off"
 vim.g.python_host_prog = "/usr/bin/python2"
@@ -16,6 +17,7 @@ vim.o.cmdheight = 2
 vim.opt.completeopt:append { "menuone", "noinsert", "noselect" }
 vim.opt.completeopt:remove { "preview" }
 vim.o.conceallevel = 2
+vim.o.cursorline = false
 vim.o.encoding = "utf-8"
 vim.o.expandtab = true
 vim.o.fileencoding = "utf-8"

@@ -12,5 +12,5 @@ return {
     },
     dependencies = {}
   },
-  { "junegunn/fzf", build = "./install --no-zsh --no-fish --key-bindings --completion --update-rc" },
+  { "junegunn/fzf", lazy = false, build = "./install --no-zsh --no-fish --key-bindings --completion --update-rc" },
 }
