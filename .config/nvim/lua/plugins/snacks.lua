@@ -1,9 +1,11 @@
 return {
-  "folke/snacks.nvim",
-  opts = {
-    dashboard = { enabled = false },
-    scroll = { enabled = false },
-    terminal = { enabled = false },
-    indent = { enabled = false },
-  }
+  {
+    "folke/snacks.nvim",
+    opts = {
+      dashboard = { enabled = false },
+      scroll = { enabled = false },
+      terminal = { enabled = false },
+      indent = { enabled = false },
+    },
+  },
 }

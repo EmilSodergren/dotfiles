@@ -1,4 +1,6 @@
 return {
-  "folke/noice.nvim",
-  lazy = false,
+  {
+    "folke/noice.nvim",
+    lazy = false,
+  },
 }

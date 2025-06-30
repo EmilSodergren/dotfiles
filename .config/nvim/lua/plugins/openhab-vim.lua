@@ -1,3 +1,5 @@
 return {
-  "cyberkov/openhab-vim"
+  {
+    "cyberkov/openhab-vim"
+  },
 }

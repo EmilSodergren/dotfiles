@@ -1,5 +1,7 @@
 return {
-  "iamcco/markdown-preview.nvim",
-  build = "cd app && ./install.sh",
-  ft = "markdown",
+  {
+    "iamcco/markdown-preview.nvim",
+    build = "cd app && ./install.sh",
+    ft = "markdown",
+  },
 }

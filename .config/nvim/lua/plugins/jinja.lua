@@ -1,4 +1,6 @@
 return {
-  "lepture/vim-jinja",
-  ft = "jinja"
+  {
+    "lepture/vim-jinja",
+    ft = "jinja"
+  },
 }
