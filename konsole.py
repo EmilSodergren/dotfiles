@@ -53,7 +53,7 @@ args = parser.parse_args()
 chdir(Path.home())
 # Install packages only if needed
 for pac in packages_for_build:
-    if not apt_cache[pac].is_installed:
+    if not apt_cache.has_key(pac):
         print("Needs to install packages for building konsole")
         call(["sudo", "apt-get", "install", "-y", *packages_for_build])
         break
@@ -73,6 +73,6 @@ if args.build:
     # Debian 10 needs tag v19.12.3 in konsole, and kinit-dev package installed
     call(["cmake", "..", "-DCMAKE_BUILD_TYPE=release", "-DCMAKE_INSTALL_PREFIX={}".format(konsole_install_dir)])
     call(["make", "-j", nproc])
-    if apt_cache["konsole"].is_installed:
+    if not apt_cache.has_key("konsole"):
         call(["sudo", "apt-get", "remove", "-y", "konsole"])
     call(["make", "install", "-j", nproc])

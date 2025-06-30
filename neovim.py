@@ -28,7 +28,7 @@ if args.uninstall:
 chdir(Path.home())
 # Install packages only if needed
 for pac in packages_for_build:
-    if not apt_cache[pac].is_installed:
+    if not apt_cache.has_key(pac):
         print("Needs to install packages for building Neovim")
         call(["sudo", "apt-get", "install", "-y", *packages_for_build])
         break

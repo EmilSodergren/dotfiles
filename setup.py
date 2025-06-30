@@ -98,7 +98,6 @@ packages_to_install = [
     "libxml2-utils",
     "make",
     "python3-jedi",
-    "python3-lib2to3",
     "python3-pip",
     "python3-semver",
     "python3-venv",
@@ -224,14 +223,14 @@ if kwalletrc.exists() and "Enabled=false" not in kwalletrc.read_text():
 # Install good stuff, and nodejs
 # Install packages only if needed
 for pac in packages_to_install:
-    if not apt_cache[pac].is_installed:
+    if not apt_cache.has_key(pac):
         print("Needs to install packages")
         run(["sudo", "apt-get", "install", "-y", *packages_to_install])
         break
 
 if os.environ.get("XDG_SESSION_TYPE") == "wayland":
     for pac in packages_to_install_wayland:
-        if not apt_cache[pac].is_installed:
+        if not apt_cache.has_key(pac):
             print("Needs to install packages")
             run(["sudo", "apt-get", "install", "-y", *packages_to_install_wayland])
             break
@@ -280,7 +279,7 @@ if args.online:
     markdownlint_cli2 = host_local_bin / "markdownlint-cli2"
     if markdownlint_cli2.is_symlink():
         markdownlint_cli2.unlink()
-    markdownlint_cli2.symlink_to(Path.home() / ".local" / "node_modules" / "markdownlint-cli2" / "markdownlint-cli2-bin")
+    markdownlint_cli2.symlink_to(Path.home() / ".local" / "node_modules" / "markdownlint-cli2" / "markdownlint-cli2-bin.mjs")
 
     (Path.home() / local_bin).mkdir(exist_ok=True)
     # Download Marksman
@@ -328,10 +327,13 @@ if args.online:
     # For python version older than 3.11
     if semver.compare(platform.python_version(), "3.11.0") == -1:
         extra_pip_flags = []
-    run(["python3", "-m", "pip", "install", "--upgrade", *extra_pip_flags, "python-lsp-server[rope,pyflakes,mccabe,pycodestyle,yapf]"])
-    run(["python3", "-m", "pip", "install", "--upgrade", *extra_pip_flags, "greenlet"])
-    run(["python3", "-m", "pip", "install", "--upgrade", *extra_pip_flags, "msgpack"])
-    run(["python3", "-m", "pip", "install", "--upgrade", *extra_pip_flags, "pynvim"])
+    run([
+        "python3", "-m", "pip", "install", "--force-reinstall", "--upgrade", *extra_pip_flags,
+        "python-lsp-server[rope,pyflakes,mccabe,pycodestyle,yapf]"
+    ])
+    run(["python3", "-m", "pip", "install", "--force-reinstall", "--upgrade", *extra_pip_flags, "greenlet"])
+    run(["python3", "-m", "pip", "install", "--force-reinstall", "--upgrade", *extra_pip_flags, "msgpack"])
+    run(["python3", "-m", "pip", "install", "--force-reinstall", "--upgrade", *extra_pip_flags, "pynvim"])
 
     if not args.skip_all and not args.skip_rust:
         ps = Popen(["curl", "--proto", "=https", "--tlsv1.2", "-sSf", "https://sh.rustup.rs"], stdout=PIPE)
