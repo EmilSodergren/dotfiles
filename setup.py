@@ -369,8 +369,9 @@ if args.font:
 if args.pack or args.artifactory:
     chdir(Path.home())
     run([
-        "tar", r"--exclude=*/\.git", "-czf", "dotfiles.tar.gz", ".dotfiles/", "go/bin/", ".cargo/bin/", ".cargo/env", local_bin,
-        ".local/node_modules", ".local/include", ".local/lib", ".local/share/nvim", ".local/share/konsole", "konsole", ".fzf.bash"
+        "tar", r"--exclude=*/\.git", r"--exclude=*/blink.cmp/target/release/version", "-czf", "dotfiles.tar.gz", ".dotfiles/", "go/bin/",
+        ".cargo/bin/", ".cargo/env", local_bin, ".local/node_modules", ".local/include", ".local/lib", ".local/share/nvim",
+        ".local/share/konsole", "konsole", ".fzf.bash"
     ])
     print("")
     print(".dotfiles has been packed into " + str(Path.home() / "dotfiles.tar.gz"))
