@@ -4,6 +4,9 @@ return {
     opts = {
       servers = {
         pylsp = {
+          cmd = {
+            os.getenv("HOME") .. "/.local/bin/pylsp",
+          },
           settings = {
             pylsp = {
               plugins = {
