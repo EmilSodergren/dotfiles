@@ -3,14 +3,17 @@ issues:
   max-same-issues: 10
 linters:
   default: all
+  enable:
+    - wsl_v5
   disable:
-    - nlreturn
-    - prealloc
-    - nolintlint
-    - lll
-    - gomoddirectives
     - depguard
+    - gomoddirectives
     - gosec
+    - lll
+    - nlreturn
+    - nolintlint
+    - prealloc
+    - wsl
   settings:
     varnamelen:
       ignore-decls:
