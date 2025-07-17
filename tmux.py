@@ -46,6 +46,6 @@ if args.build:
     call(["sh", "autogen.sh"])
     call(["./configure", "--prefix={}".format(tmux_install_dir)])
     call(["make", "-j", nproc])
-    if not apt_cache.has_key("tmux"):
+    if apt_cache.has_key("tmux"):
         call(["sudo", "apt-get", "remove", "-y", "tmux"])
     call(["make", "install"])

@@ -73,6 +73,6 @@ if args.build:
     # Debian 10 needs tag v19.12.3 in konsole, and kinit-dev package installed
     call(["cmake", "..", "-DCMAKE_BUILD_TYPE=release", "-DCMAKE_INSTALL_PREFIX={}".format(konsole_install_dir)])
     call(["make", "-j", nproc])
-    if not apt_cache.has_key("konsole"):
+    if apt_cache.has_key("konsole"):
         call(["sudo", "apt-get", "remove", "-y", "konsole"])
     call(["make", "install", "-j", nproc])
