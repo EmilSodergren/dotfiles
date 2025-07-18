@@ -32,7 +32,9 @@ return {
         },
         golangci_lint_ls = {
           cmd = { os.getenv("HOME") .. "/go/bin/golangci-lint-langserver" },
-          root_markers = { "go.mod", "go.work", ".git" },
+          root_dir = function(fname)
+            return require("lspconfig.util").root_pattern("go.mod", "go.work", ".git")(fname)
+          end,
           init_options = {
             command = { "golangci-lint", "run", "--output.json.path=stdout", "--show-stats=false" },
           },
