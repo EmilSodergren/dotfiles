@@ -52,12 +52,11 @@
     diffFilter = delta --dark --color-only
     singlekey = true
 [merge]
-    tool = fugitive
-    conflictStyle = diff3
-[mergetool]
+    tool = nvimdiff
+[mergetool "nvimdiff"]
+    cmd = nvim -d -c 'wincmd l' -c 'norm ]c' "$LOCAL" "$MERGED" "$REMOTE"
+    keepBackup = false
     prompt = false
-[mergetool "fugitive"]
-    cmd = nvim -f -c \"Gvdiffsplit!\" \"$MERGED\"
 [diff]
     context = 3
     colorMoved = default

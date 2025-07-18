@@ -65,7 +65,9 @@ vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { noremap = true })
 -- save file with sudo permissions
 vim.keymap.set("c", "w!!", "w !sudo tee > /dev/null %")
 
-vim.keymap.set("n", "dgh", "<cmd>diffget //2<cr> ]c", { noremap = true })
-vim.keymap.set("n", "dgl", "<cmd>diffget //3<cr> ]c", { noremap = true })
+-- LOCAL is set to be opened to the left and
+-- REMOTE to the right.
+vim.keymap.set("n", "dgh", "<cmd>diffget LOCAL<cr> ]c", { noremap = true })
+vim.keymap.set("n", "dgl", "<cmd>diffget REMOTE<cr> ]c", { noremap = true })
 
 vim.keymap.set({ "n", "v" }, "<space>", "za", { noremap = true })
