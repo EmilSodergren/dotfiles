@@ -4,4 +4,5 @@ return {
   { "mason-org/mason.nvim",           enabled = false },
   { "folke/noice.nvim",               enabled = false },
   { "catppuccin/nvim",                enabled = false },
+  { "MagicDuck/grug-far.nvim",        enabled = false },
 }
