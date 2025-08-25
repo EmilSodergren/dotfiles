@@ -19,18 +19,6 @@ return {
             },
           },
         },
-        pyright = {
-          mason = false,
-          autostart = false,
-        },
-        ruff = {
-          mason = false,
-          autostart = false,
-        },
-        ruff_lsp = {
-          mason = false,
-          autostart = false,
-        }
       },
     },
   },
