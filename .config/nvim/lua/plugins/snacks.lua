@@ -6,6 +6,8 @@ return {
       scroll = { enabled = false },
       terminal = { enabled = false },
       indent = { enabled = false },
+      image = { enabled = false },
+      lazygit = { enabled = false },
     },
   },
 }
