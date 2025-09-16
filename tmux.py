@@ -10,7 +10,7 @@ tmux_dir = Path.home() / "tmux"
 apt_cache = apt.Cache()
 nproc = str(cpu_count())
 
-build_tag = "3.5"
+build_tag = "3.5a"
 
 parser = ArgumentParser(description='Build the tmux program')
 packages_for_build = [
