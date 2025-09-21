@@ -1,7 +1,7 @@
 return {
   {
     "nvim-treesitter/nvim-treesitter",
-    build = "",
+    branch = "master",
     lazy = false,
     cmd = { "TSUpdateSync", "TSUpdate", "TSInstall", "TSInstallSync" },
     opts_extend = {},
