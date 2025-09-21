@@ -1,6 +1,7 @@
 return {
   {
     "stevearc/oil.nvim",
+    dependencies = { { "nvim-mini/mini.icons", opts = {} } },
     opts = {
       float = {
         padding = 3,
@@ -11,7 +12,6 @@ return {
     keys = {
       { "-", ":Oil --float<CR>", desc = "Open parent directory" },
     },
-    dependencies = { { "echasnovski/mini.icons", opts = {} } },
     lazy = false,
   }
 }
