@@ -65,6 +65,8 @@ return {
       keymap = {
         ["<C-u>"] = { "select_prev", "fallback" },
         ["<C-d>"] = { "select_next", "fallback" },
+        ["<C-k>"] = { "scroll_documentation_up", "fallback" },
+        ["<C-j>"] = { "scroll_documentation_down", "fallback" },
         ["<C-space>"] = { "show" },
         ["<CR>"] = { "select_and_accept", "fallback" },
       },
