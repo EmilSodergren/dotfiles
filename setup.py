@@ -78,8 +78,8 @@ tree_sitter_languages = [
 ]
 rustup_bin = Path.home() / ".cargo/bin/rustup"
 rust_binaries = [
-    "bat", "cargo-watch", "cargo-edit", "cargo-update", "du-dust", "fd-find", "git-delta", "lsd", "ripgrep", "sd", "tokei", "watchexec-cli",
-    "ytop", "zoxide"
+    "bat", "cargo-edit", "cargo-update", "cargo-watch", "du-dust", "fd-find", "git-delta", "lsd", "ripgrep", "sd", "tokei",
+    "tree-sitter-cli", "watchexec-cli", "ytop", "zoxide"
 ]
 packages_to_install = [
     "antiword",
@@ -354,8 +354,6 @@ if args.online:
     run(["nvim", "-u", neovim_init / "init.lua", "-c", "quitall"])
     run(["nvim", "-u", neovim_init / "init.lua", "--headless", "-c", "Lazy! install", "-c", "quitall"])
     run(["nvim", "--headless", "-c", "Lazy! sync", "-c", "quitall"])
-    for lang in tree_sitter_languages:
-        run(["nvim", "--headless", "-c", f"TSInstallSync! {lang}", "-c", "quitall"])
     try:
         run(["nvim"], timeout=10)
     except TimeoutExpired:
