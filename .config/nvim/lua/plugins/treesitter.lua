@@ -3,9 +3,7 @@ return {
     "nvim-treesitter/nvim-treesitter",
     branch = "main",
     lazy = false,
-    cmd = { "TSUpdateSync", "TSUpdate", "TSInstall", "TSInstallSync" },
-    build = ":TSUpdate!",
-    install_dir = "~/.local/share/nvim/lazy/nvim-treesitter/parsers",
+    build = ":TSUpdate",
     opts = {
       sync_install = true,
       auto_install = false,

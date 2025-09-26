@@ -353,11 +353,10 @@ if args.online:
     install_tmux_thumbs(dotfilespath / "tmux-thumbs", "https://github.com/fcsonline/tmux-thumbs"),
     run(["nvim", "-u", neovim_init / "init.lua", "-c", "quitall"])
     run(["nvim", "-u", neovim_init / "init.lua", "--headless", "-c", "Lazy! install", "-c", "quitall"])
-    run(["nvim", "--headless", "-c", "Lazy! sync", "-c", "quitall"])
     try:
-        run(["nvim"], timeout=10)
+        run(["nvim", "--headless", "-c", "Lazy! sync"], timeout=30)
     except TimeoutExpired:
-        run(["reset"], shell=True)
+        # Wait 30 secs for async task to finish (hopefully)
         pass
 
 if args.font:
