@@ -223,14 +223,14 @@ if kwalletrc.exists() and "Enabled=false" not in kwalletrc.read_text():
 # Install good stuff, and nodejs
 # Install packages only if needed
 for pac in packages_to_install:
-    if not apt_cache.has_key(pac):
+    if not apt_cache.get(pac) or not apt_cache.get(pac).is_installed:
         print("Needs to install packages")
         run(["sudo", "apt-get", "install", "-y", *packages_to_install])
         break
 
 if os.environ.get("XDG_SESSION_TYPE") == "wayland":
     for pac in packages_to_install_wayland:
-        if not apt_cache.has_key(pac):
+        if not apt_cache.get(pac) or not apt_cache.get(pac).is_installed:
             print("Needs to install packages")
             run(["sudo", "apt-get", "install", "-y", *packages_to_install_wayland])
             break

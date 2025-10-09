@@ -26,7 +26,7 @@ args = parser.parse_args()
 chdir(Path.home())
 # Install packages only if needed
 for pac in packages_for_build:
-    if not apt_cache.has_key(pac):
+    if not apt_cache.get(pac) or not apt_cache.get(pac).is_installed:
         print("Needs to install packages for building konsole")
         call(["sudo", "apt-get", "install", "-y", *packages_for_build])
         break
@@ -46,6 +46,6 @@ if args.build:
     call(["sh", "autogen.sh"])
     call(["./configure", "--prefix={}".format(tmux_install_dir)])
     call(["make", "-j", nproc])
-    if apt_cache.has_key("tmux"):
+    if apt_cache.get("tmux") and apt_cache.get("tmux").is_installed:
         call(["sudo", "apt-get", "remove", "-y", "tmux"])
     call(["make", "install"])
