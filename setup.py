@@ -156,14 +156,15 @@ def exists_all(path, files):
 
 
 def install_brave_browser():
-    if not Path("/etc/apt/sources.list.d/brave-browser-release.list").exists():
+    if not Path("/etc/apt/sources.list.d/brave-browser-release.sources").exists():
         keyring = "/usr/share/keyrings/brave-browser-archive-keyring.gpg"
         run(["sudo", "curl", "-fsSLo", keyring, "https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg"])
-        Path("/tmp/brave-browser-release.list").write_text(
-            f"deb [signed-by={keyring} arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main")
-        run(["sudo", "mv", "/tmp/brave-browser-release.list", "/etc/apt/sources.list.d/brave-browser-release.list"])
-        run(["sudo", "apt-get", "update"])
-        run(["sudo", "apt-get", "install", "-y", "brave-browser"])
+        run([
+            "sudo", "curl", "-fsSLo", "/etc/apt/sources.list.d/brave-browser-release.sources",
+            "https://brave-browser-apt-release.s3.brave.com/brave-browser.sources"
+        ])
+    run(["sudo", "apt-get", "update"])
+    run(["sudo", "apt-get", "install", "-y", "brave-browser"])
 
 
 def install_program(script_name, with_clean):
@@ -235,15 +236,19 @@ if os.environ.get("XDG_SESSION_TYPE") == "wayland":
             run(["sudo", "apt-get", "install", "-y", *packages_to_install_wayland])
             break
 
+if not apt_cache.get("brave-browser") or not apt_cache.get("brave-browser").is_installed:
+    install_brave_browser()
+
 import check_dep_version
 if not check_dep_version.check_programs():
+    if args.online:
+        run(["brave-browser", "https://go.dev/doc/install", "https://nodejs.org/en/download"])
     print("Error: programs not correct versions")
-    sys.exit(1)
+    raise SystemExit
 
 if args.online:
-    if not glob("/etc/apt/sources.list.d/kubuntu-ppa*.list"):
+    if not glob("/etc/apt/sources.list.d/kubuntu-ppa*.sources"):
         run(["sudo", "add-apt-repository", "-y", "ppa:kubuntu-ppa/backports"])
-    install_brave_browser()
     if not args.skip_all:
         if not args.skip_neovim:
             install_program("neovim.py", args.clean)

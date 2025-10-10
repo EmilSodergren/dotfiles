@@ -1,6 +1,6 @@
 import re
 import semver
-from subprocess import check_output, CalledProcessError
+from subprocess import run
 
 semver_re = re.compile(
     r'(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?'
@@ -11,8 +11,8 @@ def program_is_at_least(command, min_version):
     if type(command) == str:
         command = command.split(" ")
     try:
-        version_text = check_output(command).decode("utf-8")
-    except CalledProcessError:
+        version_text = run(command, capture_output=True).stdout.decode("utf-8")
+    except OSError:
         print("Error: Running command \"{}\"".format(" ".join(command)))
         return False
     current_version = semver_re.findall(version_text)
