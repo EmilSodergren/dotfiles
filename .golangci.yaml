@@ -40,5 +40,7 @@ linters:
         - '0o750'
         - '0o755'
         - '2'
+      ignored-functions:
+        - 'context\.WithTimeout'
 run:
   relative-path-mode: 'gomod'
