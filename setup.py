@@ -93,7 +93,7 @@ packages_to_install = [
     "gawk",
     "git",
     "libclang-dev",
-    "liblz4-tool",
+    "lz4",
     "libssl-dev",
     "libxml2-utils",
     "make",

@@ -11,41 +11,45 @@ build_dir = konsole_dir / "build"
 apt_cache = apt.Cache()
 nproc = str(cpu_count())
 
-build_tag = "v23.08.5"
+build_tag = "v25.08.2"
 
-parser = ArgumentParser(description='Setup the konsole program')
 packages_for_build = [
     "cmake",
     "extra-cmake-modules",
     "g++",
     "git",
     "libicu-dev",
-    "libkf5auth-dev",
-    "libkf5config-dev",
-    "libkf5coreaddons-dev",
-    "libkf5crash-dev",
-    "libkf5declarative-dev",
-    "libkf5i18n-dev",
-    "libkf5kcmutils-dev",
-    "libkf5newstuff-dev",
-    "libkf5notifications-dev",
-    "libkf5notifyconfig-dev",
-    "libkf5package-dev",
-    "libkf5parts-dev",
-    "libkf5pty-dev",
-    "libqt5core5a",
-    "libqt5gui5",
-    "libqt5qml5",
-    "libqt5widgets5",
+    "libkf6auth-dev",
+    "libkf6config-dev",
+    "libkf6coreaddons-dev",
+    "libkf6crash-dev",
+    "libkf6declarative-dev",
+    "libkf6i18n-dev",
+    "libkf6kcmutils-dev",
+    "libkf6iconthemes-dev",
+    "libkf6textwidgets-dev",
+    "libkf6dbusaddons-dev",
+    "libkf6kcmutils-dev",
+    "libkf6newstuff-dev",
+    "libkf6notifications-dev",
+    "libkf6notifyconfig-dev",
+    "libkf6package-dev",
+    "libkf6parts-dev",
+    "libkf6pty-dev",
+    "libqt6core6t64",
+    "libqt6gui6",
+    "libqt6qml6",
+    "libqt6widgets6",
     "make",
-    "qttools5-dev",
-    "qt5-qmake",
-    "qtbase5-dev",
-    "qtbase5-dev-tools",
+    "qmake6",
+    "qt6-base-dev",
+    "qt6-tools-dev",
     "qtchooser",
-    "qtmultimedia5-dev",
+    "qt6-multimedia-dev",
+    "qt6-5compat-dev",
 ]
 
+parser = ArgumentParser(description='Setup the konsole program')
 parser.add_argument('-b', '--build', action='store_true', help='Download/Update sources and build/install')
 parser.add_argument('-c', '--clean', action='store_true', help='Clean before build')
 args = parser.parse_args()
