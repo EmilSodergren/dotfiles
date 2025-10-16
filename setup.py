@@ -370,16 +370,18 @@ if args.font:
 
 if args.pack or args.artifactory:
     chdir(Path.home())
+    kernel_version = check_dep_version.get_kernel_version_string()
+    dotfiles_name = f"dotfiles_{kernel_version}.tar.gz"
     run([
-        "tar", r"--exclude=*/\.git", r"--exclude=*/blink.cmp/target/release/version", "-czf", "dotfiles.tar.gz", ".dotfiles/", "go/bin/",
+        "tar", r"--exclude=*/\.git", r"--exclude=*/blink.cmp/target/release/version", "-czf", dotfiles_name, ".dotfiles/", "go/bin/",
         ".cargo/bin/", ".cargo/env", local_bin, ".local/node_modules", ".local/include", ".local/lib", ".local/share/nvim",
         ".local/share/konsole", "konsole", ".fzf.bash"
     ])
     print("")
-    print(".dotfiles has been packed into " + str(Path.home() / "dotfiles.tar.gz"))
+    print(".dotfiles has been packed into " + str(Path.home() / dotfiles_name))
 
     if args.artifactory:
-        command = ["jfrog", "rt", "u", str(Path.home() / "dotfiles.tar.gz"), "ace-generic-prod-se-blu-sync/u009893/dotfiles.tar.gz"]
+        command = ["jfrog", "rt", "u", str(Path.home() / dotfiles_name), f"ace-generic-prod-se-blu-sync/u009893/{dotfiles_name}"]
         os.system(" ".join(command))
 
 print("Finished: {}".format(datetime.now().strftime("%Y-%m-%d %H:%M:%S")))

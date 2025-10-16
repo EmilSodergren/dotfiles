@@ -7,20 +7,36 @@ semver_re = re.compile(
 )
 
 
+def get_kernel_version_string():
+    semver_string = run(["uname", "-r"], capture_output=True).stdout.decode("utf-8")
+    a = semver.VersionInfo.parse(semver_string)
+    return f"{a.major}.{a.minor}.{a.patch}"
+
+
+def version_is_at_least(version_str, min_version):
+    current_version = semver_re.findall(version_str)
+    if len(current_version) < 1:
+        print("Did not find a semver version in: {}".format(version_str))
+        return False
+    current_version = ".".join(current_version[0][:3])
+    try:
+        a = semver.VersionInfo.parse(current_version)
+        b = semver.VersionInfo.parse(min_version)
+        return a >= b
+    except ValueError:
+        print(f"Did not find a semver version in: {version_str} or in: {min_version}")
+        return False
+
+
 def program_is_at_least(command, min_version):
-    if type(command) == str:
+    if type(command) is str:
         command = command.split(" ")
     try:
         version_text = run(command, capture_output=True).stdout.decode("utf-8")
     except OSError:
-        print("Error: Running command \"{}\"".format(" ".join(command)))
+        print(f'Error: Running command "{" ".join(command)}"')
         return False
-    current_version = semver_re.findall(version_text)
-    if len(current_version) < 1:
-        print("Did not find a semver version in: {}".format(version_text))
-        return False
-    current_version = ".".join(current_version[0][:3])
-    return semver.compare(current_version, min_version) >= 0
+    return version_is_at_least(version_text, min_version)
 
 
 def check_programs():
@@ -28,11 +44,11 @@ def check_programs():
     nodever = "16.0.0"
     is_ok = True
     if not program_is_at_least("go version", golangver):
-        print("Bad version of Golang, need at least version {}".format(golangver))
+        print(f"Bad version of Golang, need at least version {golangver}")
         print("Get latest version at https://go.dev/dl")
         is_ok = False
     if not program_is_at_least("node --version", nodever):
-        print("Bad version of Node, need at least version {}".format(nodever))
+        print(f"Bad version of Node, need at least version {nodever}")
         print("Get latest version at https://nodejs.org/en/download")
         is_ok = False
     return is_ok
