@@ -12,7 +12,7 @@ build_dir = konsole_dir / "build"
 apt_cache = apt.Cache()
 nproc = str(cpu_count())
 
-packages_for_build = ["cmake", "extra-cmake-modules", "g++", "git", "make", "qtchooser", "libicu-dev"]
+common_packages = ["cmake", "extra-cmake-modules", "g++", "git", "make", "qtchooser", "libicu-dev"]
 packages_for_Qt5 = [
     "libkf5auth-dev",
     "libkf5config-dev",
@@ -70,11 +70,11 @@ packages_for_Qt6 = [
 def get_dep_packages():
     match check_dep_version.get_kernel_version_string():
         case "5.15.0":
-            return packages_for_build + packages_for_Qt5
+            return common_packages + packages_for_Qt5
         case "6.8.0":
-            return packages_for_build + packages_for_Qt5
+            return common_packages + packages_for_Qt5
         case "6.17.0":
-            return packages_for_build + packages_for_Qt6
+            return common_packages + packages_for_Qt6
         case _:
             raise ValueError("No match for current kernel version")
 
@@ -98,10 +98,10 @@ args = parser.parse_args()
 
 chdir(Path.home())
 # Install packages only if needed
-for pac in packages_for_build:
+for pac in get_dep_packages():
     if not apt_cache.get(pac) or not apt_cache.get(pac).is_installed:
         print("Needs to install packages for building konsole")
-        call(["sudo", "apt-get", "install", "-y", *packages_for_build])
+        call(["sudo", "apt-get", "install", "-y", *get_dep_packages()])
         break
 
 if args.clean and build_dir.exists():
