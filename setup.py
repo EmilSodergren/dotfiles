@@ -292,9 +292,7 @@ if args.online:
 
     run(["npm", "install", "--prefix", Path.home() / ".local", "yarn"], check=True)
     yarn_bin = Path.home() / ".local" / "node_modules" / "yarn" / "bin" / "yarn"
-    # Remove and add to get latest versions, ugly but works
-    run([yarn_bin, "remove", *yarn_packages], cwd=Path.home() / ".local", check=True)
-    run([yarn_bin, "add", *yarn_packages], cwd=Path.home() / ".local", check=True)
+    run([yarn_bin, "add", "--force", *yarn_packages], cwd=Path.home() / ".local", check=True)
     markdownlint_cli2 = host_local_bin / "markdownlint-cli2"
     if markdownlint_cli2.is_symlink():
         markdownlint_cli2.unlink()
