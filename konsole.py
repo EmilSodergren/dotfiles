@@ -13,6 +13,16 @@ apt_cache = apt.Cache()
 nproc = str(cpu_count())
 
 common_packages = ["cmake", "extra-cmake-modules", "g++", "git", "make", "qtchooser", "libicu-dev"]
+packages_for_u22 = [
+    "libqt5core5a",
+    "libqt5gui5",
+    "libqt5widgets5",
+]
+packages_for_u24 = [
+    "libqt5core5t64",
+    "libqt5gui5t64",
+    "libqt5widgets5t64",
+]
 packages_for_Qt5 = [
     "libkf5auth-dev",
     "libkf5config-dev",
@@ -27,10 +37,7 @@ packages_for_Qt5 = [
     "libkf5package-dev",
     "libkf5parts-dev",
     "libkf5pty-dev",
-    "libqt5core5a",
-    "libqt5gui5",
     "libqt5qml5",
-    "libqt5widgets5",
     "qttools5-dev",
     "qt5-qmake",
     "qtbase5-dev",
@@ -70,9 +77,9 @@ packages_for_Qt6 = [
 def get_dep_packages():
     match check_dep_version.get_kernel_version_string():
         case "5.15.0":
-            return common_packages + packages_for_Qt5
+            return common_packages + packages_for_Qt5 + packages_for_u22
         case "6.8.0":
-            return common_packages + packages_for_Qt5
+            return common_packages + packages_for_Qt5 + packages_for_u24
         case "6.17.0":
             return common_packages + packages_for_Qt6
         case _:
