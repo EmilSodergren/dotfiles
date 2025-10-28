@@ -115,11 +115,12 @@ if args.clean and build_dir.exists():
     rmtree(build_dir)
 
 if args.build:
-    if not konsole_dir.exists():
-        run(["git", "clone", "-b", get_konsole_tag(), "https://invent.kde.org/utilities/konsole.git", konsole_dir], check=True)
-    else:
-        run(["git", "-C", konsole_dir, "pull"], check=True)
-        run(["git", "-C", konsole_dir, "checkout", get_konsole_tag()], check=True)
+    if (konsole_dir / ".git").exists():
+        if not konsole_dir.exists():
+            run(["git", "clone", "-b", get_konsole_tag(), "https://invent.kde.org/utilities/konsole.git", konsole_dir], check=True)
+        else:
+            run(["git", "-C", konsole_dir, "pull"], check=True)
+            run(["git", "-C", konsole_dir, "checkout", get_konsole_tag()], check=True)
 
     build_dir.mkdir(exist_ok=True)
     chdir(build_dir)
