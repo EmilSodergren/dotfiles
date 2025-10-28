@@ -1,5 +1,5 @@
 from os import chdir, cpu_count
-from subprocess import call
+from subprocess import run
 from argparse import ArgumentParser
 from shutil import rmtree
 from pathlib import Path
@@ -108,7 +108,7 @@ chdir(Path.home())
 for pac in get_dep_packages():
     if not apt_cache.get(pac) or not apt_cache.get(pac).is_installed:
         print("Needs to install packages for building konsole")
-        call(["sudo", "apt-get", "install", "-y", *get_dep_packages()])
+        run(["sudo", "apt-get", "install", "-y", *get_dep_packages()], check=True)
         break
 
 if args.clean and build_dir.exists():
@@ -116,16 +116,16 @@ if args.clean and build_dir.exists():
 
 if args.build:
     if not konsole_dir.exists():
-        call(["git", "clone", "-b", get_konsole_tag(), "https://invent.kde.org/utilities/konsole.git", konsole_dir])
+        run(["git", "clone", "-b", get_konsole_tag(), "https://invent.kde.org/utilities/konsole.git", konsole_dir], check=True)
     else:
-        call(["git", "-C", konsole_dir, "pull"])
-        call(["git", "-C", konsole_dir, "checkout", get_konsole_tag()])
+        run(["git", "-C", konsole_dir, "pull"], check=True)
+        run(["git", "-C", konsole_dir, "checkout", get_konsole_tag()], check=True)
 
     build_dir.mkdir(exist_ok=True)
     chdir(build_dir)
     # Debian 10 needs tag v19.12.3 in konsole, and kinit-dev package installed
-    call(["cmake", "..", "-DCMAKE_BUILD_TYPE=release", "-DCMAKE_INSTALL_PREFIX={}".format(konsole_install_dir)])
-    call(["make", "-j", nproc])
+    run(["cmake", "..", "-DCMAKE_BUILD_TYPE=release", f"-DCMAKE_INSTALL_PREFIX={konsole_install_dir}"], check=True)
+    run(["make", "-j", nproc], check=True)
     if apt_cache.get("konsole") and apt_cache.get("konsole").is_installed:
-        call(["sudo", "apt-get", "remove", "-y", "konsole"])
-    call(["make", "install", "-j", nproc])
+        run(["sudo", "apt-get", "remove", "-y", "konsole"], check=True)
+    run(["make", "install", "-j", nproc], check=True)

@@ -1,6 +1,6 @@
 from os import chdir, cpu_count
 from math import floor
-from subprocess import call
+from subprocess import run
 from argparse import ArgumentParser
 from shutil import rmtree
 from pathlib import Path
@@ -21,14 +21,14 @@ parser.add_argument('-c', '--clean', action='store_true', help='Clean before bui
 args = parser.parse_args()
 
 if args.uninstall:
-    call(["rm", "-f", ccls_install_dir / "bin" / "ccls"])
+    run(["rm", "-f", ccls_install_dir / "bin" / "ccls"], check=True)
 
 chdir(Path.home())
 # Install packages only if needed
 for pac in packages_for_build:
     if not apt_cache.get(pac) or not apt_cache.get(pac).is_installed:
         print("Needs to install packages for building CCLS")
-        call(["sudo", "apt-get", "install", "-y", *packages_for_build])
+        run(["sudo", "apt-get", "install", "-y", *packages_for_build], check=True)
         break
 
 if ccls_dir.exists():
@@ -36,11 +36,11 @@ if ccls_dir.exists():
 
 if args.build:
     if not ccls_dir.exists():
-        call(["git", "clone", "-b", build_tag, "--depth=1", "--recursive", "https://github.com/MaskRay/ccls", ccls_dir])
+        run(["git", "clone", "-b", build_tag, "--depth=1", "--recursive", "https://github.com/MaskRay/ccls", ccls_dir], check=True)
     else:
-        call(["git", "-C", ccls_dir, "pull"])
-        call(["git", "-C", ccls_dir, "checkout", build_tag])
+        run(["git", "-C", ccls_dir, "pull"], check=True)
+        run(["git", "-C", ccls_dir, "checkout", build_tag], check=True)
 
     chdir(ccls_dir)
-    call(["cmake", "-H.", "-BRelease", "-DCMAKE_BUILD_TYPE=Release", "-DCMAKE_INSTALL_PREFIX={}".format(ccls_install_dir)])
-    call(["cmake", "--build", "Release", "--target", "install", "--parallel", str(floor(0.75 * cpu_count()))])
+    run(["cmake", "-H.", "-BRelease", "-DCMAKE_BUILD_TYPE=Release", f"-DCMAKE_INSTALL_PREFIX={ccls_install_dir}"], check=True)
+    run(["cmake", "--build", "Release", "--target", "install", "--parallel", str(floor(0.75 * cpu_count()))], check=True)

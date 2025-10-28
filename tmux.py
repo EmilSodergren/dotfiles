@@ -1,5 +1,5 @@
 from os import chdir, cpu_count
-from subprocess import call
+from subprocess import run
 from argparse import ArgumentParser
 from shutil import rmtree
 from pathlib import Path
@@ -28,7 +28,7 @@ chdir(Path.home())
 for pac in packages_for_build:
     if not apt_cache.get(pac) or not apt_cache.get(pac).is_installed:
         print("Needs to install packages for building konsole")
-        call(["sudo", "apt-get", "install", "-y", *packages_for_build])
+        run(["sudo", "apt-get", "install", "-y", *packages_for_build], check=True)
         break
 
 if args.clean:
@@ -37,15 +37,15 @@ if args.clean:
 
 if args.build:
     if not tmux_dir.exists():
-        call(["git", "clone", "-b", build_tag, "https://github.com/tmux/tmux.git", tmux_dir])
+        run(["git", "clone", "-b", build_tag, "https://github.com/tmux/tmux.git", tmux_dir], check=True)
     else:
-        call(["git", "-C", tmux_dir, "pull"])
-        call(["git", "-C", tmux_dir, "checkout", build_tag])
+        run(["git", "-C", tmux_dir, "pull"], check=True)
+        run(["git", "-C", tmux_dir, "checkout", build_tag], check=True)
 
     chdir(tmux_dir)
-    call(["sh", "autogen.sh"])
-    call(["./configure", "--prefix={}".format(tmux_install_dir)])
-    call(["make", "-j", nproc])
+    run(["sh", "autogen.sh"], check=True)
+    run(["./configure", f"--prefix={tmux_install_dir}"], check=True)
+    run(["make", "-j", nproc], check=True)
     if apt_cache.get("tmux") and apt_cache.get("tmux").is_installed:
-        call(["sudo", "apt-get", "remove", "-y", "tmux"])
-    call(["make", "install"])
+        run(["sudo", "apt-get", "remove", "-y", "tmux"], check=True)
+    run(["make", "install"], check=True)

@@ -1,5 +1,5 @@
 from os import chdir
-from subprocess import call
+from subprocess import run
 from argparse import ArgumentParser
 from pathlib import Path
 import apt
@@ -21,30 +21,30 @@ parser.add_argument('-b', '--build', action='store_true', help='Download/Update 
 args = parser.parse_args()
 
 if args.uninstall:
-    call(["rm", "-f", nvim_install_dir / "bin" / "nvim"])
-    call(["rm", "-fr", nvim_install_dir / "share" / "nvim"])
-    call(["rm", "-fr", nvim_install_dir / "lib" / "nvim"])
+    run(["rm", "-f", nvim_install_dir / "bin" / "nvim"], check=True)
+    run(["rm", "-fr", nvim_install_dir / "share" / "nvim"], check=True)
+    run(["rm", "-fr", nvim_install_dir / "lib" / "nvim"], check=True)
 
 chdir(Path.home())
 # Install packages only if needed
 for pac in packages_for_build:
     if not apt_cache.get(pac) or not apt_cache.get(pac).is_installed:
         print("Needs to install packages for building Neovim")
-        call(["sudo", "apt-get", "install", "-y", *packages_for_build])
+        run(["sudo", "apt-get", "install", "-y", *packages_for_build], check=True)
         break
 
 if args.clean and neovimdir.exists():
     chdir(neovimdir)
-    call(["make", "distclean"])
+    run(["make", "distclean"], check=True)
 
 if args.build:
     if not neovimdir.exists():
-        call(["git", "clone", "-b", build_tag, "https://github.com/neovim/neovim.git", neovimdir])
+        run(["git", "clone", "-b", build_tag, "https://github.com/neovim/neovim.git", neovimdir], check=True)
     else:
-        call(["git", "-C", neovimdir, "pull"])
-        call(["git", "-C", neovimdir, "checkout", build_tag])
+        run(["git", "-C", neovimdir, "pull"], check=True)
+        run(["git", "-C", neovimdir, "checkout", build_tag], check=True)
 
     chdir(neovimdir)
-    call(["make", "deps"])
-    call(["make", "CMAKE_BUILD_TYPE=Release", "CMAKE_INSTALL_PREFIX={}".format(nvim_install_dir)])
-    call(["make", "install"])
+    run(["make", "deps"], check=True)
+    run(["make", "CMAKE_BUILD_TYPE=Release", f"CMAKE_INSTALL_PREFIX={nvim_install_dir}"], check=True)
+    run(["make", "install"], check=True)
