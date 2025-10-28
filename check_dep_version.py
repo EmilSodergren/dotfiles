@@ -1,6 +1,6 @@
 import re
-import semver
 from subprocess import run
+import semver
 
 semver_re = re.compile(
     r'(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?'
@@ -8,7 +8,7 @@ semver_re = re.compile(
 
 
 def get_kernel_version_string():
-    semver_string = run(["uname", "-r"], capture_output=True).stdout.decode("utf-8")
+    semver_string = run(["uname", "-r"], capture_output=True, check=True).stdout.decode("utf-8")
     a = semver.VersionInfo.parse(semver_string)
     return f"{a.major}.{a.minor}.{a.patch}"
 
@@ -16,7 +16,7 @@ def get_kernel_version_string():
 def version_is_at_least(version_str, min_version):
     current_version = semver_re.findall(version_str)
     if len(current_version) < 1:
-        print("Did not find a semver version in: {}".format(version_str))
+        print(f"Did not find a semver version in: {version_str}")
         return False
     current_version = ".".join(current_version[0][:3])
     try:
@@ -29,10 +29,10 @@ def version_is_at_least(version_str, min_version):
 
 
 def program_is_at_least(command, min_version):
-    if type(command) is str:
+    if isinstance(command, str):
         command = command.split(" ")
     try:
-        version_text = run(command, capture_output=True).stdout.decode("utf-8")
+        version_text = run(command, capture_output=True, check=True).stdout.decode("utf-8")
     except OSError:
         print(f'Error: Running command "{" ".join(command)}"')
         return False
@@ -40,8 +40,8 @@ def program_is_at_least(command, min_version):
 
 
 def check_programs():
-    golangver = "1.18.5"
-    nodever = "16.0.0"
+    golangver = "1.23.0"
+    nodever = "22.0.0"
     is_ok = True
     if not program_is_at_least("go version", golangver):
         print(f"Bad version of Golang, need at least version {golangver}")
