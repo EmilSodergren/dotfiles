@@ -41,7 +41,7 @@ settingsfiles = [
     ".golangci.yaml",
     ".hadolint.yaml",
     ".profile",
-    ".pylintrc.toml",
+    ".pylintrc",
     ".tmux.conf",
     antiword,
     ccls_config,
