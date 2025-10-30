@@ -356,7 +356,7 @@ if args.online:
     run(["python3", "-m", "pip", "install", "--force-reinstall", "--upgrade", *extra_pip_flags, "pynvim"], check=True)
 
     if not args.skip_all and not args.skip_rust:
-        with  Popen(["curl", "--proto", "=https", "--tlsv1.2", "-sSf", "https://sh.rustup.rs"], stdout=PIPE) as ps:
+        with Popen(["curl", "--proto", "=https", "--tlsv1.2", "-sSf", "https://sh.rustup.rs"], stdout=PIPE) as ps:
             run(["sh", "-s", "--", "--default-toolchain", "none", "-y"], stdin=ps.stdout, check=True)
             ps.wait()
         run([rustup_bin, "update", "stable"], check=True)
@@ -400,4 +400,4 @@ if args.pack or args.artifactory:
         command = ["jfrog", "rt", "u", str(Path.home() / dotfiles_name), f"ace-generic-prod-se-blu-sync/u009893/{dotfiles_name}"]
         os.system(" ".join(command))
 
-print(f"Finished: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}")
+print(f"Finished: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
