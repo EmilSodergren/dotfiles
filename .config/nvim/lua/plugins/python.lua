@@ -15,6 +15,7 @@ return {
                 pydocstyle = { enabled = false },
                 pylint = { enabled = true },
                 yapf = { enabled = true },
+                pylsp_mypy = { enabled = true },
               },
             },
           },

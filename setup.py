@@ -1,3 +1,4 @@
+# pylint: disable=invalid-name
 from os import chdir, system
 
 from subprocess import run, Popen, PIPE, TimeoutExpired
@@ -32,17 +33,17 @@ yarn_packages = [
     "yaml-language-server", "dockerfile-language-server-nodejs", "bash-language-server", "neovim", "vscode-langservers-extracted",
     "ansible/ansible-language-server", "markdownlint-cli2"
 ]
-settingsfiles = [
-    ".bash_completion",
-    ".bash_completion.d",
-    ".bash_git",
-    ".bashrc",
-    ".gitconfig",
-    ".golangci.yaml",
-    ".hadolint.yaml",
-    ".profile",
-    ".pylintrc",
-    ".tmux.conf",
+settingsfiles: list[Path] = [
+    Path(".bash_completion"),
+    Path(".bash_completion.d"),
+    Path(".bash_git"),
+    Path(".bashrc"),
+    Path(".gitconfig"),
+    Path(".golangci.yaml"),
+    Path(".hadolint.yaml"),
+    Path(".profile"),
+    Path(".pylintrc"),
+    Path(".tmux.conf"),
     antiword,
     ccls_config,
     forgit,
@@ -353,6 +354,7 @@ if args.online:
     run(["python3", "-m", "pip", "install", "--force-reinstall", "--upgrade", *extra_pip_flags, "greenlet"], check=True)
     run(["python3", "-m", "pip", "install", "--force-reinstall", "--upgrade", *extra_pip_flags, "msgpack"], check=True)
     run(["python3", "-m", "pip", "install", "--force-reinstall", "--upgrade", *extra_pip_flags, "pynvim"], check=True)
+    run(["python3", "-m", "pip", "install", "--force-reinstall", "--upgrade", *extra_pip_flags, "pylsp-mypy"], check=True)
 
     if not args.skip_all and not args.skip_rust:
         with Popen(["curl", "--proto", "=https", "--tlsv1.2", "-sSf", "https://sh.rustup.rs"], stdout=PIPE) as ps:
