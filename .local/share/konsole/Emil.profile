@@ -5,7 +5,7 @@ Font=Hack Nerd Font,8,-1,5,50,0,0,0,0,0
 [General]
 Name=Emil
 Parent=FALLBACK/
-TerminalCenter=false
+TerminalCenter=true
 
 [Interaction Options]
 AutoCopySelectedText=false
