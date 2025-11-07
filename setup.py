@@ -30,8 +30,13 @@ pycodestyle_config = Path(".config") / "pycodestyle"
 yapf_config = Path(".config") / "yapf" / "style"
 kwalletrc = Path.home() / ".config" / "kwalletrc"
 yarn_packages = [
-    "yaml-language-server", "dockerfile-language-server-nodejs", "bash-language-server", "neovim", "vscode-langservers-extracted",
-    "ansible/ansible-language-server", "markdownlint-cli2"
+    "ansible/ansible-language-server",
+    "bash-language-server",
+    "dockerfile-language-server-nodejs",
+    "markdownlint-cli2",
+    "neovim",
+    "vscode-langservers-extracted",
+    "yaml-language-server",
 ]
 settingsfiles: list[Path] = [
     Path(".bash_completion"),
@@ -122,6 +127,41 @@ packages_to_install = [
     "vim-nox",
     "xclip",
 ]
+golang_tools_to_install = [
+    "github.com/abenz1267/gomvp",
+    "github.com/abice/go-enum",
+    "github.com/cweill/gotests/...",
+    "github.com/davidrjenni/reftools/cmd/fillswitch",
+    "github.com/fatih/gomodifytags",
+    "github.com/go-delve/delve/cmd/dlv",
+    "github.com/golangci/golangci-lint/v2/cmd/golangci-lint",
+    "github.com/josharian/impl",
+    "github.com/koron/iferr",
+    "github.com/kyoh86/richgo",
+    "github.com/nametake/golangci-lint-langserver",
+    "github.com/onsi/ginkgo/v2/ginkgo",
+    "github.com/segmentio/golines",
+    "github.com/tmc/json-to-struct",
+    "github.com/twpayne/go-jsonstruct/v3/cmd/gojsonstruct",
+    "go.uber.org/mock/mockgen",
+    "golang.org/x/tools/cmd/callgraph",
+    "golang.org/x/tools/cmd/godoc",
+    "golang.org/x/tools/cmd/goimports",
+    "golang.org/x/tools/cmd/gonew",
+    "golang.org/x/tools/gopls",
+    "golang.org/x/vuln/cmd/govulncheck",
+    "gotest.tools/gotestsum",
+    "mvdan.cc/gofumpt",
+]
+pip_packages_to_install = [
+    "ansible-lint",
+    "greenlet",
+    "msgpack",
+    "pylsp-mypy",
+    "pynvim",
+    "python-lsp-server[rope,pyflakes,mccabe,pylint,yapf]",
+]
+
 packages_to_install_wayland = ["wl-clipboard"]
 
 apt_cache = apt.Cache()
@@ -203,6 +243,25 @@ def install_tmux_thumbs(install_path, url):
         copy2(build_path / file, install_path / file)
 
 
+def install_golang_tools():
+    print("Installing go tools")
+    for tool in golang_tools_to_install:
+        name = Path(tool).name.rstrip('.')
+        print("Installing", name if name else "gotest")
+        run(["go", "install", tool + "@latest"], check=True)
+
+
+def install_pip_packages():
+    # semver might be installed earlier in this script
+    import semver  # type: ignore # pylint: disable=import-outside-toplevel
+    extra_pip_flags = ["--user", "--break-system-packages"]
+    # For python version older than 3.11
+    if semver.compare(platform.python_version(), "3.11.0") == -1:
+        extra_pip_flags = []
+    for package in pip_packages_to_install:
+        run(["python3", "-m", "pip", "install", "--force-reinstall", "--upgrade", *extra_pip_flags, package], check=True)
+
+
 for stuff in settingsfiles:
     linkpath = Path.home() / stuff
     sourcepath = dotfilespath / stuff
@@ -273,8 +332,7 @@ if args.online:
         if not args.skip_tmux:
             install_program("tmux.py", args.clean)
 
-    run(["go", "install", "github.com/nametake/golangci-lint-langserver@latest"], check=True)
-    run(["go", "install", "golang.org/x/tools/cmd/godoc@latest"], check=True)
+    install_golang_tools()
 
     for tmuxpath, tmuxurl in [
         (dotfilespath / "tmux-resurrect", "https://github.com/tmux-plugins/tmux-resurrect"),
@@ -313,21 +371,21 @@ if args.online:
     move("/tmp/rust-analyzer-x86_64-unknown-linux-gnu", ra_bin)
     os.chmod(ra_bin, 0o755)
     # Download Lua LS
-    with Popen(['curl', 'https://api.github.com/repos/LuaLS/lua-language-server/releases/latest'], stdout=PIPE) as ps:
-        latest_lua_version = json.load(ps.stdout).get('name')
-        ps.wait()
-        lua_tar_name = f'lua-language-server-{latest_lua_version}-linux-x64.tar.gz'
-        luals_dl_url = f'https://github.com/LuaLS/lua-language-server/releases/download/{latest_lua_version}/{lua_tar_name}'
-        lua_install_dir = Path.home() / '.local' / 'lib' / 'lua-language-server'
-        run(['wget', '-P', '/tmp/', luals_dl_url], check=True)
-
-    lua_install_dir.mkdir(parents=True, exist_ok=True)
-    run(['tar', 'zxf', Path('/tmp/') / lua_tar_name], cwd=lua_install_dir, check=True)
-    os.remove(Path('/tmp/') / lua_tar_name)
-    lua_linkpath = host_local_bin / 'lua-language-server'
-    if lua_linkpath.is_symlink():
-        lua_linkpath.unlink()
-    lua_linkpath.symlink_to(lua_install_dir / 'bin' / 'lua-language-server')
+    # with Popen(['curl', 'https://api.github.com/repos/LuaLS/lua-language-server/releases/latest'], stdout=PIPE) as ps:
+    #     latest_lua_version = json.load(ps.stdout).get('name')
+    #     ps.wait()
+    #     lua_tar_name = f'lua-language-server-{latest_lua_version}-linux-x64.tar.gz'
+    #     luals_dl_url = f'https://github.com/LuaLS/lua-language-server/releases/download/{latest_lua_version}/{lua_tar_name}'
+    #     lua_install_dir = Path.home() / '.local' / 'lib' / 'lua-language-server'
+    #     run(['wget', '-P', '/tmp/', luals_dl_url], check=True)
+    #
+    # lua_install_dir.mkdir(parents=True, exist_ok=True)
+    # run(['tar', 'zxf', Path('/tmp/') / lua_tar_name], cwd=lua_install_dir, check=True)
+    # os.remove(Path('/tmp/') / lua_tar_name)
+    # lua_linkpath = host_local_bin / 'lua-language-server'
+    # if lua_linkpath.is_symlink():
+    #     lua_linkpath.unlink()
+    # lua_linkpath.symlink_to(lua_install_dir / 'bin' / 'lua-language-server')
 
     # Download hadolint
     hadolint_url = 'https://github.com/hadolint/hadolint/releases/latest/download/hadolint-Linux-x86_64'
@@ -341,20 +399,7 @@ if args.online:
     # Download Hack font zip file
     run(["wget", "-N", "-P", "bin", "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Hack.zip"], check=True)
 
-    import semver
-    extra_pip_flags = ["--user", "--break-system-packages"]
-    # For python version older than 3.11
-    if semver.compare(platform.python_version(), "3.11.0") == -1:
-        extra_pip_flags = []
-    run([
-        "python3", "-m", "pip", "install", "--force-reinstall", "--upgrade", *extra_pip_flags,
-        "python-lsp-server[rope,pyflakes,mccabe,pylint,yapf]"
-    ],
-        check=True)
-    run(["python3", "-m", "pip", "install", "--force-reinstall", "--upgrade", *extra_pip_flags, "greenlet"], check=True)
-    run(["python3", "-m", "pip", "install", "--force-reinstall", "--upgrade", *extra_pip_flags, "msgpack"], check=True)
-    run(["python3", "-m", "pip", "install", "--force-reinstall", "--upgrade", *extra_pip_flags, "pynvim"], check=True)
-    run(["python3", "-m", "pip", "install", "--force-reinstall", "--upgrade", *extra_pip_flags, "pylsp-mypy"], check=True)
+    install_pip_packages()
 
     if not args.skip_all and not args.skip_rust:
         with Popen(["curl", "--proto", "=https", "--tlsv1.2", "-sSf", "https://sh.rustup.rs"], stdout=PIPE) as ps:
