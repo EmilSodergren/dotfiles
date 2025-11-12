@@ -26,7 +26,6 @@ forgit = local_bin / "forgit"
 write_notes = local_bin / "write_notes"
 konsole_config = Path(".local") / "share" / "konsole" / "Emil.profile"
 neovim_init = Path(".config") / "nvim"
-pycodestyle_config = Path(".config") / "pycodestyle"
 yapf_config = Path(".config") / "yapf" / "style"
 kwalletrc = Path.home() / ".config" / "kwalletrc"
 yarn_packages = [
@@ -54,7 +53,6 @@ settingsfiles: list[Path] = [
     forgit,
     konsole_config,
     neovim_init,
-    pycodestyle_config,
     write_notes,
     yapf_config,
 ]
