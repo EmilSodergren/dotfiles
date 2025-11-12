@@ -1,5 +1,5 @@
 tmux-*/
-bin/Hack.zip
+bin/Hack.tar.xz
 auth.json
 __pycache__
 .local/share/southernlights

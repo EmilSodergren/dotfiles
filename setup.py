@@ -394,8 +394,6 @@ if args.online:
     # Download bfg.jar
     run(["wget", "-O", bfg_jar, "https://repo1.maven.org/maven2/com/madgag/bfg/1.14.0/bfg-1.14.0.jar"], check=True)
     os.chmod(bfg_jar, 0o755)
-    # Download Hack font zip file
-    run(["wget", "-N", "-P", "bin", "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Hack.zip"], check=True)
 
     install_pip_packages()
 
@@ -424,7 +422,8 @@ if args.online:
         pass
 
 if args.font:
-    run(["sudo", "unzip", "-o", dotfilespath / "bin" / "Hack.zip", "-d", "/usr/local/share/fonts/"], check=True)
+    run(["sudo", "rm", "-rf", '/usr/local/share/fonts/*'], check=True)
+    run(["sudo", "tar", "-xf", dotfilespath / "bin" / "Hack.tar.xz"], cwd='/usr/local/share/fonts/', check=True)
     run(["fc-cache", "-f", "-v"], check=True)
 
 if args.pack or args.artifactory:
