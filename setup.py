@@ -1,4 +1,3 @@
-# pylint: disable=invalid-name
 from os import chdir, system
 
 from subprocess import run, Popen, PIPE, TimeoutExpired
@@ -117,6 +116,7 @@ packages_to_install = [
     "make",
     "python3-jedi",
     "python3-pip",
+    "python3-requests",
     "python3-semver",
     "python3-venv",
     "shellcheck",
@@ -355,44 +355,43 @@ if args.online:
     markdownlint_cli2.symlink_to(Path.home() / ".local" / "node_modules" / "markdownlint-cli2" / "markdownlint-cli2-bin.mjs")
 
     (Path.home() / local_bin).mkdir(exist_ok=True)
+    from github_downloader import GithubDownloader
     # Download Marksman
-    run(["wget", "-N", "-O", marksman_bin, "https://github.com/artempyanykh/marksman/releases/latest/download/marksman-linux-x64"],
-        check=True)
-    os.chmod(marksman_bin, 0o755)
+    with GithubDownloader(url='https://api.github.com/repos/artempyanykh/marksman/releases/latest',
+                          file_identifier='marksman-linux-x64') as f:
+        move(f, marksman_bin)
+        os.chmod(marksman_bin, 0o755)
+
     # Download rust-analyzer
-    run([
-        "wget", "-P", "/tmp/",
-        "https://github.com/rust-lang/rust-analyzer/releases/latest/download/rust-analyzer-x86_64-unknown-linux-gnu.gz"
-    ],
-        check=True)
-    run(["gunzip", "/tmp/rust-analyzer-x86_64-unknown-linux-gnu.gz"], check=True)
-    move("/tmp/rust-analyzer-x86_64-unknown-linux-gnu", ra_bin)
-    os.chmod(ra_bin, 0o755)
-    # Download Lua LS
-    # with Popen(['curl', 'https://api.github.com/repos/LuaLS/lua-language-server/releases/latest'], stdout=PIPE) as ps:
-    #     latest_lua_version = json.load(ps.stdout).get('name')
-    #     ps.wait()
-    #     lua_tar_name = f'lua-language-server-{latest_lua_version}-linux-x64.tar.gz'
-    #     luals_dl_url = f'https://github.com/LuaLS/lua-language-server/releases/download/{latest_lua_version}/{lua_tar_name}'
-    #     lua_install_dir = Path.home() / '.local' / 'lib' / 'lua-language-server'
-    #     run(['wget', '-P', '/tmp/', luals_dl_url], check=True)
-    #
-    # lua_install_dir.mkdir(parents=True, exist_ok=True)
-    # run(['tar', 'zxf', Path('/tmp/') / lua_tar_name], cwd=lua_install_dir, check=True)
-    # os.remove(Path('/tmp/') / lua_tar_name)
-    # lua_linkpath = host_local_bin / 'lua-language-server'
-    # if lua_linkpath.is_symlink():
-    #     lua_linkpath.unlink()
-    # lua_linkpath.symlink_to(lua_install_dir / 'bin' / 'lua-language-server')
+    with GithubDownloader(url='https://api.github.com/repos/rust-lang/rust-analyzer/releases/latest',
+                          file_identifier='x86_64-unknown-linux-gnu.gz') as f:
+        move(f, ra_bin.parent)
+        run(["gunzip", f.name], cwd=ra_bin.parent, check=True)
+        move(ra_bin.parent / "rust-analyzer-x86_64-unknown-linux-gnu", ra_bin)
+        os.chmod(ra_bin, 0o755)
+
+    # Download lua language server
+    with GithubDownloader(url='https://api.github.com/repos/LuaLS/lua-language-server/releases/latest',
+                          file_identifier='linux-x64.tar.gz') as f:
+        lua_install_dir = Path.home() / '.local' / 'lib' / 'lua-language-server'
+        lua_install_dir.mkdir(parents=True, exist_ok=True)
+        run(['tar', '-xf', f], cwd=lua_install_dir, check=True)
+        lua_linkpath = host_local_bin / 'lua-language-server'
+        if lua_linkpath.is_symlink():
+            lua_linkpath.unlink()
+        lua_linkpath.symlink_to(lua_install_dir / 'bin' / 'lua-language-server')
 
     # Download hadolint
-    hadolint_url = 'https://github.com/hadolint/hadolint/releases/latest/download/hadolint-Linux-x86_64'
-    run(['wget', '-P', '/tmp/', hadolint_url], check=True)
-    move("/tmp/hadolint-Linux-x86_64", hado_bin)
-    os.chmod(hado_bin, 0o755)
+    with GithubDownloader(url='https://api.github.com/repos/hadolint/hadolint/releases/latest', file_identifier='linux-x86_64') as f:
+        move(f, hado_bin)
+        os.chmod(hado_bin, 0o755)
+
+    # Download Hack font zip file
+    with GithubDownloader(url='https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest', file_identifier='Hack.tar.xz') as f:
+        copy2(f, "bin/")
 
     # Download bfg.jar
-    run(["wget", "-O", bfg_jar, "https://repo1.maven.org/maven2/com/madgag/bfg/1.14.0/bfg-1.14.0.jar"], check=True)
+    run(["wget", "-O", bfg_jar, "https://repo1.maven.org/maven2/com/madgag/bfg/1.15.0/bfg-1.15.0.jar"], check=True)
     os.chmod(bfg_jar, 0o755)
 
     install_pip_packages()
