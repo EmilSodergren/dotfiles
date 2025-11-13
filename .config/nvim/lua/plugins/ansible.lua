@@ -1,5 +1,8 @@
 return {
   {
+    "mfussenegger/nvim-ansible",
+  },
+  {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
