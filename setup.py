@@ -152,6 +152,7 @@ golang_tools_to_install = [
     "mvdan.cc/gofumpt",
 ]
 pip_packages_to_install = [
+    "ansible",
     "ansible-lint",
     "greenlet",
     "msgpack",
