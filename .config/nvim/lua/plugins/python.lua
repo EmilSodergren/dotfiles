@@ -13,6 +13,7 @@ return {
                 autopep8 = { enabled = false },
                 flake8 = { enabled = false },
                 pydocstyle = { enabled = false },
+                pycodestyle = { enabled = false },
                 pylint = { enabled = true },
                 yapf = { enabled = true },
                 pylsp_mypy = { enabled = true },

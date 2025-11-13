@@ -1,0 +1,7 @@
+ansible
+ansible-lint
+greenlet
+msgpack
+pylsp-mypy
+pynvim
+python-lsp-server[rope,pyflakes,mccabe,pylint,yapf]

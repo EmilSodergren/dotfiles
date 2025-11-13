@@ -118,6 +118,7 @@ packages_to_install = [
     "python3-pip",
     "python3-requests",
     "python3-semver",
+    "python3-setuptools",
     "python3-venv",
     "shellcheck",
     "software-properties-common",
@@ -150,15 +151,6 @@ golang_tools_to_install = [
     "golang.org/x/vuln/cmd/govulncheck",
     "gotest.tools/gotestsum",
     "mvdan.cc/gofumpt",
-]
-pip_packages_to_install = [
-    "ansible",
-    "ansible-lint",
-    "greenlet",
-    "msgpack",
-    "pylsp-mypy",
-    "pynvim",
-    "python-lsp-server[rope,pyflakes,mccabe,pylint,yapf]",
 ]
 
 packages_to_install_wayland = ["wl-clipboard"]
@@ -248,17 +240,6 @@ def install_golang_tools():
         name = Path(tool).name.rstrip('.')
         print("Installing", name if name else "gotest")
         run(["go", "install", tool + "@latest"], check=True)
-
-
-def install_pip_packages():
-    # semver might be installed earlier in this script
-    import semver  # type: ignore # pylint: disable=import-outside-toplevel
-    extra_pip_flags = ["--user", "--break-system-packages"]
-    # For python version older than 3.11
-    if semver.compare(platform.python_version(), "3.11.0") == -1:
-        extra_pip_flags = []
-    for package in pip_packages_to_install:
-        run(["python3", "-m", "pip", "install", "--force-reinstall", "--upgrade", *extra_pip_flags, package], check=True)
 
 
 for stuff in settingsfiles:
@@ -402,7 +383,13 @@ if args.online:
     run(["wget", "-O", bfg_jar, "https://repo1.maven.org/maven2/com/madgag/bfg/1.15.0/bfg-1.15.0.jar"], check=True)
     os.chmod(bfg_jar, 0o755)
 
-    install_pip_packages()
+    # semver might be installed earlier in this script
+    import semver  # type: ignore # pylint: disable=import-outside-toplevel
+    extra_pip_flags = ["--user", "--break-system-packages"]
+    # For python version older than 3.11
+    if semver.compare(platform.python_version(), "3.11.0") == -1:
+        extra_pip_flags = []
+    run(["python3", "-m", "pip", "install", "--force-reinstall", "--upgrade", *extra_pip_flags, "-r", "./requirements.txt"], check=True)
 
     if not args.skip_all and not args.skip_rust:
         with Popen(["curl", "--proto", "=https", "--tlsv1.2", "-sSf", "https://sh.rustup.rs"], stdout=PIPE) as ps:
