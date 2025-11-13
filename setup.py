@@ -6,7 +6,6 @@ from datetime import datetime
 from glob import glob
 from shutil import move, copy2
 from pathlib import Path
-import json
 import platform
 import re
 import os
@@ -28,7 +27,6 @@ neovim_init = Path(".config") / "nvim"
 yapf_config = Path(".config") / "yapf" / "style"
 kwalletrc = Path.home() / ".config" / "kwalletrc"
 yarn_packages = [
-    "ansible/ansible-language-server",
     "bash-language-server",
     "dockerfile-language-server-nodejs",
     "markdownlint-cli2",
