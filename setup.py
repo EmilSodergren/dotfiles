@@ -18,6 +18,7 @@ bfg_jar = host_local_bin / "bfg.jar"
 marksman_bin = host_local_bin / "marksman"
 ra_bin = host_local_bin / "rust-analyzer"
 hado_bin = host_local_bin / "hadolint"
+ansiblels_bin = local_bin / "ansible-language-server"
 antiword = local_bin / "antiword"
 ccls_config = local_bin / "ccls_config"
 forgit = local_bin / "forgit"
@@ -45,6 +46,7 @@ settingsfiles: list[Path] = [
     Path(".profile"),
     Path(".pylintrc"),
     Path(".tmux.conf"),
+    ansiblels_bin,
     antiword,
     ccls_config,
     forgit,
@@ -359,6 +361,13 @@ if args.online:
                           file_identifier='marksman-linux-x64') as f:
         move(f, marksman_bin)
         os.chmod(marksman_bin, 0o755)
+
+    # Download ansble language server
+    with GithubDownloader(url='https://api.github.com/repos/ansible/vscode-ansible/releases/latest', file_identifier='vsix') as f:
+        run(['unzip', '-qq', f], cwd=f.parent, check=True)
+        ansiblels_install_dir = Path.home() / '.local' / 'lib' / 'ansible-language-server'
+        ansiblels_install_dir.mkdir(parents=True, exist_ok=True)
+        copy2(f.parent / 'extension' / 'out' / 'server' / 'src' / 'server.js', ansiblels_install_dir)
 
     # Download rust-analyzer
     with GithubDownloader(url='https://api.github.com/repos/rust-lang/rust-analyzer/releases/latest',

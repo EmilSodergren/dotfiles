@@ -5,8 +5,7 @@ return {
       servers = {
         ansiblels = {
           cmd = {
-            os.getenv("HOME") .. "/.local/node_modules/@ansible/ansible-language-server/bin/ansible-language-server",
-            "--stdio"
+            os.getenv("HOME") .. "/.local/bin/ansible-language-server", "--stdio"
           },
         },
       },
