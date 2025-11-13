@@ -93,7 +93,7 @@ def get_konsole_tag():
         case "6.8.0":
             return "v23.08.5"
         case "6.17.0":
-            return "v25.08.5"
+            return "v25.08.3"
         case _:
             raise ValueError("No match for current kernel version")
 
@@ -119,7 +119,7 @@ if args.build:
         if not konsole_dir.exists():
             run(["git", "clone", "-b", get_konsole_tag(), "https://invent.kde.org/utilities/konsole.git", konsole_dir], check=True)
         else:
-            run(["git", "-C", konsole_dir, "pull"], check=True)
+            run(["git", "-C", konsole_dir, "fetch", "--all"], check=True)
             run(["git", "-C", konsole_dir, "checkout", get_konsole_tag()], check=True)
 
     build_dir.mkdir(exist_ok=True)

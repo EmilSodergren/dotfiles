@@ -39,7 +39,7 @@ if args.build:
     if not tmux_dir.exists():
         run(["git", "clone", "-b", build_tag, "https://github.com/tmux/tmux.git", tmux_dir], check=True)
     else:
-        run(["git", "-C", tmux_dir, "pull"], check=True)
+        run(["git", "-C", tmux_dir, "fetch", "--all"], check=True)
         run(["git", "-C", tmux_dir, "checkout", build_tag], check=True)
 
     chdir(tmux_dir)
