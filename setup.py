@@ -339,29 +339,26 @@ if args.online:
     (Path.home() / local_bin).mkdir(exist_ok=True)
     from github_downloader import GithubDownloader
     # Download Marksman
-    with GithubDownloader(url='https://api.github.com/repos/artempyanykh/marksman/releases/latest',
-                          file_identifier='marksman-linux-x64') as f:
+    with GithubDownloader(url='artempyanykh/marksman', file_identifier='marksman-linux-x64') as f:
         move(f, marksman_bin)
         os.chmod(marksman_bin, 0o755)
 
     # Download ansble language server
-    with GithubDownloader(url='https://api.github.com/repos/ansible/vscode-ansible/releases/latest', file_identifier='vsix') as f:
+    with GithubDownloader(url='ansible/vscode-ansible', file_identifier='vsix') as f:
         run(['unzip', '-qq', f], cwd=f.parent, check=True)
         ansiblels_install_dir = Path.home() / '.local' / 'lib' / 'ansible-language-server'
         ansiblels_install_dir.mkdir(parents=True, exist_ok=True)
         copy2(f.parent / 'extension' / 'out' / 'server' / 'src' / 'server.js', ansiblels_install_dir)
 
     # Download rust-analyzer
-    with GithubDownloader(url='https://api.github.com/repos/rust-lang/rust-analyzer/releases/latest',
-                          file_identifier='x86_64-unknown-linux-gnu.gz') as f:
+    with GithubDownloader(url='rust-lang/rust-analyzer', file_identifier='x86_64-unknown-linux-gnu.gz') as f:
         move(f, ra_bin.parent)
         run(["gunzip", f.name], cwd=ra_bin.parent, check=True)
         move(ra_bin.parent / "rust-analyzer-x86_64-unknown-linux-gnu", ra_bin)
         os.chmod(ra_bin, 0o755)
 
     # Download lua language server
-    with GithubDownloader(url='https://api.github.com/repos/LuaLS/lua-language-server/releases/latest',
-                          file_identifier='linux-x64.tar.gz') as f:
+    with GithubDownloader(url='LuaLS/lua-language-server', file_identifier='linux-x64.tar.gz') as f:
         lua_install_dir = Path.home() / '.local' / 'lib' / 'lua-language-server'
         lua_install_dir.mkdir(parents=True, exist_ok=True)
         run(['tar', '-xf', f], cwd=lua_install_dir, check=True)
@@ -371,12 +368,12 @@ if args.online:
         lua_linkpath.symlink_to(lua_install_dir / 'bin' / 'lua-language-server')
 
     # Download hadolint
-    with GithubDownloader(url='https://api.github.com/repos/hadolint/hadolint/releases/latest', file_identifier='linux-x86_64') as f:
+    with GithubDownloader(url='hadolint/hadolint', file_identifier='linux-x86_64') as f:
         move(f, hado_bin)
         os.chmod(hado_bin, 0o755)
 
     # Download Hack font zip file
-    with GithubDownloader(url='https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest', file_identifier='Hack.tar.xz') as f:
+    with GithubDownloader(url='ryanoasis/nerd-fonts', file_identifier='Hack.tar.xz') as f:
         copy2(f, "bin/")
 
     # Download bfg.jar

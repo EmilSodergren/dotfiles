@@ -10,7 +10,7 @@ class GithubDownloader:
     def __init__(self, url, file_identifier, quiet=False):
         # pylint: disable=consider-using-with
         self.__temp_dir = tempfile.TemporaryDirectory(ignore_cleanup_errors=True, delete=False)
-        self.url = url
+        self.url = 'https://api.github.com/repos/' + url + '/releases/latest'
         self.file_identifier = file_identifier
         self.quiet = quiet
 
