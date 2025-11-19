@@ -1,8 +1,31 @@
 #!/usr/bin/python3
 
 import tempfile
+from datetime import datetime
 from pathlib import Path
+import time
 import requests
+
+TOKEN_PATH = Path.home() / '.local/share/token/github.token'
+EXPIRY_SOON_DAYS = 7
+
+
+def check_api_token_expiry():
+    if not TOKEN_PATH.exists():
+        print(f'No token found at {TOKEN_PATH}, can not check expiry')
+        return
+    token = TOKEN_PATH.read_text().strip()
+    response = requests.get('https://api.github.com/user', headers={'Authorization': f'token {token}'}, timeout=10)
+    expiration_header = response.headers.get('GitHub-Authentication-Token-Expiration')
+    expiry_days = (datetime.strptime(expiration_header, r'%Y-%m-%d %H:%M:%S %z').replace(tzinfo=None) - datetime.now()).days
+    if expiry_days <= 0:
+        print('TOKEN HAS EXPIRED')
+        return
+    if expiry_days < EXPIRY_SOON_DAYS:
+        print('TOKEN will expire soon...')
+        print('Fix here -> https://github.com/settings/personal-access-tokens')
+        time.sleep(10)
+    print(f"Token expires in {expiry_days} days")
 
 
 class GithubDownloader:
@@ -15,12 +38,11 @@ class GithubDownloader:
         self.quiet = quiet
 
     def __enter__(self):
-        token_path = Path.home() / '.local/share/token/github.token'
         headers = None
-        if not token_path.exists():
-            print(f'If things fail here... place a token in {token_path}')
+        if not TOKEN_PATH.exists():
+            print(f'If things fail here... place a token in {TOKEN_PATH}')
         else:
-            token = token_path.read_text().strip()
+            token = TOKEN_PATH.read_text().strip()
             headers = {"Authorization": f"Bearer {token}"}
         r = requests.get(url=self.url, headers=headers, timeout=10)
         if not r.ok:

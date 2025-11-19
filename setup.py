@@ -299,6 +299,10 @@ if not check_dep_version.check_programs():
     print("Error: programs not correct versions")
     raise SystemExit
 
+from github_downloader import check_api_token_expiry, GithubDownloader  # pylint: disable=wrong-import-position
+
+check_api_token_expiry()
+
 if args.online:
     if not glob("/etc/apt/sources.list.d/kubuntu-ppa*.sources"):
         run(["sudo", "add-apt-repository", "-y", "ppa:kubuntu-ppa/backports"], check=True)
@@ -337,7 +341,6 @@ if args.online:
     markdownlint_cli2.symlink_to(Path.home() / ".local" / "node_modules" / "markdownlint-cli2" / "markdownlint-cli2-bin.mjs")
 
     (Path.home() / local_bin).mkdir(exist_ok=True)
-    from github_downloader import GithubDownloader
     # Download Marksman
     with GithubDownloader(url='artempyanykh/marksman', file_identifier='marksman-linux-x64') as f:
         move(f, marksman_bin)
@@ -420,18 +423,18 @@ if args.font:
 if args.pack or args.artifactory:
     chdir(Path.home())
     kernel_version = check_dep_version.get_kernel_version_string()
-    dotfiles_name = f"dotfiles_{kernel_version}.tar.gz"
+    DOTFILES_NAME = f"dotfiles_{kernel_version}.tar.gz"
     run([
-        "tar", r"--exclude=*/\.git", r"--exclude=*/blink.cmp/target/release/version", "-czf", dotfiles_name, ".dotfiles/", "go/bin/",
+        "tar", r"--exclude=*/\.git", r"--exclude=*/blink.cmp/target/release/version", "-czf", DOTFILES_NAME, ".dotfiles/", "go/bin/",
         ".cargo/bin/", ".cargo/env", local_bin, ".local/node_modules", ".local/include", ".local/lib", ".local/share/nvim",
         ".local/share/konsole", "konsole", ".fzf.bash"
     ],
         check=True)
     print("")
-    print(".dotfiles has been packed into " + str(Path.home() / dotfiles_name))
+    print(".dotfiles has been packed into " + str(Path.home() / DOTFILES_NAME))
 
     if args.artifactory:
-        command = ["jfrog", "rt", "u", str(Path.home() / dotfiles_name), f"ace-generic-prod-se-blu-sync/u009893/{dotfiles_name}"]
+        command = ["jfrog", "rt", "u", str(Path.home() / DOTFILES_NAME), f"ace-generic-prod-se-blu-sync/u009893/{DOTFILES_NAME}"]
         os.system(" ".join(command))
 
 print(f"Finished: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
