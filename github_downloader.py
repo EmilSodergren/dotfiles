@@ -17,7 +17,11 @@ def check_api_token_expiry():
     token = TOKEN_PATH.read_text().strip()
     response = requests.get('https://api.github.com/user', headers={'Authorization': f'token {token}'}, timeout=10)
     expiration_header = response.headers.get('GitHub-Authentication-Token-Expiration')
-    expiry_days = (datetime.strptime(expiration_header, r'%Y-%m-%d %H:%M:%S %z').replace(tzinfo=None) - datetime.now()).days
+    expiry_days = (datetime.strptime(expiration_header, r'%Y-%m-%d %H:%M:%S %z').replace(tzinfo=None) -
+                   datetime.now()).days if expiration_header else None
+    if not expiry_days:
+        print('Token will never expire')
+        return
     if expiry_days <= 0:
         print('TOKEN HAS EXPIRED')
         return
