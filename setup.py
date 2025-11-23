@@ -96,7 +96,7 @@ tree_sitter_languages = [
 ]
 rustup_bin = Path.home() / ".cargo/bin/rustup"
 rust_crates = [
-    "bat", "cargo-edit", "cargo-update", "cargo-watch", "du-dust", "fd-find", "git-delta", "lsd", "ripgrep", "sd", "tokei",
+    "bat", "cargo-edit", "cargo-update", "cargo-watch", "du-dust", "fd-find", "git-delta", "jnv", "lsd", "ripgrep", "sd", "tokei",
     "tree-sitter-cli", "watchexec-cli", "ytop", "zoxide"
 ]
 packages_to_install = [
