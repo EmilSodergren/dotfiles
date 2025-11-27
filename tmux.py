@@ -8,9 +8,9 @@ import apt
 tmux_install_dir = Path.home() / ".local"
 tmux_dir = Path.home() / "tmux"
 apt_cache = apt.Cache()
-nproc = str(cpu_count())
+NPROC = str(cpu_count())
 
-build_tag = "3.5a"
+BUILD_TAG = "3.6"
 
 parser = ArgumentParser(description='Build the tmux program')
 packages_for_build = [
@@ -37,15 +37,15 @@ if args.clean:
 
 if args.build:
     if not tmux_dir.exists():
-        run(["git", "clone", "-b", build_tag, "https://github.com/tmux/tmux.git", tmux_dir], check=True)
+        run(["git", "clone", "-b", BUILD_TAG, "https://github.com/tmux/tmux.git", tmux_dir], check=True)
     else:
         run(["git", "-C", tmux_dir, "fetch", "--all"], check=True)
-        run(["git", "-C", tmux_dir, "checkout", build_tag], check=True)
+        run(["git", "-C", tmux_dir, "checkout", BUILD_TAG], check=True)
 
     chdir(tmux_dir)
     run(["sh", "autogen.sh"], check=True)
     run(["./configure", f"--prefix={tmux_install_dir}"], check=True)
-    run(["make", "-j", nproc], check=True)
+    run(["make", "-j", NPROC], check=True)
     if apt_cache.get("tmux") and apt_cache.get("tmux").is_installed:
         run(["sudo", "apt-get", "remove", "-y", "tmux"], check=True)
     run(["make", "install"], check=True)
