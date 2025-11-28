@@ -4,9 +4,10 @@ from subprocess import run, Popen, PIPE, TimeoutExpired
 from argparse import ArgumentParser
 from datetime import datetime
 from glob import glob
-from shutil import move, copy2
+from shutil import move, copy2, rmtree
 from pathlib import Path
 import platform
+import site
 import re
 import os
 import apt
@@ -390,6 +391,14 @@ if args.online:
     if semver.compare(platform.python_version(), "3.11.0") == -1:
         extra_pip_flags = []
     run(["python3", "-m", "pip", "install", "--force-reinstall", "--upgrade", *extra_pip_flags, "-r", "./requirements.txt"], check=True)
+    #
+    # Cleanup ansible stuff to minimize footprint, it brings in tonnes of stuff that I do not care about
+    ansible_packages_path = Path(site.getusersitepackages()) / "ansible_collections"
+    for ansi_pack in [
+            "amazon", "arista", "azure", "check_point", "cisco", "dellemc", "f5networks", "fortinet", "google", "hitachivantara",
+            "junipernetworks", "netapp", "ovirt", "purestorage", "vmware", "vyos"
+    ]:
+        rmtree(ansible_packages_path / ansi_pack)
 
     if not args.skip_all and not args.skip_rust:
         with Popen(["curl", "--proto", "=https", "--tlsv1.2", "-sSf", "https://sh.rustup.rs"], stdout=PIPE) as ps:
