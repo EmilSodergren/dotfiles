@@ -158,23 +158,23 @@ packages_to_install_wayland = ["wl-clipboard"]
 
 apt_cache = apt.Cache()
 
-parser = ArgumentParser(description='Setup the machine')
+parser = ArgumentParser(description="Setup the machine")
 
-parser.add_argument('-o', '--online', action='store_true', help='Download stuff from the internet')
-parser.add_argument('-ob', '--only-brave', action='store_true', help='Only install brave browser and exit')
-parser.add_argument('-sa', '--skip_all', action='store_true', help='Short hand for -sn -sc -sk -sr -st, only vaild if --online is defined')
-parser.add_argument('-sn', '--skip_neovim', action='store_true', help='Should neovim be skipped, only vaild if --online is defined')
-parser.add_argument('-c',
-                    '--clean',
-                    action='store_true',
-                    help='If programs should be cleaned before build, only vaild if --online  is defined')
-parser.add_argument('-sc', '--skip_ccls', action='store_true', help='Should ccls be skipped, only vaild if --online is defined')
-parser.add_argument('-sk', '--skip_konsole', action='store_true', help='Should konsole be skipped, only vaild if --online is defined')
-parser.add_argument('-st', '--skip_tmux', action='store_true', help='Should tmux be skipped, only vaild if --online is defined')
-parser.add_argument('-sr', '--skip-rust', action='store_true', help='Skip downloading and updating the rust toolchain')
-parser.add_argument('-f', '--font', action='store_true', help='Install Hack Nerd Fonts')
-parser.add_argument('-p', '--pack', action='store_true', help='Pack everything in dotfiles.tar.gz')
-parser.add_argument('-a', '--artifactory', action='store_true', help='Publish to Artifactory')
+parser.add_argument("-o", "--online", action="store_true", help="Download stuff from the internet")
+parser.add_argument("-ob", "--only-brave", action="store_true", help="Only install brave browser and exit")
+parser.add_argument("-sa", "--skip_all", action="store_true", help="Short hand for -sn -sc -sk -sr -st, only vaild if --online is defined")
+parser.add_argument("-sn", "--skip_neovim", action="store_true", help="Should neovim be skipped, only vaild if --online is defined")
+parser.add_argument("-c",
+                    "--clean",
+                    action="store_true",
+                    help="If programs should be cleaned before build, only vaild if --online  is defined")
+parser.add_argument("-sc", "--skip_ccls", action="store_true", help="Should ccls be skipped, only vaild if --online is defined")
+parser.add_argument("-sk", "--skip_konsole", action="store_true", help="Should konsole be skipped, only vaild if --online is defined")
+parser.add_argument("-st", "--skip_tmux", action="store_true", help="Should tmux be skipped, only vaild if --online is defined")
+parser.add_argument("-sr", "--skip-rust", action="store_true", help="Skip downloading and updating the rust toolchain")
+parser.add_argument("-f", "--font", action="store_true", help="Install Hack Nerd Fonts")
+parser.add_argument("-p", "--pack", action="store_true", help="Pack everything in dotfiles.tar.gz")
+parser.add_argument("-a", "--artifactory", action="store_true", help="Publish to Artifactory")
 args = parser.parse_args()
 
 
@@ -238,7 +238,7 @@ def install_tmux_thumbs(install_path, url):
 def install_golang_tools():
     print("Installing go tools")
     for tool in golang_tools_to_install:
-        name = Path(tool).name.rstrip('.')
+        name = Path(tool).name.rstrip(".")
         print("Installing", name if name else "gotest")
         run(["go", "install", tool + "@latest"], check=True)
 
@@ -257,7 +257,7 @@ regex = re.compile(r"email =( ?)(.*)$")
 replace_line = ""
 old_email = ""
 new_email = ""
-with open(gitconfig_path, "rt", encoding='utf-8') as f:
+with open(gitconfig_path, "rt", encoding="utf-8") as f:
     for line in f:
         result = regex.search(line)
         if result:
@@ -266,10 +266,10 @@ with open(gitconfig_path, "rt", encoding='utf-8') as f:
             new_email = input(f"Give mail ({old_email}):") or old_email
 
 file_content = ""
-with open(gitconfig_path, "rt", encoding='utf-8') as f:
+with open(gitconfig_path, "rt", encoding="utf-8") as f:
     file_content = f.read().replace(replace_line, "email = " + new_email)
 
-with open(gitconfig_path, "wt", encoding='utf-8') as fout:
+with open(gitconfig_path, "wt", encoding="utf-8") as fout:
     fout.write(file_content)
 
 if kwalletrc.exists() and "Enabled=false" not in kwalletrc.read_text():
@@ -343,41 +343,41 @@ if args.online:
 
     (Path.home() / local_bin).mkdir(exist_ok=True)
     # Download Marksman
-    with GithubDownloader(url='artempyanykh/marksman', file_identifier='marksman-linux-x64') as f:
+    with GithubDownloader(url="artempyanykh/marksman", file_identifier="marksman-linux-x64") as f:
         move(f, marksman_bin)
         os.chmod(marksman_bin, 0o755)
 
     # Download ansble language server
-    with GithubDownloader(url='ansible/vscode-ansible', file_identifier='vsix') as f:
-        run(['unzip', '-qq', f], cwd=f.parent, check=True)
-        ansiblels_install_dir = Path.home() / '.local' / 'lib' / 'ansible-language-server'
+    with GithubDownloader(url="ansible/vscode-ansible", file_identifier="vsix") as f:
+        run(["unzip", "-qq", f], cwd=f.parent, check=True)
+        ansiblels_install_dir = Path.home() / ".local" / "lib" / "ansible-language-server"
         ansiblels_install_dir.mkdir(parents=True, exist_ok=True)
-        copy2(f.parent / 'extension' / 'out' / 'server' / 'src' / 'server.js', ansiblels_install_dir)
+        copy2(f.parent / "extension" / "out" / "server" / "src" / "server.js", ansiblels_install_dir)
 
     # Download rust-analyzer
-    with GithubDownloader(url='rust-lang/rust-analyzer', file_identifier='x86_64-unknown-linux-gnu.gz') as f:
+    with GithubDownloader(url="rust-lang/rust-analyzer", file_identifier="x86_64-unknown-linux-gnu.gz") as f:
         move(f, ra_bin.parent)
         run(["gunzip", f.name], cwd=ra_bin.parent, check=True)
         move(ra_bin.parent / "rust-analyzer-x86_64-unknown-linux-gnu", ra_bin)
         os.chmod(ra_bin, 0o755)
 
     # Download lua language server
-    with GithubDownloader(url='LuaLS/lua-language-server', file_identifier='linux-x64.tar.gz') as f:
-        lua_install_dir = Path.home() / '.local' / 'lib' / 'lua-language-server'
+    with GithubDownloader(url="LuaLS/lua-language-server", file_identifier="linux-x64.tar.gz") as f:
+        lua_install_dir = Path.home() / ".local" / "lib" / "lua-language-server"
         lua_install_dir.mkdir(parents=True, exist_ok=True)
-        run(['tar', '-xf', f], cwd=lua_install_dir, check=True)
-        lua_linkpath = host_local_bin / 'lua-language-server'
+        run(["tar", "-xf", f], cwd=lua_install_dir, check=True)
+        lua_linkpath = host_local_bin / "lua-language-server"
         if lua_linkpath.is_symlink():
             lua_linkpath.unlink()
-        lua_linkpath.symlink_to(lua_install_dir / 'bin' / 'lua-language-server')
+        lua_linkpath.symlink_to(lua_install_dir / "bin" / "lua-language-server")
 
     # Download hadolint
-    with GithubDownloader(url='hadolint/hadolint', file_identifier='linux-x86_64') as f:
+    with GithubDownloader(url="hadolint/hadolint", file_identifier="linux-x86_64") as f:
         move(f, hado_bin)
         os.chmod(hado_bin, 0o755)
 
     # Download Hack font zip file
-    with GithubDownloader(url='ryanoasis/nerd-fonts', file_identifier='Hack.tar.xz') as f:
+    with GithubDownloader(url="ryanoasis/nerd-fonts", file_identifier="Hack.tar.xz") as f:
         copy2(f, "bin/")
 
     # Download bfg.jar
@@ -425,8 +425,8 @@ if args.online:
         pass
 
 if args.font:
-    run(["sudo", "rm", "-rf", '/usr/local/share/fonts/*'], check=True)
-    run(["sudo", "tar", "-xf", dotfilespath / "bin" / "Hack.tar.xz"], cwd='/usr/local/share/fonts/', check=True)
+    run(["sudo", "rm", "-rf", "/usr/local/share/fonts/*"], check=True)
+    run(["sudo", "tar", "-xf", dotfilespath / "bin" / "Hack.tar.xz"], cwd="/usr/local/share/fonts/", check=True)
     run(["fc-cache", "-f", "-v"], check=True)
 
 if args.pack or args.artifactory:
@@ -446,4 +446,4 @@ if args.pack or args.artifactory:
         command = ["jfrog", "rt", "u", str(Path.home() / DOTFILES_NAME), f"ace-generic-prod-se-blu-sync/u009893/{DOTFILES_NAME}"]
         os.system(" ".join(command))
 
-print(f"Finished: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+print(f'Finished: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}')

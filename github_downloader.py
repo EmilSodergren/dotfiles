@@ -10,6 +10,18 @@ TOKEN_PATH = Path.home() / '.local/share/token/github.token'
 EXPIRY_SOON_DAYS = 7
 
 
+class RequestFailedException(Exception):
+
+    def __init__(self, _):
+        super().__init__('Request failed')
+
+
+class NoAssetException(Exception):
+
+    def __init__(self, asset_name, url):
+        super().__init__(f'No asset ending with `{asset_name}` found in {url}')
+
+
 def check_api_token_expiry():
     if not TOKEN_PATH.exists():
         print(f'No token found at {TOKEN_PATH}, can not check expiry')
@@ -36,36 +48,44 @@ class GithubDownloader:
 
     def __init__(self, url, file_identifier, quiet=False):
         # pylint: disable=consider-using-with
-        self.__temp_dir = tempfile.TemporaryDirectory(ignore_cleanup_errors=True, delete=False)
+        self.__temp_dir = tempfile.TemporaryDirectory(ignore_cleanup_errors=True, delete=False, prefix='githubdl_')
         self.url = 'https://api.github.com/repos/' + url + '/releases/latest'
         self.file_identifier = file_identifier
         self.quiet = quiet
 
     def __enter__(self):
-        headers = None
-        if not TOKEN_PATH.exists():
-            print(f'If things fail here... place a token in {TOKEN_PATH}')
-        else:
-            token = TOKEN_PATH.read_text().strip()
-            headers = {"Authorization": f"Bearer {token}"}
-        r = requests.get(url=self.url, headers=headers, timeout=10)
-        if not r.ok:
-            print(r.json()['message'])
+        try:
+            headers = None
+            if not TOKEN_PATH.exists():
+                print(f'If things fail here... place a token in {TOKEN_PATH}')
+            else:
+                token = TOKEN_PATH.read_text().strip()
+                headers = {'Authorization': f'Bearer {token}'}
+            r = requests.get(url=self.url, headers=headers, timeout=10)
+            if not r.ok:
+                print(r.json()['message'])
+                raise RequestFailedException
+            for asset in r.json().get('assets'):
+                if asset.get('browser_download_url').endswith(self.file_identifier):
+                    file_path = Path(self.__temp_dir.name) / asset.get('name')
+                    r2 = requests.get(asset.get('browser_download_url'), headers=headers, timeout=30)
+                    if not self.quiet:
+                        print(f"Downloading {asset.get('name')}")
+                    with open(file_path, 'wb') as temp_file:
+                        for chunk in r2.iter_content(chunk_size=10240):
+                            temp_file.write(chunk)
+                    return file_path
+            raise NoAssetException(self.file_identifier, self.url)
+        except (RequestFailedException, NoAssetException) as e:
+            if self.__exit__(type(e), e, None):
+                pass
             return None
-        file_path = ''
-        for asset in r.json().get('assets'):
-            if asset.get('browser_download_url').endswith(self.file_identifier):
-                file_path = Path(self.__temp_dir.name) / asset.get('name')
-                r2 = requests.get(asset.get('browser_download_url'), headers=headers, timeout=30)
-                if not self.quiet:
-                    print(f'Downloading {asset.get("name")}')
-                with open(file_path, 'wb') as temp_file:
-                    for chunk in r2.iter_content(chunk_size=10240):
-                        temp_file.write(chunk)
-        return file_path
 
     def __exit__(self, exc_type, exc_value, traceback):
         self.__temp_dir.cleanup()
+        if exc_type:
+            print('WARNING:', exc_type, exc_value)
+        return True
 
 
 # For testing
