@@ -1,15 +1,15 @@
-from os import chdir, system
-
-from subprocess import run, Popen, PIPE, TimeoutExpired
+import os
+import platform
+import re
+import site
 from argparse import ArgumentParser
 from datetime import datetime
 from glob import glob
-from shutil import move, copy2, rmtree
+from os import chdir, system
 from pathlib import Path
-import platform
-import site
-import re
-import os
+from shutil import copy2, move, rmtree
+from subprocess import PIPE, Popen, TimeoutExpired, run
+
 import apt
 
 dotfilespath = Path().resolve()
@@ -26,7 +26,6 @@ forgit = local_bin / "forgit"
 write_notes = local_bin / "write_notes"
 konsole_config = Path(".local") / "share" / "konsole" / "Emil.profile"
 neovim_init = Path(".config") / "nvim"
-yapf_config = Path(".config") / "yapf" / "style"
 kwalletrc = Path.home() / ".config" / "kwalletrc"
 yarn_packages = [
     "bash-language-server",
@@ -46,6 +45,7 @@ settingsfiles: list[Path] = [
     Path(".hadolint.yaml"),
     Path(".profile"),
     Path(".pylintrc"),
+    Path(".ruff.toml"),
     Path(".tmux.conf"),
     ansiblels_bin,
     antiword,
@@ -54,7 +54,6 @@ settingsfiles: list[Path] = [
     konsole_config,
     neovim_init,
     write_notes,
-    yapf_config,
 ]
 tree_sitter_languages = [
     "bash",
@@ -97,8 +96,22 @@ tree_sitter_languages = [
 ]
 rustup_bin = Path.home() / ".cargo/bin/rustup"
 rust_crates = [
-    "bat", "cargo-edit", "cargo-update", "cargo-watch", "du-dust", "fd-find", "git-delta", "jnv", "lsd", "ripgrep", "sd", "tokei",
-    "tree-sitter-cli", "watchexec-cli", "ytop", "zoxide"
+    "bat",
+    "cargo-edit",
+    "cargo-update",
+    "cargo-watch",
+    "du-dust",
+    "fd-find",
+    "git-delta",
+    "jnv",
+    "lsd",
+    "ripgrep",
+    "sd",
+    "tokei",
+    "tree-sitter-cli",
+    "watchexec-cli",
+    "ytop",
+    "zoxide",
 ]
 packages_to_install = [
     "antiword",
@@ -161,17 +174,54 @@ apt_cache = apt.Cache()
 parser = ArgumentParser(description="Setup the machine")
 
 parser.add_argument("-o", "--online", action="store_true", help="Download stuff from the internet")
-parser.add_argument("-ob", "--only-brave", action="store_true", help="Only install brave browser and exit")
-parser.add_argument("-sa", "--skip_all", action="store_true", help="Short hand for -sn -sc -sk -sr -st, only vaild if --online is defined")
-parser.add_argument("-sn", "--skip_neovim", action="store_true", help="Should neovim be skipped, only vaild if --online is defined")
-parser.add_argument("-c",
-                    "--clean",
-                    action="store_true",
-                    help="If programs should be cleaned before build, only vaild if --online  is defined")
-parser.add_argument("-sc", "--skip_ccls", action="store_true", help="Should ccls be skipped, only vaild if --online is defined")
-parser.add_argument("-sk", "--skip_konsole", action="store_true", help="Should konsole be skipped, only vaild if --online is defined")
-parser.add_argument("-st", "--skip_tmux", action="store_true", help="Should tmux be skipped, only vaild if --online is defined")
-parser.add_argument("-sr", "--skip-rust", action="store_true", help="Skip downloading and updating the rust toolchain")
+parser.add_argument(
+    "-ob",
+    "--only-brave",
+    action="store_true",
+    help="Only install brave browser and exit",
+)
+parser.add_argument(
+    "-sa",
+    "--skip_all",
+    action="store_true",
+    help="Short hand for -sn -sc -sk -sr -st, only vaild if --online is defined",
+)
+parser.add_argument(
+    "-sn",
+    "--skip_neovim",
+    action="store_true",
+    help="Should neovim be skipped, only vaild if --online is defined",
+)
+parser.add_argument(
+    "-c",
+    "--clean",
+    action="store_true",
+    help="If programs should be cleaned before build, only vaild if --online  is defined",
+)
+parser.add_argument(
+    "-sc",
+    "--skip_ccls",
+    action="store_true",
+    help="Should ccls be skipped, only vaild if --online is defined",
+)
+parser.add_argument(
+    "-sk",
+    "--skip_konsole",
+    action="store_true",
+    help="Should konsole be skipped, only vaild if --online is defined",
+)
+parser.add_argument(
+    "-st",
+    "--skip_tmux",
+    action="store_true",
+    help="Should tmux be skipped, only vaild if --online is defined",
+)
+parser.add_argument(
+    "-sr",
+    "--skip-rust",
+    action="store_true",
+    help="Skip downloading and updating the rust toolchain",
+)
 parser.add_argument("-f", "--font", action="store_true", help="Install Hack Nerd Fonts")
 parser.add_argument("-p", "--pack", action="store_true", help="Pack everything in dotfiles.tar.gz")
 parser.add_argument("-a", "--artifactory", action="store_true", help="Publish to Artifactory")
@@ -202,13 +252,13 @@ def exists_all(path, files):
 def install_brave_browser():
     if not Path("/etc/apt/sources.list.d/brave-browser-release.sources").exists():
         keyring = "/usr/share/keyrings/brave-browser-archive-keyring.gpg"
-        run(["sudo", "curl", "-fsSLo", keyring, "https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg"],
-            check=True)
-        run([
-            "sudo", "curl", "-fsSLo", "/etc/apt/sources.list.d/brave-browser-release.sources",
-            "https://brave-browser-apt-release.s3.brave.com/brave-browser.sources"
-        ],
-            check=True)
+        keyring_url = "https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg"
+        run(["sudo", "curl", "-fsSLo", keyring, keyring_url], check=True)
+
+        sources = "/etc/apt/sources.list.d/brave-browser-release.sources"
+        sources_url = ("https://brave-browser-apt-release.s3.brave.com/brave-browser.sources",)
+        run(["sudo", "curl", "-fsSLo", sources, sources_url], check=True)
+
     run(["sudo", "apt-get", "update"], check=True)
     run(["sudo", "apt-get", "install", "-y", "brave-browser"], check=True)
 
@@ -231,7 +281,13 @@ def install_tmux_thumbs(install_path, url):
     run(["cargo", "build", "--release"], cwd=build_path, check=True)
     # Install binaries
     (install_path / "target" / "release").mkdir(parents=True, exist_ok=True)
-    for file in ["Cargo.toml", "tmux-thumbs.tmux", "tmux-thumbs.sh", "target/release/thumbs", "target/release/tmux-thumbs"]:
+    for file in [
+        "Cargo.toml",
+        "tmux-thumbs.tmux",
+        "tmux-thumbs.sh",
+        "target/release/thumbs",
+        "target/release/tmux-thumbs",
+    ]:
         copy2(build_path / file, install_path / file)
 
 
@@ -293,14 +349,15 @@ if os.environ.get("XDG_SESSION_TYPE") == "wayland":
 if not apt_cache.get("brave-browser") or not apt_cache.get("brave-browser").is_installed:
     install_brave_browser()
 
-import check_dep_version  # pylint: disable=wrong-import-position
+import check_dep_version  # noqa: E402 # pylint: disable=wrong-import-position
+
 if not check_dep_version.check_programs():
     if args.online:
         run(["brave-browser", "https://go.dev/doc/install", "https://nodejs.org/en/download"], check=True)
     print("Error: programs not correct versions")
     raise SystemExit
 
-from github_downloader import check_api_token_expiry, GithubDownloader  # pylint: disable=wrong-import-position
+from github_downloader import GithubDownloader, check_api_token_expiry  # noqa: E402 # pylint: disable=wrong-import-position
 
 check_api_token_expiry()
 
@@ -326,7 +383,7 @@ if args.online:
         (dotfilespath / "tmux-ssh-split", "https://github.com/pschmitt/tmux-ssh-split"),
         (dotfilespath / "tmux-notify", "https://github.com/rickstaa/tmux-notify"),
         (dotfilespath / "tmux-power", "https://github.com/wfxr/tmux-power"),
-            # Tmux Thumbs installed futher down
+        # Tmux Thumbs installed futher down
     ]:
         if tmuxpath.exists():
             run(["git", "-C", tmuxpath, "pull"], check=True)
@@ -381,22 +438,51 @@ if args.online:
         copy2(f, "bin/")
 
     # Download bfg.jar
-    run(["wget", "-O", bfg_jar, "https://repo1.maven.org/maven2/com/madgag/bfg/1.15.0/bfg-1.15.0.jar"], check=True)
+    BFG_URL = "https://repo1.maven.org/maven2/com/madgag/bfg/1.15.0/bfg-1.15.0.jar"
+    run(["wget", "-O", bfg_jar, BFG_URL], check=True)
     os.chmod(bfg_jar, 0o755)
 
     # semver might be installed earlier in this script
-    import semver  # type: ignore # pylint: disable=import-outside-toplevel
+    import semver  # noqa: E402
+
     extra_pip_flags = ["--user", "--break-system-packages"]
     # For python version older than 3.11
     if semver.compare(platform.python_version(), "3.11.0") == -1:
         extra_pip_flags = []
-    run(["python3", "-m", "pip", "install", "--force-reinstall", "--upgrade", *extra_pip_flags, "-r", "./requirements.txt"], check=True)
+    run(
+        [
+            "python3",
+            "-m",
+            "pip",
+            "install",
+            "--force-reinstall",
+            "--upgrade",
+            *extra_pip_flags,
+            "-r",
+            "./requirements.txt",
+        ],
+        check=True,
+    )
     #
     # Cleanup ansible stuff to minimize footprint, it brings in tonnes of stuff that I do not care about
     ansible_packages_path = Path(site.getusersitepackages()) / "ansible_collections"
     for ansi_pack in [
-            "amazon", "arista", "azure", "check_point", "cisco", "dellemc", "f5networks", "fortinet", "google", "hitachivantara",
-            "junipernetworks", "netapp", "ovirt", "purestorage", "vmware", "vyos"
+        "amazon",
+        "arista",
+        "azure",
+        "check_point",
+        "cisco",
+        "dellemc",
+        "f5networks",
+        "fortinet",
+        "google",
+        "hitachivantara",
+        "junipernetworks",
+        "netapp",
+        "ovirt",
+        "purestorage",
+        "vmware",
+        "vyos",
     ]:
         rmtree(ansible_packages_path / ansi_pack)
 
@@ -417,7 +503,19 @@ if args.online:
     # Fix tmux-thumbs
     install_tmux_thumbs(dotfilespath / "tmux-thumbs", "https://github.com/fcsonline/tmux-thumbs")
     run(["nvim", "-u", neovim_init / "init.lua", "-c", "quitall"], check=True)
-    run(["nvim", "-u", neovim_init / "init.lua", "--headless", "-c", "Lazy! install", "-c", "quitall"], check=True)
+    run(
+        [
+            "nvim",
+            "-u",
+            neovim_init / "init.lua",
+            "--headless",
+            "-c",
+            "Lazy! install",
+            "-c",
+            "quitall",
+        ],
+        check=True,
+    )
     try:
         run(["nvim", "--headless", "-c", "Lazy! sync"], timeout=30, check=True)
     except TimeoutExpired:
@@ -433,17 +531,39 @@ if args.pack or args.artifactory:
     chdir(Path.home())
     kernel_version = check_dep_version.get_kernel_version_string()
     DOTFILES_NAME = f"dotfiles_{kernel_version}.tar.gz"
-    run([
-        "tar", r"--exclude=*/\.git", r"--exclude=*/blink.cmp/target/release/version", "-czf", DOTFILES_NAME, ".dotfiles/", "go/bin/",
-        ".cargo/bin/", ".cargo/env", local_bin, ".local/node_modules", ".local/include", ".local/lib", ".local/share/nvim",
-        ".local/share/konsole", "konsole", ".fzf.bash"
-    ],
-        check=True)
+    run(
+        [
+            "tar",
+            r"--exclude=*/\.git",
+            r"--exclude=*/blink.cmp/target/release/version",
+            "-czf",
+            DOTFILES_NAME,
+            ".dotfiles/",
+            "go/bin/",
+            ".cargo/bin/",
+            ".cargo/env",
+            local_bin,
+            ".local/node_modules",
+            ".local/include",
+            ".local/lib",
+            ".local/share/nvim",
+            ".local/share/konsole",
+            "konsole",
+            ".fzf.bash",
+        ],
+        check=True,
+    )
     print("")
     print(".dotfiles has been packed into " + str(Path.home() / DOTFILES_NAME))
 
     if args.artifactory:
-        command = ["jfrog", "rt", "u", str(Path.home() / DOTFILES_NAME), f"ace-generic-prod-se-blu-sync/u009893/{DOTFILES_NAME}"]
+        command = [
+            "jfrog",
+            "rt",
+            "u",
+            str(Path.home() / DOTFILES_NAME),
+            f"ace-generic-prod-se-blu-sync/u009893/{DOTFILES_NAME}",
+        ]
         os.system(" ".join(command))
 
-print(f'Finished: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}')
+print(f"Finished: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")

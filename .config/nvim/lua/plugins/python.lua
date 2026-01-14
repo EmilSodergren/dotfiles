@@ -15,9 +15,21 @@ return {
                 pydocstyle = { enabled = false },
                 pycodestyle = { enabled = false },
                 pylint = { enabled = true },
-                yapf = { enabled = true },
+                yapf = { enabled = false },
                 pylsp_mypy = { enabled = true },
               },
+            },
+          },
+        },
+        ruff = {
+          cmd = {
+            os.getenv("HOME") .. "/.local/bin/ruff", "server",
+          },
+          settings = {
+            organizeImports = true,
+            showSyntasErrors = true,
+            format = {
+              preview = true,
             },
           },
         },
