@@ -404,19 +404,12 @@ if args.online:
         move(f, marksman_bin)
         os.chmod(marksman_bin, 0o755)
 
-    # Download ansble language server
+    # Download ansible language server
     with GithubDownloader(url="ansible/vscode-ansible", file_identifier="vsix") as f:
         run(["unzip", "-qq", f], cwd=f.parent, check=True)
         ansiblels_install_dir = Path.home() / ".local" / "lib" / "ansible-language-server"
         ansiblels_install_dir.mkdir(parents=True, exist_ok=True)
         copy2(f.parent / "extension" / "out" / "server" / "src" / "server.js", ansiblels_install_dir)
-
-    # Download rust-analyzer
-    with GithubDownloader(url="rust-lang/rust-analyzer", file_identifier="x86_64-unknown-linux-gnu.gz") as f:
-        move(f, ra_bin.parent)
-        run(["gunzip", f.name], cwd=ra_bin.parent, check=True)
-        move(ra_bin.parent / "rust-analyzer-x86_64-unknown-linux-gnu", ra_bin)
-        os.chmod(ra_bin, 0o755)
 
     # Download lua language server
     with GithubDownloader(url="LuaLS/lua-language-server", file_identifier="linux-x64.tar.gz") as f:
@@ -494,6 +487,7 @@ if args.online:
         run([rustup_bin, "component", "add", "rustfmt"], check=True)
         run([rustup_bin, "component", "add", "rust-src"], check=True)
         run([rustup_bin, "component", "add", "clippy"], check=True)
+        run([rustup_bin, "component", "add", "rust-analyzer"], check=True)
 
         if exists_all(Path.home() / ".cargo" / "bin", rust_crates):
             run(["cargo", "install-update", "-ag"], check=True)

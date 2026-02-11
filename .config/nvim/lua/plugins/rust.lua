@@ -6,7 +6,7 @@ return {
     opts = {
       servers = {
         bacon_ls = { enabled = false },
-        rust_analyzer = { enabled = true }
+        rust_analyzer = { enabled = true },
       }
     }
   }
