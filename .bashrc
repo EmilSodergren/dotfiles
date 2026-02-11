@@ -133,7 +133,6 @@ export FZF_DEFAULT_COMMAND='fd --type file --follow --hidden --exclude .git'
 export WS_BOOTSTRAP_NO_SAVE=1
 [ -f ~/.kube/k3s.yaml ] && export KUBECONFIG=~/.kube/k3s.yaml
 
-export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
@@ -145,15 +144,12 @@ if ! shopt -oq posix; then
   fi
 fi
 
-if command -v zoxide &> /dev/null; then
-  eval "$(zoxide init bash)"
-fi
-
 eval "command -v tmux" &> /dev/null; TMUX_EXIST=$?
 eval "/usr/bin/pgrep tmux" &> /dev/null; TMUX_IS_RUNNING=$?
 eval "command -v kubectl" &> /dev/null; KUBECTL_EXIST=$?
 eval "command -v helm" &> /dev/null; HELM_EXIST=$?
 eval "command -v golangci-lint" &> /dev/null; GOLANGCI_LINT_EXIST=$?
+eval "command -v zoxide" &> /dev/null; ZOXIDE_EXISTS=$?
 
 if [ $TMUX_EXIST -eq 0 ] &&  [ -z "$WORKSPACE" ]; then
   if [ $TMUX_IS_RUNNING -eq 1 ];  then
@@ -167,7 +163,12 @@ fi
 [ $KUBECTL_EXIST -eq 0 ] && . <(kubectl completion bash)
 [ $HELM_EXIST -eq 0 ] && . <(helm completion bash)
 [ $GOLANGCI_LINT_EXIST -eq 0 ] && . <(golangci-lint completion bash)
+[ $ZOXIDE_EXISTS -eq 0 ] && . <(zoxide init bash)
 
 [ -f ~/qmk_firmware/util/qmk_tab_complete.sh ] && source ~/qmk_firmware/util/qmk_tab_complete.sh
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 . "$HOME/.cargo/env"
+
+if [[ ! "$PROMPT_COMMAND" == *"history -a"* ]]; then
+  export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+fi
