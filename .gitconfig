@@ -54,7 +54,7 @@
 [merge]
     tool = nvimdiff
 [mergetool "nvimdiff"]
-    cmd = nvim -d -c 'wincmd l' -c 'norm ]c' "$LOCAL" "$MERGED" "$REMOTE"
+    cmd = nvim -c DiffviewOpen
     keepBackup = false
     prompt = false
 [diff]

@@ -84,9 +84,6 @@ vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { noremap = true })
 -- save file with sudo permissions
 vim.keymap.set("c", "w!!", "w !sudo tee > /dev/null %")
 
-vim.keymap.set("n", "dgh", "<cmd>diffget //2<cr> ]c", { noremap = true })
-vim.keymap.set("n", "dgl", "<cmd>diffget //3<cr> ]c", { noremap = true })
-
 vim.keymap.set("n", "ysss", "<Plug>Yssurround <s><cr>I* <esc>f*xx")
 
 vim.keymap.set("n", "<leader>u", "<cmd>UndotreeToggle<cr>", { noremap = true })
