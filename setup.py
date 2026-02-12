@@ -17,7 +17,6 @@ local_bin = Path(".local") / "bin"
 host_local_bin = Path.home() / local_bin
 bfg_jar = host_local_bin / "bfg.jar"
 marksman_bin = host_local_bin / "marksman"
-ra_bin = host_local_bin / "rust-analyzer"
 hado_bin = host_local_bin / "hadolint"
 ansiblels_bin = local_bin / "ansible-language-server"
 antiword = local_bin / "antiword"
@@ -96,6 +95,7 @@ tree_sitter_languages = [
 ]
 rustup_bin = Path.home() / ".cargo/bin/rustup"
 rust_crates = [
+    "bacon",
     "bat",
     "cargo-edit",
     "cargo-update",
