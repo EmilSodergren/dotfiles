@@ -15,11 +15,11 @@ import apt
 dotfilespath = Path().resolve()
 local_bin = Path(".local") / "bin"
 host_local_bin = Path.home() / local_bin
-bfg_jar = host_local_bin / "bfg.jar"
 marksman_bin = host_local_bin / "marksman"
 hado_bin = host_local_bin / "hadolint"
 ansiblels_bin = local_bin / "ansible-language-server"
 antiword = local_bin / "antiword"
+bfg_bin = local_bin / "bfg"
 ccls_config = local_bin / "ccls_config"
 forgit = local_bin / "forgit"
 write_notes = local_bin / "write_notes"
@@ -48,6 +48,7 @@ settingsfiles: list[Path] = [
     Path(".tmux.conf"),
     ansiblels_bin,
     antiword,
+    bfg_bin,
     ccls_config,
     forgit,
     konsole_config,
@@ -432,8 +433,7 @@ if args.online:
 
     # Download bfg.jar
     BFG_URL = "https://repo1.maven.org/maven2/com/madgag/bfg/1.15.0/bfg-1.15.0.jar"
-    run(["wget", "-O", bfg_jar, BFG_URL], check=True)
-    os.chmod(bfg_jar, 0o755)
+    run(["wget", "-O", host_local_bin / "bfg.jar", BFG_URL], check=True)
 
     # semver might be installed earlier in this script
     import semver  # noqa: E402
