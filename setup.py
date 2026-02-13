@@ -48,7 +48,6 @@ settingsfiles: list[Path] = [
     Path(".tmux.conf"),
     ansiblels_bin,
     antiword,
-    bfg_bin,
     ccls_config,
     forgit,
     konsole_config,
@@ -434,6 +433,7 @@ if args.online:
     # Download bfg.jar
     BFG_URL = "https://repo1.maven.org/maven2/com/madgag/bfg/1.15.0/bfg-1.15.0.jar"
     run(["wget", "-O", host_local_bin / "bfg.jar", BFG_URL], check=True)
+    copy2(bfg_bin, host_local_bin)
 
     # semver might be installed earlier in this script
     import semver  # noqa: E402
