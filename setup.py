@@ -433,6 +433,9 @@ if args.online:
     # Download bfg.jar
     BFG_URL = "https://repo1.maven.org/maven2/com/madgag/bfg/1.15.0/bfg-1.15.0.jar"
     run(["wget", "-O", host_local_bin / "bfg.jar", BFG_URL], check=True)
+    bfg_wrapper = host_local_bin / bfg_bin.name
+    if (bfg_wrapper).exists():
+        bfg_wrapper.unlink()
     copy2(bfg_bin, host_local_bin)
 
     # semver might be installed earlier in this script

@@ -1,2 +1,2 @@
 #!/bin/bash
-java -jar $(realpath $0).jar
+java -jar "$(realpath "$0")".jar "$@"
