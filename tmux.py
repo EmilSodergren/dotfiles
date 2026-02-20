@@ -1,8 +1,9 @@
-from os import chdir, cpu_count
-from subprocess import run
 from argparse import ArgumentParser
-from shutil import rmtree
+from os import chdir, cpu_count
 from pathlib import Path
+from shutil import rmtree
+from subprocess import run
+
 import apt
 
 tmux_install_dir = Path.home() / ".local"
@@ -10,17 +11,17 @@ tmux_dir = Path.home() / "tmux"
 apt_cache = apt.Cache()
 NPROC = str(cpu_count())
 
-BUILD_TAG = "master"
+BUILD_TAG = "3.6a"
 
-parser = ArgumentParser(description='Build the tmux program')
+parser = ArgumentParser(description="Build the tmux program")
 packages_for_build = [
     "make",
     "bison",
     "libevent-dev",
 ]
 
-parser.add_argument('-b', '--build', action='store_true', help='Download/Update sources and build/install')
-parser.add_argument('-c', '--clean', action='store_true', help='Clean before build')
+parser.add_argument("-b", "--build", action="store_true", help="Download/Update sources and build/install")
+parser.add_argument("-c", "--clean", action="store_true", help="Clean before build")
 args = parser.parse_args()
 
 chdir(Path.home())
