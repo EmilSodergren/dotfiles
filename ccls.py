@@ -1,23 +1,26 @@
-from os import chdir, cpu_count
-from math import floor
-from subprocess import run
 from argparse import ArgumentParser
-from shutil import rmtree
+from math import floor
+from os import chdir, cpu_count
 from pathlib import Path
+from shutil import rmtree
+from subprocess import run
+
 import apt
+
+from check_dep_version import get_dependency_apt_packag_name
 
 ccls_install_dir = Path.home() / ".local"
 ccls_dir = Path.home() / "ccls"
 apt_cache = apt.Cache()
 
-parser = ArgumentParser(description='Setup the ccls program')
+parser = ArgumentParser(description="Setup the ccls program")
 packages_for_build = ["clang", "cmake", "libclang-dev", "llvm-dev", "rapidjson-dev"]
 
-build_tag = 'master'
+build_tag = "master"
 
-parser.add_argument('-u', '--uninstall', action='store_true', help='Uninstall ccls local install path')
-parser.add_argument('-b', '--build', action='store_true', help='Download/Update sources and build/install')
-parser.add_argument('-c', '--clean', action='store_true', help='Clean before build')
+parser.add_argument("-u", "--uninstall", action="store_true", help="Uninstall ccls local install path")
+parser.add_argument("-b", "--build", action="store_true", help="Download/Update sources and build/install")
+parser.add_argument("-c", "--clean", action="store_true", help="Clean before build")
 args = parser.parse_args()
 
 if args.uninstall:
@@ -34,6 +37,13 @@ for pac in packages_for_build:
 if ccls_dir.exists():
     rmtree(ccls_dir)
 
+try:
+    currently_installed_llvm = get_dependency_apt_packag_name("llvm-dev", r"llvm-.*-dev")
+    llvm_path = Path("/usr/lib/") / currently_installed_llvm.rstrip("-dev")
+except RuntimeError as e:
+    print(e)
+    raise SystemExit(1) from e
+
 if args.build:
     if not ccls_dir.exists():
         run(["git", "clone", "-b", build_tag, "--depth=1", "--recursive", "https://github.com/MaskRay/ccls", ccls_dir], check=True)
@@ -42,5 +52,15 @@ if args.build:
         run(["git", "-C", ccls_dir, "checkout", build_tag], check=True)
 
     chdir(ccls_dir)
-    run(["cmake", "-H.", "-BRelease", "-DCMAKE_BUILD_TYPE=Release", f"-DCMAKE_INSTALL_PREFIX={ccls_install_dir}"], check=True)
+    run(
+        [
+            "cmake",
+            "-H.",
+            "-BRelease",
+            "-DCMAKE_BUILD_TYPE=Release",
+            f"-DCMAKE_PREFIX_PATH={llvm_path}",
+            f"-DCMAKE_INSTALL_PREFIX={ccls_install_dir}",
+        ],
+        check=True,
+    )
     run(["cmake", "--build", "Release", "--target", "install", "--parallel", str(floor(0.75 * cpu_count()))], check=True)

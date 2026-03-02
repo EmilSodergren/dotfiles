@@ -1,10 +1,23 @@
 import re
 from subprocess import run
+
+import apt
 import semver
 
 semver_re = re.compile(
-    r'(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?'
+    r"(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?"
 )
+
+
+def get_dependency_apt_packag_name(package_name, dependency_package_regexp):
+    package = apt.Cache().get(package_name)
+    if not package:
+        raise RuntimeError(f"{package_name} is not installed")
+
+    for dep in package.versions[0].dependencies:
+        if re.search(dependency_package_regexp, dep[0].name):
+            return dep[0].name
+    raise RuntimeError(f"{package_name} has no dependency package matching the regexp `{dependency_package_regexp}`")
 
 
 def get_kernel_version_string():
