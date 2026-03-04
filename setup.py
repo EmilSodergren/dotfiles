@@ -99,7 +99,6 @@ rust_crates = [
     "bat",
     "cargo-edit",
     "cargo-update",
-    "cargo-watch",
     "du-dust",
     "fd-find",
     "git-delta",
