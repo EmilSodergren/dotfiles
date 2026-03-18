@@ -1,8 +1,5 @@
-return {
-  {
-    "xzbdmw/colorful-menu.nvim",
-    config = function()
-      require("colorful-menu").setup()
-    end
-  }
-}
+vim.pack.add({ 
+  { src = 'https://github.com/xzbdmw/colorful-menu.nvim', version = 'master' },
+})
+
+require('colorful-menu').setup()
