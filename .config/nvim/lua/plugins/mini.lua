@@ -5,6 +5,8 @@ vim.pack.add({
   { src = 'https://github.com/nvim-mini/mini.tabline', version = 'main' },
   { src = 'https://github.com/nvim-mini/mini.icons', version = 'main' },
   { src = 'https://github.com/nvim-mini/mini.statusline', version = 'main' },
+  { src = 'https://github.com/nvim-mini/mini.files', version = 'main' },
+  { src = 'https://github.com/nvim-mini/mini.pairs', version = 'main' },
 })
 
 require('mini.ai').setup()
@@ -13,3 +15,5 @@ require('mini.cursorword').setup()
 require('mini.tabline').setup()
 require('mini.icons').setup()
 require('mini.statusline').setup()
+require('mini.files').setup()
+require('mini.pairs').setup()

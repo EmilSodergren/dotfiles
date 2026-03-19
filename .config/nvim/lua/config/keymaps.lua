@@ -3,39 +3,41 @@ local map = vim.keymap.set
 map("i", "jk", "<esc>", { noremap = true })
 map("n", "<leader>q", "<cmd>bp<bar>bd #<cr>", { noremap = true })
 
-vim.keymap.set("n", "n", "nzzzv", { noremap = true })
-vim.keymap.set("n", "N", "Nzzzv", { noremap = true })
+map("n", "n", "nzzzv", { noremap = true })
+map("n", "N", "Nzzzv", { noremap = true })
 
-vim.keymap.set("n", "J", "mzJ`z", { noremap = true })
-vim.keymap.set({ "n", "v" }, "<leader>y", '"+y', { noremap = true })
-vim.keymap.set("n", "<leader>Y", '"+Y', { noremap = true })
+map("n", "J", "mzJ`z", { noremap = true })
+map({ "n", "v" }, "<leader>y", '"+y', { noremap = true })
+map("n", "<leader>Y", '"+Y', { noremap = true })
 
-vim.keymap.set("n", "Q", "@q")
-vim.keymap.set({ "n", "v" }, "q:", "<nop>", { remap = true })
+map("n", "Q", "@q")
+map({ "n", "v" }, "q:", "<nop>", { remap = true })
 
-vim.keymap.set("n", "<down>", "3jzz", { noremap = true })
-vim.keymap.set("n", "<up>", "3kzz", { noremap = true })
-vim.keymap.set("n", "<s-h>", "<cmd>bp<cr>", { noremap = true })
-vim.keymap.set("n", "<s-l>", "<cmd>bn<cr>", { noremap = true })
+map("n", "<down>", "3jzz", { noremap = true })
+map("n", "<up>", "3kzz", { noremap = true })
+map("n", "<s-h>", "<cmd>bp<cr>", { noremap = true })
+map("n", "<s-l>", "<cmd>bn<cr>", { noremap = true })
 
-vim.keymap.set("n", "<c-g>", "1<c-g>", { noremap = true })
+map("n", "<c-g>", "1<c-g>", { noremap = true })
 
-vim.keymap.set("n", "<leader>rr", ":%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>", { noremap = true })
+map("n", "<leader>rr", ":%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>", { noremap = true })
 
-vim.keymap.set("n", "<c-w><bar>", "<c-w>v", { noremap = true })
-vim.keymap.set("n", "<c-w>-", "<c-w>s", { noremap = true })
+map("n", "<c-w><bar>", "<c-w>v", { noremap = true })
+map("n", "<c-w>-", "<c-w>s", { noremap = true })
 
 
-vim.keymap.set({ "n", "o" }, "<c-d>", "<c-d>M", { noremap = true })
-vim.keymap.set({ "n", "o" }, "<c-u>", "<c-u>M", { noremap = true })
+map({ "n", "o" }, "<c-d>", "<c-d>M", { noremap = true })
+map({ "n", "o" }, "<c-u>", "<c-u>M", { noremap = true })
 
-vim.keymap.set("n", "<F2>", vim.lsp.buf.rename, { noremap = true, silent = true })
-vim.keymap.set("n", "K", vim.lsp.buf.hover, { noremap = true, silent = true })
-vim.keymap.set("n", "gd", vim.lsp.buf.definition, { noremap = true, silent = true })
-vim.keymap.set("n", "<leader>r", vim.lsp.buf.references, { noremap = true, silent = true })
-vim.keymap.set("n", "<leader>f", vim.lsp.buf.format, { noremap = true, silent = true })
-vim.keymap.set("n", "<leader>n", vim.lsp.buf.code_action, { noremap = true, silent = true })
-vim.keymap.set("n", "<leader>e", vim.lsp.buf.signature_help, { noremap = true, silent = true })
+map("n", "<F2>", vim.lsp.buf.rename, { noremap = true, silent = true })
+map("n", "K", vim.lsp.buf.hover, { noremap = true, silent = true })
+map("n", "gd", vim.lsp.buf.definition, { noremap = true, silent = true })
+map("n", "<leader>r", vim.lsp.buf.references, { noremap = true, silent = true })
+map("n", "<leader>f", vim.lsp.buf.format, { noremap = true, silent = true })
+map("n", "<leader>n", vim.lsp.buf.code_action, { noremap = true, silent = true })
+map("n", "<leader>e", vim.lsp.buf.signature_help, { noremap = true, silent = true })
+
+map("n", "<leader>u", require('undotree').toggle, { noremap = true, silent = true } )
 
 -- Clean up whitespaces at end of lines
 vim.keymap.set("n", "<leader>ws", function()
@@ -56,3 +58,10 @@ vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { noremap = true })
 vim.keymap.set("c", "w!!", "w !sudo tee > /dev/null %")
 
 vim.keymap.set({ "n", "v" }, "<space>", "za", { noremap = true })
+
+vim.keymap.set("n", "<leader>sf", function() return require("fzf-lua").files() end,                                                    { noremap = true })
+vim.keymap.set("n", "<leader>sh", function() return require("fzf-lua").files({ prompt = "~/", cwd = "~/" }) end,                       { noremap = true })
+vim.keymap.set("n", "<leader>sg", function() return require("fzf-lua").git_files({ prompt = "GIT> " }) end,                            { noremap = true })
+vim.keymap.set("n", "<leader>sr", function() return require("fzf-lua").live_grep({ prompt = "rg> " }) end,                             { noremap = true })
+vim.keymap.set("i", "<C-x><C-f>", function() return require("fzf-lua").complete_path({ cmd = "rg --files --hidden -g '!.git/'" }) end, { silent = true, noremap = true })
+vim.keymap.set("n", "<leader>ev", function() return require("fzf-lua").files({ cwd = "~/.config/nvim/" }) end,                         { noremap = true })  

@@ -1,6 +1,5 @@
 vim.g.mapleader = ","
 vim.g.maplocalleader = "\\"
-vim.g.snacks_animate = false
 
 -- vim.g.bash_ctrl_j = "off"
 vim.g.python_host_prog = "/usr/bin/python2"

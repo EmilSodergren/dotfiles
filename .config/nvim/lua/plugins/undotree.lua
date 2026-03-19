@@ -3,7 +3,6 @@ vim.pack.add({
 })
 
 require('undotree').setup({
-      parser = 'compact',
+      -- parser = 'compact',
 })
 
-vim.keymap.set("n", "<leader>u", function require('undotree').toggle() end, { noremap = true } )
