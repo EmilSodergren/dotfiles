@@ -19,6 +19,7 @@ require("blink.cmp").setup({
             name = "lsp",
           },
           snippets = {
+
             score_offset = 4,
             name = "snippets",
           },
