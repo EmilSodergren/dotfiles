@@ -1,7 +1,9 @@
 require('colorscheme.tokyonight')
 
 require('plugins.ansible')
+require('plugins.gitsigns')
 require('plugins.diffview')
+require('plugins.go')
 require('plugins.c')
 require('plugins.bash')
 require('plugins.blink')
@@ -17,3 +19,5 @@ require('plugins.rust')
 
 require('config.options')
 require('config.keymaps')
+
+vim.lsp.inlay_hint.enable(true, { bufnr = 0 })
