@@ -1,5 +1,9 @@
 require('colorscheme.tokyonight')
 
+require('plugins.ansible')
+require('plugins.diffview')
+require('plugins.c')
+require('plugins.bash')
 require('plugins.blink')
 require('plugins.treesitter')
 require('plugins.tmux-vim-navigator')
@@ -8,6 +12,8 @@ require('plugins.lua_ls')
 require('plugins.mini')
 require('plugins.fzf')
 require('plugins.undotree')
+require('plugins.oil')
+require('plugins.rust')
 
 require('config.options')
 require('config.keymaps')
