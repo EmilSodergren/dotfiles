@@ -19,6 +19,8 @@ require('plugins.rust')
 require('plugins.python')
 require('plugins.json')
 require('plugins.luasnip')
+require('plugins.toml')
+require('plugins.yaml')
 
 require('config.options')
 require('config.keymaps')
