@@ -1,4 +1,5 @@
 require('colorscheme.tokyonight')
+require('plugins.packchanged')
 
 require('plugins.ansible')
 require('plugins.gitsigns')

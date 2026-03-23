@@ -1,13 +1,3 @@
-vim.api.nvim_create_autocmd("PackChanged", {
-  callback = function(ev)
-    local name, kind = ev.data.spec.name, ev.data.kind
-    if name == "markdown-preview.nvim" and kind ~= "delete" then
-      install_cmd = ev.data.path .. "/app/install.sh"
-      os.execute(install_cmd)
-    end
-  end
-})
-
 vim.pack.add({
   { src = "https://github.com/iamcco/markdown-preview.nvim",              version = "master" },
   { src = "https://github.com/MeanderingProgrammer/render-markdown.nvim", version = "main" },
