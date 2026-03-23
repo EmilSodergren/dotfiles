@@ -31,4 +31,5 @@ require('config.options')
 require('config.keymaps')
 require('config.autocmds')
 
-vim.lsp.inlay_hint.enable(true, { bufnr = 0 })
+-- vim.lsp.inlay_hint.enable(true, { bufnr = 0 })
+vim.diagnostic.config({ virtual_text = true })

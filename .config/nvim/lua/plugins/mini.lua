@@ -24,9 +24,11 @@ require("mini.trailspace").setup()
 require("mini.cmdline").setup()
 require("mini.clue").setup({
   triggers = {
-    { mode = { "n", "x" }, keys = "<leader>" },
-    { mode = "n",          keys = "[" },
-    { mode = "n",          keys = "]" },
-    --    { mode = { "n", "x" }, keys = "g" },
+    { mode = "n", keys = "<leader>" },
+    { mode = "x", keys = "<leader>" },
+    { mode = "n", keys = "[" },
+    { mode = "n", keys = "]" },
+    { mode = "n", keys = "g" },
+    { mode = "x", keys = "g" },
   }
 })

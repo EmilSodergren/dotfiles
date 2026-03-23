@@ -82,7 +82,7 @@ def get_dep_packages():
             return common_packages + packages_for_Qt5 + packages_for_u24
         case "6.17.0":
             return common_packages + packages_for_Qt6
-        case "6.19.0":
+        case "7.0.0":
             return common_packages + packages_for_Qt6
         case _:
             raise ValueError("No match for current kernel version")
@@ -96,7 +96,7 @@ def get_konsole_tag():
             return "v23.08.5"
         case "6.17.0":
             return "v25.08.3"
-        case "6.19.0":
+        case "7.0.0":
             return "v25.12.2"
         case _:
             raise ValueError("No match for current kernel version")
