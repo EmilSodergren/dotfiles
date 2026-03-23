@@ -1,8 +1,8 @@
 vim.pack.add({
-  { src = 'https://github.com/neovim/nvim-lspconfig', version = 'master' },
+  { src = "https://github.com/neovim/nvim-lspconfig", version = "master" },
 })
 
-vim.lsp.config('pylsp', {
+vim.lsp.config("pylsp", {
   cmd = {
     os.getenv("HOME") .. "/.local/bin/pylsp",
   },
@@ -21,7 +21,7 @@ vim.lsp.config('pylsp', {
   },
 })
 
-vim.lsp.config('ruff', {
+vim.lsp.config("ruff", {
   cmd = {
     os.getenv("HOME") .. "/.local/bin/ruff", "server",
   },
@@ -36,5 +36,5 @@ vim.lsp.config('ruff', {
   },
 })
 
-vim.lsp.enable('pylsp')
-vim.lsp.enable('ruff')
+vim.lsp.enable("pylsp")
+vim.lsp.enable("ruff")

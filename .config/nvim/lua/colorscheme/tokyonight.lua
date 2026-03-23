@@ -1,5 +1,5 @@
 vim.pack.add({
-  { src = 'https://github.com/folke/tokyonight.nvim', version = 'main' },
+  { src = "https://github.com/folke/tokyonight.nvim", version = "main" },
 })
 
 require("tokyonight").setup({
@@ -12,7 +12,7 @@ require("tokyonight").setup({
   },
   -- Change the "hint" color to the "orange" color, and make the "error" color bright red
   on_colors = function(colors)
-    colors.yellow = '#ffff8f'
+    colors.yellow = "#ffff8f"
     -- colors.hint = colors.orange
     -- colors.error = "#ff0000"
   end,
@@ -25,4 +25,4 @@ require("tokyonight").setup({
   end,
 })
 
-vim.cmd('colorscheme tokyonight')
+vim.cmd("colorscheme tokyonight")

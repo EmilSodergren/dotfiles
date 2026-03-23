@@ -1,11 +1,11 @@
 vim.pack.add({ 
-  { src = 'https://github.com/mfussenegger/nvim-ansible', version = 'main' },
-  { src = 'https://github.com/neovim/nvim-lspconfig', version = 'master' },
+  { src = "https://github.com/mfussenegger/nvim-ansible", version = "main" },
+  { src = "https://github.com/neovim/nvim-lspconfig", version = "master" },
 })
 
-vim.lsp.enable('ansiblels')
+vim.lsp.enable("ansiblels")
 
-vim.lsp.config('ansiblels', {
+vim.lsp.config("ansiblels", {
           cmd = {
             os.getenv("HOME") .. "/.local/bin/ansible-language-server", "--stdio"
           },

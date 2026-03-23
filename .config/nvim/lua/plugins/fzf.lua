@@ -1,18 +1,18 @@
-vim.api.nvim_create_autocmd('PackChanged', { callback = function(ev)
+vim.api.nvim_create_autocmd("PackChanged", { callback = function(ev)
   local name, kind = ev.data.spec.name, ev.data.kind
-   if name == 'fzf' and kind ~= 'delete' then
-     install_cmd = ev.data.path .. '/install --no-zsh --no-fish --key-bindings --completion --update-rc'
+   if name == "fzf" and kind ~= "delete" then
+     install_cmd = ev.data.path .. "/install --no-zsh --no-fish --key-bindings --completion --update-rc"
      os.execute(install_cmd)
   end
 end })
 
 vim.pack.add({
-  { src = 'https://github.com/ibhagwan/fzf-lua', version = 'main' },
-  { src = 'https://github.com/junegunn/fzf', version = 'master' },
+  { src = "https://github.com/ibhagwan/fzf-lua", version = "main" },
+  { src = "https://github.com/junegunn/fzf", version = "master" },
 })
 
-require('fzf-lua').setup({
-  fzf_bin = '~/.local/share/nvim/site/pack/core/opt/fzf/bin/fzf',
+require("fzf-lua").setup({
+  fzf_bin = "~/.local/share/nvim/site/pack/core/opt/fzf/bin/fzf",
 })
 
 vim.keymap.set("n", "<leader>sf", function() return require("fzf-lua").files() end,                                                    { noremap = true })

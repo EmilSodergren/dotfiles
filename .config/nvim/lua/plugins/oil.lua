@@ -1,9 +1,9 @@
 vim.pack.add({
-  { src = 'https://github.com/stevearc/oil.nvim', version = 'master', name = 'oil' },
-  { src = 'https://github.com/nvim-mini/mini.icons', version = 'main' },
+  { src = "https://github.com/stevearc/oil.nvim", version = "master", name = "oil" },
+  { src = "https://github.com/nvim-mini/mini.icons", version = "main" },
 })
 
-require('oil').setup({
+require("oil").setup({
       float = {
         padding = 3,
         max_width = 100,

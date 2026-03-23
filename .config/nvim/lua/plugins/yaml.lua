@@ -1,13 +1,13 @@
 vim.pack.add({
-  { src = 'https://github.com/neovim/nvim-lspconfig', version = 'master' },
+  { src = "https://github.com/neovim/nvim-lspconfig", version = "master" },
 })
 
-vim.lsp.config('yamlls', {
+vim.lsp.config("yamlls", {
   cmd = {
     os.getenv("HOME") .. "/.local/node_modules/yaml-language-server/bin/yaml-language-server",
     "--stdio",
   },
-  filetypes = { 'yaml', 'yaml.ansible' },
+  filetypes = { "yaml", "yaml.ansible" },
   settings = {
     yaml = {
       format = {
@@ -25,4 +25,4 @@ vim.lsp.config('yamlls', {
   },
 })
 
-vim.lsp.enable('yamlls')
+vim.lsp.enable("yamlls")

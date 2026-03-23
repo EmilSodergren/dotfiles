@@ -49,7 +49,7 @@ vim.api.nvim_create_autocmd("FileType",
 
 -- This function uses the go-qmk-keymap formatter to format the current buffer
 local function format_keymap_c()
-  if vim.fn.executable('go-qmk-keymap') ~= 1 then
+  if vim.fn.executable("go-qmk-keymap") ~= 1 then
     return
   end
   local buf = vim.api.nvim_get_current_buf()
@@ -75,7 +75,7 @@ vim.api.nvim_create_augroup("format_on_save", { clear = true })
 vim.api.nvim_create_autocmd("BufWritePre",
   {
     pattern = "*",
-    group = 'format_on_save',
+    group = "format_on_save",
     callback = function()
       local filename = vim.api.nvim_buf_get_name(0):match("^.+/(.+)$")
       if filename == "keymap.c" then

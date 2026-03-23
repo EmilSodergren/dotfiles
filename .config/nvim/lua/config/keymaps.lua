@@ -37,7 +37,7 @@ map("n", "<leader>f", vim.lsp.buf.format, { noremap = true, silent = true })
 map("n", "<leader>n", vim.lsp.buf.code_action, { noremap = true, silent = true })
 map("n", "<leader>e", vim.lsp.buf.signature_help, { noremap = true, silent = true })
 
-map("n", "<leader>u", require('undotree').toggle, { noremap = true, silent = true } )
+map("n", "<leader>u", require("undotree").toggle, { noremap = true, silent = true })
 
 -- Clean up whitespaces at end of lines
 vim.keymap.set("n", "<leader>ws", function()
@@ -51,46 +51,52 @@ end, { noremap = true, silent = true })
 -- keeping the currently pasted text instead of overwriting it.
 vim.keymap.set({ "v", "x" }, "p", '"_dP', { noremap = true })
 
-vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { noremap = true })
-vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { noremap = true })
+vim.keymap.set("v", "J", ':m ">+1<CR>gv=gv', { noremap = true })
+vim.keymap.set("v", "K", ':m "<-2<CR>gv=gv', { noremap = true })
 
 -- save file with sudo permissions
 vim.keymap.set("c", "w!!", "w !sudo tee > /dev/null %")
 
 vim.keymap.set({ "n", "v" }, "<space>", "za", { noremap = true })
 
-vim.keymap.set("n", "<leader>sf", function() return require("fzf-lua").files() end,                                                    { noremap = true })
-vim.keymap.set("n", "<leader>sh", function() return require("fzf-lua").files({ prompt = "~/", cwd = "~/" }) end,                       { noremap = true })
-vim.keymap.set("n", "<leader>sg", function() return require("fzf-lua").git_files({ prompt = "GIT> " }) end,                            { noremap = true })
-vim.keymap.set("n", "<leader>sr", function() return require("fzf-lua").live_grep({ prompt = "rg> " }) end,                             { noremap = true })
-vim.keymap.set("i", "<C-x><C-f>", function() return require("fzf-lua").complete_path({ cmd = "rg --files --hidden -g '!.git/'" }) end, { silent = true, noremap = true })
-vim.keymap.set("n", "<leader>ev", function() return require("fzf-lua").files({ cwd = "~/.config/nvim/" }) end,                         { noremap = true })  
+vim.keymap.set("n", "<leader>sf", function() return require("fzf-lua").files() end, { noremap = true })
+vim.keymap.set("n", "<leader>sh", function() return require("fzf-lua").files({ prompt = "~/", cwd = "~/" }) end,
+  { noremap = true })
+vim.keymap.set("n", "<leader>sg", function() return require("fzf-lua").git_files({ prompt = "GIT> " }) end,
+  { noremap = true })
+vim.keymap.set("n", "<leader>sr", function() return require("fzf-lua").live_grep({ prompt = "rg> " }) end,
+  { noremap = true })
+vim.keymap.set("i", "<C-x><C-f>",
+  function() return require("fzf-lua").complete_path({ cmd = "rg --files --hidden -g '!.git/'" }) end,
+  { silent = true, noremap = true })
+vim.keymap.set("n", "<leader>ev", function() return require("fzf-lua").files({ cwd = "~/.config/nvim/" }) end,
+  { noremap = true })
 
 
-      vim.keymap.set(  "n", "<leader>hs", require("gitsigns").stage_hunk, { noremap = true })
-      vim.keymap.set(  "n", "<leader>hr", require("gitsigns").reset_hunk, { noremap = true })
-     vim.keymap.set(  "v", 
-        "<leader>hs",
-        function()
-          require("gitsigns").stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
-        end,
-        { noremap = true})
-     vim.keymap.set(  "v", 
-        "<leader>hr",
-        function()
-          require("gitsigns").reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
-        end,
-      { noremap = true })
-      vim.keymap.set(  "n", "<leader>hS", require("gitsigns").stage_buffer, { noremap = true })
-      vim.keymap.set(  "n", "<leader>hu", require("gitsigns").stage_hunk, { noremap = true })
-     vim.keymap.set(  "n",  "<leader>hR", require("gitsigns").reset_buffer, { noremap = true })
-     vim.keymap.set(  "n",  "<leader>hp", require("gitsigns").preview_hunk, { noremap = true })
-    vim.keymap.set(  "n",   "<leader>hb", function()
-        require("gitsigns").blame_line({ full = true })
-      end, { noremap = true })
-      vim.keymap.set(  "n", "<leader>tb", require("gitsigns").toggle_current_line_blame, { noremap = true })
-      vim.keymap.set(  "n", "<leader>hd", require("gitsigns").diffthis, { noremap = true })
-      vim.keymap.set(  "n", "<leader>hD", function()
-        require("gitsigns").diffthis("~")
-      end, { noremap = true })
-      vim.keymap.set(  "n", "<leader>td", require("gitsigns").preview_hunk_inline, { noremap = true })
+vim.keymap.set("n", "<leader>hs", require("gitsigns").stage_hunk, { noremap = true })
+vim.keymap.set("n", "<leader>hr", require("gitsigns").reset_hunk, { noremap = true })
+vim.keymap.set("v",
+  "<leader>hs",
+  function()
+    require("gitsigns").stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
+  end,
+  { noremap = true })
+vim.keymap.set("v",
+  "<leader>hr",
+  function()
+    require("gitsigns").reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
+  end,
+  { noremap = true })
+vim.keymap.set("n", "<leader>hS", require("gitsigns").stage_buffer, { noremap = true })
+vim.keymap.set("n", "<leader>hu", require("gitsigns").stage_hunk, { noremap = true })
+vim.keymap.set("n", "<leader>hR", require("gitsigns").reset_buffer, { noremap = true })
+vim.keymap.set("n", "<leader>hp", require("gitsigns").preview_hunk, { noremap = true })
+vim.keymap.set("n", "<leader>hb", function()
+  require("gitsigns").blame_line({ full = true })
+end, { noremap = true })
+vim.keymap.set("n", "<leader>tb", require("gitsigns").toggle_current_line_blame, { noremap = true })
+vim.keymap.set("n", "<leader>hd", require("gitsigns").diffthis, { noremap = true })
+vim.keymap.set("n", "<leader>hD", function()
+  require("gitsigns").diffthis("~")
+end, { noremap = true })
+vim.keymap.set("n", "<leader>td", require("gitsigns").preview_hunk_inline, { noremap = true })

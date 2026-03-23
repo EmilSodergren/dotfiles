@@ -1,32 +1,32 @@
 vim.pack.add({
-  { src = 'https://github.com/nvim-mini/mini.ai',         version = 'main' },
-  { src = 'https://github.com/nvim-mini/mini.comment',    version = 'main' },
-  { src = 'https://github.com/nvim-mini/mini.cursorword', version = 'main' },
-  { src = 'https://github.com/nvim-mini/mini.tabline',    version = 'main' },
-  { src = 'https://github.com/nvim-mini/mini.icons',      version = 'main' },
-  { src = 'https://github.com/nvim-mini/mini.statusline', version = 'main' },
-  { src = 'https://github.com/nvim-mini/mini.files',      version = 'main' },
-  { src = 'https://github.com/nvim-mini/mini.pairs',      version = 'main' },
-  { src = 'https://github.com/nvim-mini/mini.clue',       version = 'main' },
-  { src = 'https://github.com/nvim-mini/mini.cmdline',    version = 'main' },
-  { src = 'https://github.com/nvim-mini/mini.trailspace', version = 'main' },
+  { src = "https://github.com/nvim-mini/mini.ai",         version = "stable" },
+  { src = "https://github.com/nvim-mini/mini.comment",    version = "stable" },
+  { src = "https://github.com/nvim-mini/mini.cursorword", version = "stable" },
+  { src = "https://github.com/nvim-mini/mini.tabline",    version = "stable" },
+  { src = "https://github.com/nvim-mini/mini.icons",      version = "stable" },
+  { src = "https://github.com/nvim-mini/mini.statusline", version = "stable" },
+  { src = "https://github.com/nvim-mini/mini.files",      version = "stable" },
+  { src = "https://github.com/nvim-mini/mini.pairs",      version = "stable" },
+  { src = "https://github.com/nvim-mini/mini.clue",       version = "stable" },
+  { src = "https://github.com/nvim-mini/mini.cmdline",    version = "stable" },
+  { src = "https://github.com/nvim-mini/mini.trailspace", version = "stable" },
 })
 
-require('mini.ai').setup()
-require('mini.comment').setup()
-require('mini.cursorword').setup()
-require('mini.tabline').setup()
-require('mini.icons').setup()
-require('mini.statusline').setup()
-require('mini.files').setup()
-require('mini.pairs').setup()
-require('mini.clue').setup({
+require("mini.ai").setup()
+require("mini.comment").setup()
+require("mini.cursorword").setup()
+require("mini.tabline").setup()
+require("mini.icons").setup()
+require("mini.statusline").setup()
+require("mini.files").setup()
+require("mini.pairs").setup()
+require("mini.trailspace").setup()
+require("mini.cmdline").setup()
+require("mini.clue").setup({
   triggers = {
-    { mode = { 'n', 'x' }, keys = '<leader>' },
-    { mode = 'n',          keys = '[' },
-    { mode = 'n',          keys = ']' },
-    { mode = { 'n', 'x' }, keys = 'g' },
+    { mode = { "n", "x" }, keys = "<leader>" },
+    { mode = "n",          keys = "[" },
+    { mode = "n",          keys = "]" },
+    --    { mode = { "n", "x" }, keys = "g" },
   }
 })
-require('mini.trailspace').setup()
-require('mini.cmdline').setup()

@@ -1,8 +1,8 @@
 vim.pack.add({
-  { src = 'https://github.com/neovim/nvim-lspconfig', version = 'master' },
+  { src = "https://github.com/neovim/nvim-lspconfig", version = "master" },
 })
 
-vim.lsp.config('jsonls', {
+vim.lsp.config("jsonls", {
   cmd = {
     os.getenv("HOME")
     .. "/.local/node_modules/vscode-langservers-extracted/bin/vscode-json-language-server",
@@ -10,4 +10,4 @@ vim.lsp.config('jsonls', {
   },
 })
 
-vim.lsp.enable('jsonls')
+vim.lsp.enable("jsonls")

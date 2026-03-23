@@ -1,12 +1,12 @@
 vim.pack.add({ 
-  { src = 'https://github.com/ray-x/go.nvim', version = 'master' },
-  { src = 'https://github.com/ray-x/guihua.lua', version = 'master' },
-  { src = 'https://github.com/neovim/nvim-lspconfig', version = 'master' },
+  { src = "https://github.com/ray-x/go.nvim", version = "master" },
+  { src = "https://github.com/ray-x/guihua.lua", version = "master" },
+  { src = "https://github.com/neovim/nvim-lspconfig", version = "master" },
 })
-vim.lsp.enable('gopls')
-vim.lsp.enable('golangci_lint_ls')
+vim.lsp.enable("gopls")
+vim.lsp.enable("golangci_lint_ls")
 
-vim.lsp.config('gopls', {
+vim.lsp.config("gopls", {
           cmd = { os.getenv("HOME") .. "/go/bin/gopls" },
           settings = {
             gopls = {
@@ -22,7 +22,7 @@ vim.lsp.config('gopls', {
             },
           },
         })
-vim.lsp.config('golangci_lint_ls', {
+vim.lsp.config("golangci_lint_ls", {
           cmd = { os.getenv("HOME") .. "/go/bin/golangci-lint-langserver" },
           root_dir = function(bufnr, ondir)
             local fname = vim.api.nvim_buf_get_name(bufnr)

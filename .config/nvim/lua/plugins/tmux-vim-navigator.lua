@@ -1,5 +1,5 @@
 vim.pack.add({
-  { src = 'https://github.com/alexghergh/nvim-tmux-navigation', version = 'main' },
+  { src = "https://github.com/alexghergh/nvim-tmux-navigation", version = "main" },
 })
 
 require("nvim-tmux-navigation").setup({
