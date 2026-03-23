@@ -47,3 +47,9 @@ vim.o.smartindent = true
 vim.o.updatetime = 50
 vim.o.textwidth = 0
 vim.o.termguicolors = true
+
+-- -- Use 2 space indent by default
+vim.go.tabstop = 2
+vim.go.shiftwidth = 2
+vim.go.expandtab = true
+vim.go.softtabstop = 2

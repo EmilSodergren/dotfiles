@@ -16,8 +16,10 @@ require('plugins.fzf')
 require('plugins.undotree')
 require('plugins.oil')
 require('plugins.rust')
+require('plugins.python')
 
 require('config.options')
 require('config.keymaps')
+require('config.autocmds')
 
 vim.lsp.inlay_hint.enable(true, { bufnr = 0 })
