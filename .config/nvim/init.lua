@@ -21,6 +21,7 @@ require('plugins.json')
 require('plugins.luasnip')
 require('plugins.toml')
 require('plugins.yaml')
+require('plugins.markdown')
 
 require('config.options')
 require('config.keymaps')
