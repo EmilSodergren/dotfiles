@@ -1,3 +1,23 @@
+vim.api.nvim_create_augroup("numbertoggle", { clear = true })
+vim.api.nvim_create_autocmd({ "BufEnter", "FocusGained", "InsertLeave", "WinEnter" },
+  {
+    group = "numbertoggle",
+    callback = function()
+      if vim.o.number == true and vim.api.nvim_get_mode()["mode"] ~= "i" then
+        vim.o.relativenumber = true
+      end
+    end
+  })
+vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost", "InsertEnter", "WinLeave" },
+  {
+    group = "numbertoggle",
+    callback = function()
+      if vim.o.number == true then
+        vim.o.relativenumber = false
+      end
+    end
+  })
+
 vim.api.nvim_create_autocmd("FileType",
   {
     group = vim.api.nvim_create_augroup("go_commands", { clear = true }),
