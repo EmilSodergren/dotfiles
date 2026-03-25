@@ -21,7 +21,7 @@ require("mini.statusline").setup()
 require("mini.files").setup()
 require("mini.pairs").setup()
 require("mini.trailspace").setup()
-require("mini.cmdline").setup()
+-- require("mini.cmdline").setup()
 require("mini.clue").setup({
   triggers = {
     { mode = "n", keys = "<leader>" },

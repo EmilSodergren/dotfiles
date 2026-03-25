@@ -24,6 +24,9 @@ require('plugins.yaml')
 require('plugins.markdown')
 require('plugins.neogit')
 require('plugins.flash')
+require('plugins.flash')
+require('plugins.winresizer')
+
 
 require('plugins.mini')
 
