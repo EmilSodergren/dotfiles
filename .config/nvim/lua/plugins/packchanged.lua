@@ -1,7 +1,7 @@
 ------------------------------------------------
 --- TREESITTER Install and update
 ------------------------------------------------
-local parsers = {
+local treesitter_parsers = {
   "bash",
   "c",
   "comment",
@@ -44,7 +44,7 @@ vim.api.nvim_create_autocmd("PackChanged", {
     local name, kind = ev.data.spec.name, ev.data.kind
     if name == "nvim-treesitter" and kind == "install" then
       if not ev.data.active then vim.cmd.packadd("nvim-treesitter") end
-      require("nvim-treesitter").install(parsers):wait(60000)
+      require("nvim-treesitter").install(treesitter_parsers):wait(60000)
     end
     if name == "nvim-treesitter" and kind == "update" then
       if not ev.data.active then vim.cmd.packadd("nvim-treesitter") end
@@ -56,7 +56,7 @@ vim.api.nvim_create_autocmd("PackChanged", {
 vim.api.nvim_create_autocmd("FileType",
   {
     group = vim.api.nvim_create_augroup("enable_treesitter", { clear = true }),
-    pattern = parsers,
+    pattern = treesitter_parsers,
     callback = function() vim.treesitter.start() end
   })
 
