@@ -25,6 +25,7 @@ forgit = local_bin / "forgit"
 write_notes = local_bin / "write_notes"
 konsole_config = Path(".local") / "share" / "konsole" / "Emil.profile"
 neovim_init = Path(".config") / "nvim"
+alacritty_conf = Path(".config") / "alacritty"
 kwalletrc = Path.home() / ".config" / "kwalletrc"
 yarn_packages = [
     "bash-language-server",
@@ -50,6 +51,8 @@ settingsfiles: list[Path] = [
     antiword,
     ccls_config,
     forgit,
+    neovim_init,
+    alacritty_conf,
     konsole_config,
     write_notes,
 ]
@@ -497,7 +500,10 @@ if args.online:
             run(["cargo", "install", "cargo-update"], check=True)
     # Fix tmux-thumbs
     install_tmux_thumbs(dotfilespath / "tmux-thumbs", "https://github.com/fcsonline/tmux-thumbs")
-    run(["nvim", "-c", "lua vim.pack.update()"], timeout=60, check=False)
+    try:
+        run(["nvim", "-c", "lua vim.pack.update()"], timeout=60, check=False)
+    except TimeoutExpired:
+        pass
 
 if args.font:
     run(["sudo", "rm", "-rf", "/usr/local/share/fonts/*"], check=True)

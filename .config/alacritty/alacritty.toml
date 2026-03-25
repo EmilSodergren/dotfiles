@@ -1,0 +1,14 @@
+[window]
+dimensions = { columns = 400, lines = 90 }
+decorations = "none"
+opacity = 1
+
+[scrolling]
+history = 100000
+
+[font]
+normal = { family = "Hack Nerd Font" }
+size = 8.5
+
+[mouse]
+hide_when_typing = true
