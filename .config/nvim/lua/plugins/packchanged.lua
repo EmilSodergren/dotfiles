@@ -53,6 +53,13 @@ vim.api.nvim_create_autocmd("PackChanged", {
   end
 })
 
+vim.api.nvim_create_autocmd("FileType",
+  {
+    group = vim.api.nvim_create_augroup("enable_treesitter", { clear = true }),
+    pattern = parsers,
+    callback = function() vim.treesitter.start() end
+  })
+
 ------------------------------------------------
 --- FZF binary download
 ------------------------------------------------
