@@ -49,7 +49,7 @@ vim.o.textwidth = 0
 vim.o.termguicolors = true
 
 -- -- Use 2 space indent by default
-vim.go.tabstop = 2
-vim.go.shiftwidth = 2
-vim.go.expandtab = true
-vim.go.softtabstop = 2
+vim.o.tabstop = 2
+vim.o.shiftwidth = 2
+vim.o.expandtab = true
+vim.o.softtabstop = 2
