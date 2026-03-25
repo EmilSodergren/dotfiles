@@ -100,3 +100,5 @@ vim.keymap.set("n", "<leader>hD", function()
   require("gitsigns").diffthis("~")
 end, { noremap = true })
 vim.keymap.set("n", "<leader>td", require("gitsigns").preview_hunk_inline, { noremap = true })
+
+vim.keymap.set("n", "<leader>m", function() require("neogit").open({ kind = "vsplit" }) end, { noremap = true })
