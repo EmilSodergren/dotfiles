@@ -8,7 +8,6 @@ vim.pack.add({
   { src = "https://github.com/nvim-mini/mini.files",      version = "stable" },
   { src = "https://github.com/nvim-mini/mini.pairs",      version = "stable" },
   { src = "https://github.com/nvim-mini/mini.clue",       version = "stable" },
-  { src = "https://github.com/nvim-mini/mini.cmdline",    version = "stable" },
   { src = "https://github.com/nvim-mini/mini.trailspace", version = "stable" },
 })
 
@@ -21,7 +20,6 @@ require("mini.statusline").setup()
 require("mini.files").setup()
 require("mini.pairs").setup()
 require("mini.trailspace").setup()
--- require("mini.cmdline").setup()
 require("mini.clue").setup({
   triggers = {
     { mode = "n", keys = "<leader>" },
