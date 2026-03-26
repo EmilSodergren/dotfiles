@@ -19,7 +19,7 @@ class RequestFailedException(Exception):
 class NoAssetException(Exception):
 
     def __init__(self, asset_name, url):
-        super().__init__(f'No asset ending with `{asset_name}` found in {url}')
+        super().__init__(f'No asset containing the string `{asset_name}` found in {url}')
 
 
 def check_api_token_expiry():
@@ -66,7 +66,7 @@ class GithubDownloader:
                 print(r.json()['message'])
                 raise RequestFailedException
             for asset in r.json().get('assets'):
-                if asset.get('browser_download_url').endswith(self.file_identifier):
+                if self.file_identifier in asset.get('browser_download_url'):
                     file_path = Path(self.__temp_dir.name) / asset.get('name')
                     r2 = requests.get(asset.get('browser_download_url'), headers=headers, timeout=30)
                     if not self.quiet:

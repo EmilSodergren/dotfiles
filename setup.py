@@ -397,7 +397,7 @@ if args.online:
         os.chmod(marksman_bin, 0o755)
 
     # Download ansible language server
-    with GithubDownloader(url="ansible/vscode-ansible", file_identifier="@ansible-ansible-language-server") as f:
+    with GithubDownloader(url="ansible/vscode-ansible", file_identifier="ansible-ansible-language-server") as f:
         run(["tar", "xf", f], cwd=f.parent, check=True)
         ansiblels_install_dir = Path.home() / ".local" / "lib" / "ansible-language-server"
         ansiblels_install_dir.mkdir(parents=True, exist_ok=True)
