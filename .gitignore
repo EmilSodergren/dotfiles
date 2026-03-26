@@ -1,5 +1,5 @@
 tmux-*/
 bin/Hack.tar.xz
-auth.json
+server_path
 __pycache__
 .config/nvim/nvim-pack-lock.json

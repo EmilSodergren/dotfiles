@@ -23,7 +23,6 @@ bfg_bin = local_bin / "bfg"
 ccls_config = local_bin / "ccls_config"
 forgit = local_bin / "forgit"
 write_notes = local_bin / "write_notes"
-konsole_config = Path(".local") / "share" / "konsole" / "Emil.profile"
 neovim_init = Path(".config") / "nvim"
 alacritty_conf = Path(".config") / "alacritty"
 kwalletrc = Path.home() / ".config" / "kwalletrc"
@@ -53,7 +52,6 @@ settingsfiles: list[Path] = [
     forgit,
     neovim_init,
     alacritty_conf,
-    konsole_config,
     write_notes,
 ]
 tree_sitter_languages = [
@@ -97,6 +95,7 @@ tree_sitter_languages = [
 ]
 rustup_bin = Path.home() / ".cargo/bin/rustup"
 rust_crates = [
+    "alacritty",
     "bacon",
     "bat",
     "cargo-edit",
@@ -204,12 +203,6 @@ parser.add_argument(
     "--skip_ccls",
     action="store_true",
     help="Should ccls be skipped, only vaild if --online is defined",
-)
-parser.add_argument(
-    "-sk",
-    "--skip_konsole",
-    action="store_true",
-    help="Should konsole be skipped, only vaild if --online is defined",
 )
 parser.add_argument(
     "-st",
@@ -370,8 +363,6 @@ if args.online:
             install_program("neovim.py", args.clean)
         if not args.skip_ccls:
             install_program("ccls.py", args.clean)
-        if not args.skip_konsole:
-            install_program("konsole.py", args.clean)
         if not args.skip_tmux:
             install_program("tmux.py", args.clean)
 
@@ -501,9 +492,9 @@ if args.online:
     # Fix tmux-thumbs
     install_tmux_thumbs(dotfilespath / "tmux-thumbs", "https://github.com/fcsonline/tmux-thumbs")
     try:
-        run(["nvim", "-c", "lua vim.pack.update()"], timeout=60, check=False)
+        run(["nvim", "-c", "lua vim.pack.update(nil, { force = true })"], timeout=60, check=False)
     except TimeoutExpired:
-        pass
+        run(["reset"], check=True)
 
 if args.font:
     run(["sudo", "rm", "-rf", "/usr/local/share/fonts/*"], check=True)
@@ -530,8 +521,6 @@ if args.pack or args.artifactory:
             ".local/include",
             ".local/lib",
             ".local/share/nvim",
-            ".local/share/konsole",
-            "konsole",
             ".fzf.bash",
         ],
         check=True,
@@ -539,13 +528,15 @@ if args.pack or args.artifactory:
     print("")
     print(".dotfiles has been packed into " + str(Path.home() / DOTFILES_NAME))
 
+    ul_path = (dotfilespath / "server_path").read_text(encoding="utf-8").strip()
+
     if args.artifactory:
         command = [
             "jfrog",
             "rt",
             "u",
             str(Path.home() / DOTFILES_NAME),
-            f"ace-generic-prod-se-blu-sync/u009893/{DOTFILES_NAME}",
+            "/".join([ul_path, DOTFILES_NAME]),
         ]
         os.system(" ".join(command))
 
