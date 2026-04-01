@@ -34,7 +34,7 @@ map("n", "K", vim.lsp.buf.hover, { noremap = true, silent = true })
 map("n", "gd", vim.lsp.buf.definition, { noremap = true, silent = true })
 map("n", "<leader>r", vim.lsp.buf.references, { noremap = true, silent = true })
 map("n", "<leader>f", vim.lsp.buf.format, { noremap = true, silent = true })
-map("n", "<leader>n", vim.lsp.buf.code_action, { noremap = true, silent = true })
+map({ "n", "i" }, "<leader>n", vim.lsp.buf.code_action, { noremap = true, silent = true })
 map("n", "<leader>e", vim.lsp.buf.signature_help, { noremap = true, silent = true })
 
 map("n", "<leader>u", require("undotree").toggle, { noremap = true, silent = true })
@@ -102,3 +102,10 @@ end, { noremap = true })
 vim.keymap.set("n", "<leader>td", require("gitsigns").preview_hunk_inline, { noremap = true })
 
 vim.keymap.set("n", "<leader>m", function() require("neogit").open({ kind = "vsplit" }) end, { noremap = true })
+
+
+require('opencode').setup({
+  preferred_picker = 'fzf',
+  preferred_completion = 'blink',
+  default_mode = 'plan',
+})

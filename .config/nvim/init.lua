@@ -26,6 +26,7 @@ require('plugins.neogit')
 require('plugins.flash')
 require('plugins.flash')
 require('plugins.winresizer')
+require('plugins.opencode')
 
 
 require('plugins.mini')
