@@ -15,7 +15,7 @@ vim.o.list = false
 vim.o.autoindent = true
 vim.o.backspace = "indent"
 vim.o.clipboard = vim.env.SSH_TTY and "" or "unnamedplus"
-vim.o.cmdheight = 2
+vim.o.cmdheight = 0
 vim.o.cursorline = false
 vim.opt.completeopt:append { "menuone", "noinsert", "noselect" }
 vim.opt.completeopt:remove { "preview" }
