@@ -74,19 +74,6 @@ vim.api.nvim_create_autocmd("PackChanged", {
 })
 
 ------------------------------------------------
---- MARKDOWN PREVIEW install
-------------------------------------------------
-vim.api.nvim_create_autocmd("PackChanged", {
-  callback = function(ev)
-    local name, kind = ev.data.spec.name, ev.data.kind
-    if name == "markdown-preview.nvim" and kind ~= "delete" then
-      local install_cmd = ev.data.path .. "/app/install.sh"
-      os.execute(install_cmd)
-    end
-  end
-})
----
-------------------------------------------------
 --- LUASNIP install
 ------------------------------------------------
 vim.api.nvim_create_autocmd("PackChanged", {
