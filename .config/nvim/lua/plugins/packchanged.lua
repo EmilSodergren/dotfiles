@@ -85,3 +85,16 @@ vim.api.nvim_create_autocmd("PackChanged", {
     end
   end
 })
+---
+------------------------------------------------
+--- LUASNIP install
+------------------------------------------------
+vim.api.nvim_create_autocmd("PackChanged", {
+  callback = function(ev)
+    local name, kind = ev.data.spec.name, ev.data.kind
+    if name == "LuaSnip" and kind ~= "delete" then
+      local install_cmd = "make -C " .. ev.data.path .. " install_jsregexp"
+      os.execute(install_cmd)
+    end
+  end
+})

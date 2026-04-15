@@ -91,6 +91,9 @@ local function format_keymap_c()
   os.remove("keymap.c.tmp")
 end
 
+--
+-- FORMAT ON SAVE
+--
 vim.api.nvim_create_augroup("format_on_save", { clear = true })
 vim.api.nvim_create_autocmd("BufWritePre",
   {
@@ -115,6 +118,9 @@ vim.api.nvim_create_autocmd("BufWritePre",
     end
   })
 
+--
+-- NOTIFICATION WINDOW
+--
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "msg",
   callback = function()
