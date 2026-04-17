@@ -27,6 +27,7 @@ require('plugins.flash')
 require('plugins.winresizer')
 require('plugins.opencode')
 require('plugins.tiny-cmdline')
+require('plugins.dap')
 
 
 require('plugins.mini')

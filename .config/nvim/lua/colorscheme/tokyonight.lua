@@ -10,7 +10,6 @@ require("tokyonight").setup({
   },
   on_colors = function(colors)
     colors.yellow = "#ffff8f"
-    -- colors.hint = colors.orange
   end,
 
   on_highlights = function(hl, c)
@@ -19,6 +18,9 @@ require("tokyonight").setup({
     hl.MiniCursorwordCurrent = { bg = "none", bold = false, }
     hl.MiniTablineCurrent = { bg = "none", bold = true, }
     hl.MiniTrailspace = { bg = "#5f0000", }
+
+    hl.DapBreakpoint = { link = "@variable" }
+    hl.DapStoppedLine = { fg = c.green, }
 
     hl.DiffAdd = { bg = "none", fg = "#55EE33" }
     hl.GitSignsAdd = { link = "DiffAdd" }
