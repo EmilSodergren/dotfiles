@@ -18,30 +18,6 @@ vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost", "InsertEnter", "WinLeave"
     end
   })
 
-vim.api.nvim_create_autocmd("FileType",
-  {
-    group = vim.api.nvim_create_augroup("go_commands", { clear = true }),
-    pattern = "go",
-    callback = function()
-      vim.keymap.set("n", "<leader>b", "<cmd>GoBuild<cr>", { noremap = true })
-      vim.keymap.set("n", "<leader>i", "<cmd>GoInstall<cr>", { noremap = true })
-      vim.keymap.set("n", "<leader>t", "<cmd>GoTest<cr>", { noremap = true })
-      vim.keymap.set("n", "<leader>c", "<cmd>GoCallers<cr>", { noremap = true })
-    end
-  })
-
-vim.api.nvim_create_autocmd("FileType",
-  {
-    group = vim.api.nvim_create_augroup("rust_commands", { clear = true }),
-    pattern = { "rust" },
-    callback = function()
-      vim.keymap.set("n", "<leader>b", "<cmd>Cbuild<cr><bar><s-g>", { noremap = true })
-      vim.keymap.set("n", "<leader>i", "<cmd>Cinstall<cr>", { noremap = true })
-      vim.keymap.set("n", "<leader>t", "<cmd>Ctest -- --nocapture<cr><bar><s-g>", { noremap = true })
-      vim.keymap.set("n", "<leader>bt", "<cmd>! RUST_BACKTRACE=1 cargo test <cr>,<bar><s-g>",
-        { noremap = true })
-    end
-  })
 
 vim.api.nvim_create_autocmd("FileType",
   {
@@ -57,13 +33,25 @@ vim.api.nvim_create_autocmd("FileType",
 
 vim.api.nvim_create_autocmd("FileType",
   {
+    group = vim.api.nvim_create_augroup("override_indent_3_spc", { clear = true }),
+    pattern = { "*.gpr" },
+    callback = function()
+      vim.opt_local.tabstop = 3
+      vim.opt_local.shiftwidth = 3
+      vim.opt_local.softtabstop = 3
+      vim.opt_local.expandtab = true
+    end
+  })
+
+vim.api.nvim_create_autocmd("FileType",
+  {
     group = vim.api.nvim_create_augroup("override_indent_force_tabs", { clear = true }),
     pattern = { "Makefile", "go" },
     callback = function()
-      vim.opt_local.expandtab = false
       vim.opt_local.tabstop = 2
       vim.opt_local.shiftwidth = 2
       vim.opt_local.softtabstop = 0
+      vim.opt_local.expandtab = false
     end
   })
 
