@@ -493,7 +493,7 @@ if args.online:
     # Fix tmux-thumbs
     install_tmux_thumbs(dotfilespath / "tmux-thumbs", "https://github.com/fcsonline/tmux-thumbs")
     try:
-        run(["nvim", "-c", "lua vim.pack.update(nil, { force = true })"], timeout=60, check=False)
+        run(["nvim", "-c", "lua vim.pack.update(nil, { force = true })"], timeout=120, check=False)
     except TimeoutExpired:
         run(["reset"], check=True)
 
