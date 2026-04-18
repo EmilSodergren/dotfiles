@@ -23,8 +23,8 @@ bfg_bin = local_bin / "bfg"
 ccls_config = local_bin / "ccls_config"
 forgit = local_bin / "forgit"
 write_notes = local_bin / "write_notes"
-konsole_config = Path(".local") / "share" / "konsole" / "Emil.profile"
 neovim_init = Path(".config") / "nvim"
+alacritty_conf = Path(".config") / "alacritty"
 kwalletrc = Path.home() / ".config" / "kwalletrc"
 yarn_packages = [
     "bash-language-server",
@@ -50,8 +50,8 @@ settingsfiles: list[Path] = [
     antiword,
     ccls_config,
     forgit,
-    konsole_config,
     neovim_init,
+    alacritty_conf,
     write_notes,
 ]
 tree_sitter_languages = [
@@ -95,6 +95,7 @@ tree_sitter_languages = [
 ]
 rustup_bin = Path.home() / ".cargo/bin/rustup"
 rust_crates = [
+    "alacritty",
     "bacon",
     "bat",
     "cargo-edit",
@@ -202,12 +203,6 @@ parser.add_argument(
     "--skip_ccls",
     action="store_true",
     help="Should ccls be skipped, only vaild if --online is defined",
-)
-parser.add_argument(
-    "-sk",
-    "--skip_konsole",
-    action="store_true",
-    help="Should konsole be skipped, only vaild if --online is defined",
 )
 parser.add_argument(
     "-st",
@@ -368,8 +363,6 @@ if args.online:
             install_program("neovim.py", args.clean)
         if not args.skip_ccls:
             install_program("ccls.py", args.clean)
-        if not args.skip_konsole:
-            install_program("konsole.py", args.clean)
         if not args.skip_tmux:
             install_program("tmux.py", args.clean)
 
@@ -528,8 +521,6 @@ if args.pack or args.artifactory:
             ".local/include",
             ".local/lib",
             ".local/share/nvim",
-            ".local/share/konsole",
-            "konsole",
             ".fzf.bash",
         ],
         check=True,
