@@ -128,6 +128,8 @@ packages_to_install = [
     "libssl-dev",
     "libxml2-utils",
     "make",
+    "python3-debugpy",
+    "python3-flask",
     "python3-jedi",
     "python3-pip",
     "python3-requests",
