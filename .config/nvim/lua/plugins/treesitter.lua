@@ -65,8 +65,6 @@ vim.pack.add({
   { src = "https://github.com/neovim-treesitter/nvim-treesitter",            version = "main" },
 })
 
--- require("nvim-treesitter").setup({})
-
 vim.api.nvim_create_autocmd("FileType",
   {
     group = vim.api.nvim_create_augroup("enable_treesitter", { clear = true }),

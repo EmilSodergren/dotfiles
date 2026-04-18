@@ -6,3 +6,5 @@ vim.pack.add({
 require("neogit").setup({
   mappings = { status = { ["<space>"] = "Toggle" } },
 })
+
+vim.keymap.set("n", "<leader>m", function() require("neogit").open({ kind = "vsplit" }) end, { noremap = true })
