@@ -538,9 +538,8 @@ if args.pack or args.artifactory:
     print("")
     print(".dotfiles has been packed into " + str(Path.home() / DOTFILES_NAME))
 
-    ul_path = (dotfilespath / "server_path").read_text(encoding="utf-8").strip()
-
     if args.artifactory:
+        ul_path = (dotfilespath / "server_path").read_text(encoding="utf-8").strip()
         command = [
             "jfrog",
             "rt",
