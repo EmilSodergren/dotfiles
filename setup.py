@@ -530,13 +530,15 @@ if args.pack or args.artifactory:
     print("")
     print(".dotfiles has been packed into " + str(Path.home() / DOTFILES_NAME))
 
+    ul_path = (dotfilespath / "server_path").read_text(encoding="utf-8").strip()
+
     if args.artifactory:
         command = [
             "jfrog",
             "rt",
             "u",
             str(Path.home() / DOTFILES_NAME),
-            f"ace-generic-prod-se-blu-sync/u009893/{DOTFILES_NAME}",
+            "/".join([ul_path, DOTFILES_NAME]),
         ]
         os.system(" ".join(command))
 
