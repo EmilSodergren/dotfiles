@@ -7,7 +7,7 @@ from datetime import datetime
 from glob import glob
 from os import chdir, system
 from pathlib import Path
-from shutil import copy2, move, rmtree
+from shutil import copy2, copytree, move, rmtree
 from subprocess import PIPE, Popen, TimeoutExpired, run
 
 import apt
@@ -415,6 +415,13 @@ if args.online:
             lua_linkpath.unlink()
         lua_linkpath.symlink_to(lua_install_dir / "bin" / "lua-language-server")
 
+    # Download codelldb for debugging
+    with GithubDownloader(url="vadimcn/codelldb", file_identifier="linux-x64.vsix") as f:
+        run(["unzip", "-qq", f], cwd=f.parent, check=True)
+        copy2(f.parent / "extension" / "adapter" / "codelldb", host_local_bin)
+        copytree(f.parent / "extension" / "adapter" / "scripts", host_local_bin / "scripts", dirs_exist_ok=True)
+        copytree(f.parent / "extension" / "lldb" / "lib", Path.home() / ".local" / "lldb" / "lib", dirs_exist_ok=True)
+
     # Download hadolint
     with GithubDownloader(url="hadolint/hadolint", file_identifier="linux-x86_64") as f:
         move(f, hado_bin)
@@ -522,6 +529,7 @@ if args.pack or args.artifactory:
             ".local/node_modules",
             ".local/include",
             ".local/lib",
+            ".local/lldb",
             ".local/share/nvim",
             ".fzf.bash",
         ],
