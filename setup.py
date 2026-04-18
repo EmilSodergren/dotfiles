@@ -399,11 +399,11 @@ if args.online:
         os.chmod(marksman_bin, 0o755)
 
     # Download ansible language server
-    with GithubDownloader(url="ansible/vscode-ansible", file_identifier="vsix") as f:
-        run(["unzip", "-qq", f], cwd=f.parent, check=True)
+    with GithubDownloader(url="ansible/vscode-ansible", file_identifier="ansible-ansible-language-server") as f:
+        run(["tar", "xf", f], cwd=f.parent, check=True)
         ansiblels_install_dir = Path.home() / ".local" / "lib" / "ansible-language-server"
         ansiblels_install_dir.mkdir(parents=True, exist_ok=True)
-        copy2(f.parent / "extension" / "out" / "server" / "src" / "server.js", ansiblels_install_dir)
+        copy2(f.parent / "package" / "dist" / "server.js", ansiblels_install_dir)
 
     # Download lua language server
     with GithubDownloader(url="LuaLS/lua-language-server", file_identifier="linux-x64.tar.gz") as f:
