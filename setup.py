@@ -498,25 +498,10 @@ if args.online:
             run(["cargo", "install", "cargo-update"], check=True)
     # Fix tmux-thumbs
     install_tmux_thumbs(dotfilespath / "tmux-thumbs", "https://github.com/fcsonline/tmux-thumbs")
-    run(["nvim", "-u", neovim_init / "init.lua", "-c", "quitall"], check=True)
-    run(
-        [
-            "nvim",
-            "-u",
-            neovim_init / "init.lua",
-            "--headless",
-            "-c",
-            "Lazy! install",
-            "-c",
-            "quitall",
-        ],
-        check=True,
-    )
     try:
-        run(["nvim", "--headless", "-c", "Lazy! sync"], timeout=30, check=True)
+        run(["nvim", "-c", "lua vim.pack.update(nil, { force = true })"], timeout=120, check=False)
     except TimeoutExpired:
-        # Wait 30 secs for async task to finish (hopefully)
-        pass
+        run(["reset"], check=True)
 
 if args.font:
     run(["sudo", "rm", "-rf", "/usr/local/share/fonts/*"], check=True)

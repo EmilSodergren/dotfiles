@@ -1,14 +1,18 @@
-return {
-  {
-    "iamcco/markdown-preview.nvim",
-    build = "cd app && ./install.sh",
-    ft = "markdown",
-  },
-  {
-    'MeanderingProgrammer/render-markdown.nvim',
-    dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' },
-    ft = "markdown",
+vim.pack.add({
+  { src = "https://github.com/MeanderingProgrammer/render-markdown.nvim", version = "main" },
+  { src = "https://github.com/nvim-mini/mini.icons",                      version = "main" },
+  { src = "https://github.com/neovim/nvim-lspconfig",                     version = "master" },
+})
 
-    opts = {},
+require("render-markdown").setup({
+  latex = { enabled = false },
+})
+
+vim.lsp.config("marksman", {
+  cmd = {
+    os.getenv("HOME") .. "/.local/bin/marksman",
+    "server",
   },
-}
+
+})
+vim.lsp.enable("marksman")

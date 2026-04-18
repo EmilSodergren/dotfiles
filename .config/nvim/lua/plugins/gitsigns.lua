@@ -1,38 +1,31 @@
-return {
-  {
-    "lewis6991/gitsigns.nvim",
-    lazy = false,
-    opts = {},
-    keys = {
-      { "<leader>hs", require("gitsigns").stage_hunk },
-      { "<leader>hr", require("gitsigns").reset_hunk },
-      {
-        "<leader>hs",
-        function()
-          require("gitsigns").stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
-        end,
-        mode = "v"
-      },
-      {
-        "<leader>hr",
-        function()
-          require("gitsigns").reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
-        end,
-        mode = "v"
-      },
-      { "<leader>hS", require("gitsigns").stage_buffer },
-      { "<leader>hu", require("gitsigns").stage_hunk },
-      { "<leader>hR", require("gitsigns").reset_buffer },
-      { "<leader>hp", require("gitsigns").preview_hunk },
-      { "<leader>hb", function()
-        require("gitsigns").blame_line({ full = true })
-      end },
-      { "<leader>tb", require("gitsigns").toggle_current_line_blame },
-      { "<leader>hd", require("gitsigns").diffthis },
-      { "<leader>hD", function()
-        require("gitsigns").diffthis("~")
-      end },
-      { "<leader>td", require("gitsigns").preview_hunk_inline },
-    },
-  },
-}
+vim.pack.add({
+  { src = "https://github.com/lewis6991/gitsigns.nvim", version = "main" },
+})
+
+vim.keymap.set("n", "<leader>hs", require("gitsigns").stage_hunk, { noremap = true })
+vim.keymap.set("n", "<leader>hr", require("gitsigns").reset_hunk, { noremap = true })
+vim.keymap.set("v",
+  "<leader>hs",
+  function()
+    require("gitsigns").stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
+  end,
+  { noremap = true })
+vim.keymap.set("v",
+  "<leader>hr",
+  function()
+    require("gitsigns").reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
+  end,
+  { noremap = true })
+vim.keymap.set("n", "<leader>hS", require("gitsigns").stage_buffer, { noremap = true })
+vim.keymap.set("n", "<leader>hu", require("gitsigns").stage_hunk, { noremap = true })
+vim.keymap.set("n", "<leader>hR", require("gitsigns").reset_buffer, { noremap = true })
+vim.keymap.set("n", "<leader>hp", require("gitsigns").preview_hunk, { noremap = true })
+vim.keymap.set("n", "<leader>hb", function()
+  require("gitsigns").blame_line({ full = true })
+end, { noremap = true })
+vim.keymap.set("n", "<leader>tb", require("gitsigns").toggle_current_line_blame, { noremap = true })
+vim.keymap.set("n", "<leader>hd", require("gitsigns").diffthis, { noremap = true })
+vim.keymap.set("n", "<leader>hD", function()
+  require("gitsigns").diffthis("~")
+end, { noremap = true })
+vim.keymap.set("n", "<leader>td", require("gitsigns").preview_hunk_inline, { noremap = true })

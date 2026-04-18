@@ -1,7 +1,4 @@
-return {
-  {
-    "sindrets/diffview.nvim",
-    lazy = false,
-    dependencies = { "nvim-tree/nvim-web-devicons", lazy = true },
-  },
-}
+vim.pack.add({ 
+  { src = "https://github.com/sindrets/diffview.nvim", version = "main" },
+  { src = "https://github.com/nvim-mini/mini.icons", version = "main" },
+})

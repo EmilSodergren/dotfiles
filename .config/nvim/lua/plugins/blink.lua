@@ -1,12 +1,9 @@
-return {
-  {
-    "saghen/blink.cmp",
-    dependencies = {
-      "mgalliou/blink-cmp-tmux",
-      "rafamadriz/friendly-snippets",
-    },
-    lazy = false,
-    opts = {
+vim.pack.add({ 
+  { src = "https://github.com/saghen/blink.cmp", version = vim.version.range("^1") },
+  { src = "https://github.com/mgalliou/blink-cmp-tmux", version = "main" },
+})
+
+require("blink.cmp").setup({
       sources = {
         default = {
           "lsp",
@@ -21,6 +18,7 @@ return {
             name = "lsp",
           },
           snippets = {
+
             score_offset = 4,
             name = "snippets",
           },
@@ -83,6 +81,4 @@ return {
           list = { selection = { preselect = true } },
         },
       },
-    },
-  },
-}
+    })

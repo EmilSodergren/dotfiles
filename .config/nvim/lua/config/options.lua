@@ -1,6 +1,5 @@
 vim.g.mapleader = ","
 vim.g.maplocalleader = "\\"
-vim.g.snacks_animate = false
 
 -- vim.g.bash_ctrl_j = "off"
 vim.g.python_host_prog = "/usr/bin/python2"
@@ -16,7 +15,7 @@ vim.o.list = false
 vim.o.autoindent = true
 vim.o.backspace = "indent"
 vim.o.clipboard = vim.env.SSH_TTY and "" or "unnamedplus"
-vim.o.cmdheight = 2
+vim.o.cmdheight = 0
 vim.o.cursorline = false
 vim.opt.completeopt:append { "menuone", "noinsert", "noselect" }
 vim.opt.completeopt:remove { "preview" }
@@ -48,3 +47,56 @@ vim.o.smartindent = true
 vim.o.updatetime = 50
 vim.o.textwidth = 0
 vim.o.termguicolors = true
+
+-- -- Use 2 space indent by default
+vim.o.tabstop = 2
+vim.o.shiftwidth = 2
+vim.o.expandtab = true
+vim.o.softtabstop = 2
+
+require("vim._core.ui2").enable({
+  enable = true,
+  msg = {
+    targets = {
+      [""] = "msg",
+      empty = "cmd",
+      bufwrite = "msg",
+      confirm = "cmd",
+      emsg = "pager",
+      echo = "msg",
+      echomsg = "msg",
+      echoerr = "pager",
+      completion = "cmd",
+      list_cmd = "pager",
+      lua_error = "pager",
+      lua_print = "msg",
+      progress = "pager",
+      rpc_error = "pager",
+      quickfix = "msg",
+      search_cmd = "cmd",
+      search_count = "cmd",
+      shell_cmd = "pager",
+      shell_err = "pager",
+      shell_out = "pager",
+      shell_ret = "msg",
+      undo = "msg",
+      verbose = "pager",
+      wildlist = "cmd",
+      wmsg = "msg",
+      typed_cmd = "cmd",
+    },
+    cmd = {
+      height = 0.5,
+    },
+    dialog = {
+      height = 0.5,
+    },
+    msg = {
+      height = 0.3,
+      timeout = 5000,
+    },
+    pager = {
+      height = 0.5,
+    },
+  },
+})

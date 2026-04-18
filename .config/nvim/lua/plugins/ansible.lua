@@ -1,29 +1,16 @@
-return {
-  {
-    "mfussenegger/nvim-ansible",
-    ft = "yaml",
-    keys = {
-      {
-        "<leader>ta",
-        function()
-          require("ansible").run()
-        end,
-        ft = "yaml.ansible",
-        desc = "Ansible Run Playbook/Role",
-        silent = true,
-      },
-    },
+vim.pack.add({
+  { src = "https://github.com/mfussenegger/nvim-ansible", version = "main" },
+  { src = "https://github.com/neovim/nvim-lspconfig",     version = "master" },
+})
+
+vim.lsp.config("ansiblels", {
+  cmd = {
+    os.getenv("HOME") .. "/.local/bin/ansible-language-server", "--stdio"
   },
-  {
-    "neovim/nvim-lspconfig",
-    opts = {
-      servers = {
-        ansiblels = {
-          cmd = {
-            os.getenv("HOME") .. "/.local/bin/ansible-language-server", "--stdio"
-          },
-        },
-      },
-    },
-  },
-}
+})
+
+
+vim.keymap.set("n", "<leader>ta", require("ansible").run,
+  { noremap = true, desc = "Ansible Run Playbook/Role", silent = true, })
+
+vim.lsp.enable("ansiblels")

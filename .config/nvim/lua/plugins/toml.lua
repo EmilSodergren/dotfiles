@@ -1,6 +1,3 @@
-return {
-  {
-    "cespare/vim-toml",
-    ft = "toml",
-  },
-}
+vim.pack.add({
+  { src = "https://github.com/cespare/vim-toml", version = "main" },
+})

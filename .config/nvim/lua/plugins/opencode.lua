@@ -1,27 +1,11 @@
-return {
-  "nickjvandyke/opencode.nvim",
-  version = "*",
-  dependencies = {
-    "MeanderingProgrammer/render-markdown.nvim",
-  },
-  lazy = false,
-  enabled = vim.fn.executable("opencode") == 1,
-  config = function()
-    vim.o.autoread = true
-    vim.keymap.set({ "n", "x" }, "<leader>oa", function() require("opencode").ask("@this: ", { submit = true }) end,
-      { desc = "Ask opencode…" })
-    vim.keymap.set({ "n", "x" }, "<leader>os", function() require("opencode").select() end,
-      { desc = "Execute opencode action…" })
-    vim.keymap.set({ "n" }, "<leader>oo", function() require("opencode").toggle() end, { desc = "Toggle opencode" })
+if vim.fn.executable("opencode") == 1 then
+  vim.pack.add({
+    { src = "https://github.com/sudo-tee/opencode.nvim", version = "main" },
+  })
 
-    vim.keymap.set({ "n", "x" }, "go", function() return require("opencode").operator("@this ") end,
-      { desc = "Add range to opencode", expr = true })
-    vim.keymap.set("n", "goo", function() return require("opencode").operator("@this ") .. "_" end,
-      { desc = "Add line to opencode", expr = true })
-
-    vim.keymap.set("n", "<S-C-u>", function() require("opencode").command("session.half.page.up") end,
-      { desc = "Scroll opencode up" })
-    vim.keymap.set("n", "<S-C-d>", function() require("opencode").command("session.half.page.down") end,
-      { desc = "Scroll opencode down" })
-  end,
-}
+  require('opencode').setup({
+    preferred_picker = 'fzf',
+    preferred_completion = 'blink',
+    default_mode = 'plan',
+  })
+end

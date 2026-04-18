@@ -1,10 +1,5 @@
-return {
-  {
-    "simeji/winresizer",
-    lazy = false,
-    keys = function()
-      return {
-        { "<C-a>", "<cmd>WinResizerStartResize<CR>", desc = "Resize Windows" } }
-    end
-  },
-}
+vim.pack.add({
+  { src = "https://github.com/simeji/winresizer", version = "master" },
+})
+
+vim.keymap.set("n", "<C-a>", "<cmd>WinResizerStartResize<cr>", { noremap = true, silent = true })

@@ -1,5 +1,0 @@
-return {
-  {
-    "cyberkov/openhab-vim"
-  },
-}
