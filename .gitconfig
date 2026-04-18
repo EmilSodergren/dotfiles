@@ -19,6 +19,8 @@
     autosetuprebase = always
 [pull]
     rebase = true
+[tag]
+    sort = -creatordate
 [alias]
     st = status
     br = branch
