@@ -1,55 +1,56 @@
 #!/usr/bin/python3
 
 import tempfile
+import time
 from datetime import datetime
 from pathlib import Path
-import time
+
 import requests
 
-TOKEN_PATH = Path.home() / '.local/share/token/github.token'
+TOKEN_PATH = Path.home() / ".local/share/token/github.token"
 EXPIRY_SOON_DAYS = 7
 
 
 class RequestFailedException(Exception):
-
     def __init__(self, _):
-        super().__init__('Request failed')
+        super().__init__("Request failed")
 
 
 class NoAssetException(Exception):
-
     def __init__(self, asset_name, url):
-        super().__init__(f'No asset ending with `{asset_name}` found in {url}')
+        super().__init__(f"No asset containing the string `{asset_name}` found in {url}")
 
 
 def check_api_token_expiry():
     if not TOKEN_PATH.exists():
-        print(f'No token found at {TOKEN_PATH}, can not check expiry')
+        print(f"No token found at {TOKEN_PATH}, can not check expiry")
         return
     token = TOKEN_PATH.read_text().strip()
-    response = requests.get('https://api.github.com/user', headers={'Authorization': f'token {token}'}, timeout=10)
-    expiration_header = response.headers.get('GitHub-Authentication-Token-Expiration')
-    expiry_days = (datetime.strptime(expiration_header, r'%Y-%m-%d %H:%M:%S %z').replace(tzinfo=None) -
-                   datetime.now()).days if expiration_header else None
+    response = requests.get("https://api.github.com/user", headers={"Authorization": f"token {token}"}, timeout=10)
+    expiration_header = response.headers.get("GitHub-Authentication-Token-Expiration")
+    expiry_days = (
+        (datetime.strptime(expiration_header, r"%Y-%m-%d %H:%M:%S %z").replace(tzinfo=None) - datetime.now()).days
+        if expiration_header
+        else None
+    )
     if not expiry_days:
-        print('Token will never expire')
+        print("Token will never expire")
         return
     if expiry_days <= 0:
-        print('TOKEN HAS EXPIRED')
+        print("TOKEN HAS EXPIRED")
         return
     if expiry_days < EXPIRY_SOON_DAYS:
-        print('TOKEN will expire soon...')
-        print('Fix here -> https://github.com/settings/personal-access-tokens')
+        print("TOKEN will expire soon...")
+        print("Fix here -> https://github.com/settings/personal-access-tokens")
         time.sleep(10)
     print(f"Token expires in {expiry_days} days")
 
 
 class GithubDownloader:
-
     def __init__(self, url, file_identifier, quiet=False):
         # pylint: disable=consider-using-with
-        self.__temp_dir = tempfile.TemporaryDirectory(ignore_cleanup_errors=True, delete=False, prefix='githubdl_')
-        self.url = 'https://api.github.com/repos/' + url + '/releases/latest'
+        self.__temp_dir = tempfile.TemporaryDirectory(ignore_cleanup_errors=True, delete=False, prefix="githubdl_")
+        self.url = "https://api.github.com/repos/" + url + "/releases/latest"
         self.file_identifier = file_identifier
         self.quiet = quiet
 
@@ -57,21 +58,21 @@ class GithubDownloader:
         try:
             headers = None
             if not TOKEN_PATH.exists():
-                print(f'If things fail here... place a token in {TOKEN_PATH}')
+                print(f"If things fail here... place a token in {TOKEN_PATH}")
             else:
                 token = TOKEN_PATH.read_text().strip()
-                headers = {'Authorization': f'Bearer {token}'}
+                headers = {"Authorization": f"Bearer {token}"}
             r = requests.get(url=self.url, headers=headers, timeout=10)
             if not r.ok:
-                print(r.json()['message'])
+                print(r.json()["message"])
                 raise RequestFailedException
-            for asset in r.json().get('assets'):
-                if asset.get('browser_download_url').endswith(self.file_identifier):
-                    file_path = Path(self.__temp_dir.name) / asset.get('name')
-                    r2 = requests.get(asset.get('browser_download_url'), headers=headers, timeout=30)
+            for asset in r.json().get("assets"):
+                if self.file_identifier in asset.get("browser_download_url"):
+                    file_path = Path(self.__temp_dir.name) / asset.get("name")
+                    r2 = requests.get(asset.get("browser_download_url"), headers=headers, timeout=30)
                     if not self.quiet:
                         print(f"Downloading {asset.get('name')}")
-                    with open(file_path, 'wb') as temp_file:
+                    with open(file_path, "wb") as temp_file:
                         for chunk in r2.iter_content(chunk_size=10240):
                             temp_file.write(chunk)
                     return file_path
@@ -84,12 +85,13 @@ class GithubDownloader:
     def __exit__(self, exc_type, exc_value, traceback):
         self.__temp_dir.cleanup()
         if exc_type:
-            print('WARNING:', exc_type, exc_value)
+            print("WARNING:", exc_type, exc_value)
         return True
 
 
 # For testing
-if __name__ == '__main__':
-    with GithubDownloader(url='https://api.github.com/repos/LuaLS/lua-language-server/releases/latest',
-                          file_identifier='linux-x64.tar.gz') as d:
+if __name__ == "__main__":
+    with GithubDownloader(
+        url="https://api.github.com/repos/LuaLS/lua-language-server/releases/latest", file_identifier="linux-x64.tar.gz"
+    ) as d:
         print(d)
