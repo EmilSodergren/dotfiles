@@ -7,4 +7,4 @@ require("neogit").setup({
   mappings = { status = { ["<space>"] = "Toggle" } },
 })
 
-vim.keymap.set("n", "<leader>m", function() require("neogit").open({ kind = "vsplit" }) end, { noremap = true })
+vim.keymap.set("n", "<leader>m", function() require("neogit").open({ kind = "vsplit" }) end, { noremap = true, desc = "Start Neogit" })

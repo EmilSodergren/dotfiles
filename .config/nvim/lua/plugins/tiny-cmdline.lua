@@ -4,8 +4,8 @@ vim.pack.add({
 
 require("tiny-cmdline").setup({
   position = {
-    x = "30%",
-    y = "80%"
+    x = "20%",
+    y = "90%"
   },
   native_types = {},
   on_reposition = require("tiny-cmdline").adapters.blink,

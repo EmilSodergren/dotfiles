@@ -17,15 +17,16 @@ require("fzf-lua").setup({
   fzf_bin = "~/.local/share/nvim/site/pack/core/opt/fzf/bin/fzf",
 })
 
-vim.keymap.set("n", "<leader>sf", function() return require("fzf-lua").files() end, { noremap = true })
+vim.keymap.set("n", "<leader>sf", function() return require("fzf-lua").files() end,
+  { noremap = true, desc = "Search current folder" })
 vim.keymap.set("n", "<leader>sh", function() return require("fzf-lua").files({ prompt = "~/", cwd = "~/" }) end,
-  { noremap = true })
+  { noremap = true, desc = "Search home folder" })
 vim.keymap.set("n", "<leader>sg", function() return require("fzf-lua").git_files({ prompt = "GIT> " }) end,
-  { noremap = true })
+  { noremap = true, desc = "Search in git repo" })
 vim.keymap.set("n", "<leader>sr", function() return require("fzf-lua").live_grep({ prompt = "rg> " }) end,
-  { noremap = true })
+  { noremap = true, desc = "Search with RG" })
 vim.keymap.set("i", "<C-x><C-f>",
   function() return require("fzf-lua").complete_path({ cmd = "rg --files --hidden -g '!.git/'" }) end,
-  { silent = true, noremap = true })
+  { silent = true, noremap = true, desc = "Complete filepath" })
 vim.keymap.set("n", "<leader>ev", function() return require("fzf-lua").files({ cwd = "~/.config/nvim/" }) end,
-  { noremap = true })
+  { noremap = true, desc = "Edit Vim config" })
