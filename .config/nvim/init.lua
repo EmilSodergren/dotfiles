@@ -36,3 +36,6 @@ require('config.autocmds')
 
 vim.lsp.inlay_hint.enable(true, nil)
 vim.diagnostic.config({ virtual_text = true })
+
+vim.keymap.set('n', '<Leader>th', function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled(nil), nil) end,
+  { noremap = true, desc = 'Toggle inlay hints' })
