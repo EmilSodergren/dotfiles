@@ -33,7 +33,6 @@ map({ "n", "o" }, "<c-u>", "<c-u>M", { noremap = true, desc = "Center view after
 map("n", "<F2>", vim.lsp.buf.rename, { noremap = true, silent = true, desc = "Rename with LSP" })
 map("n", "K", vim.lsp.buf.hover, { noremap = true, silent = true, desc = "Hover with LSP" })
 map("n", "gd", vim.lsp.buf.definition, { noremap = true, silent = true, desc = "Go to definition with LSP" })
-map("n", "<leader>r", vim.lsp.buf.references, { noremap = true, silent = true, desc = "Get references in qflist" })
 map("n", "<leader>f", vim.lsp.buf.format, { noremap = true, silent = true, desc = "Format with LSP" })
 map({ "n", "i" }, "<leader>n", vim.lsp.buf.code_action, { noremap = true, silent = true, desc = "Code Action with LSP" })
 map("n", "<leader>e", vim.lsp.buf.signature_help, { noremap = true, silent = true, desc = "Signature Help with LSP" })
