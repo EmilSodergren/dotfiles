@@ -28,5 +28,11 @@ require("mini.clue").setup({
     { mode = "n", keys = "]" },
     { mode = "n", keys = "g" },
     { mode = "x", keys = "g" },
+  },
+  window = {
+    delay = 400,
+    config = {
+      width = 'auto',
+    }
   }
 })
