@@ -1,3 +1,4 @@
+-- Toggle RELATIVE / ABSOLUTE line numbers
 vim.api.nvim_create_augroup("numbertoggle", { clear = true })
 vim.api.nvim_create_autocmd({ "BufEnter", "FocusGained", "InsertLeave", "WinEnter" },
   {
@@ -18,7 +19,7 @@ vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost", "InsertEnter", "WinLeave"
     end
   })
 
-
+-- Line indentation and tabs for different file types
 vim.api.nvim_create_autocmd("FileType",
   {
     group = vim.api.nvim_create_augroup("override_indent_4_spc", { clear = true }),
@@ -139,3 +140,11 @@ msgs.set_pos = function(tgt)
     })
   end
 end
+
+-- Highligt yanked section
+vim.api.nvim_create_autocmd("TextYankPost", {
+  group = vim.api.nvim_create_augroup("YankHighlight", { clear = true }),
+  callback = function()
+    vim.highlight.on_yank({ timeout = 3000, higroup = "YankyYanked" })
+  end,
+})
