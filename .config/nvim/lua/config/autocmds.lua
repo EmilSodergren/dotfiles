@@ -148,3 +148,27 @@ vim.api.nvim_create_autocmd("TextYankPost", {
     vim.highlight.on_yank({ timeout = 3000, higroup = "YankyYanked" })
   end,
 })
+
+-- Auto-jump to last cursor position when reopening files
+local lastplace_group = vim.api.nvim_create_augroup("LastPlace", { clear = true })
+
+vim.api.nvim_create_autocmd("BufReadPost", {
+  group = lastplace_group,
+  callback = function()
+    -- Skip special buffers (help, terminal, quickfix, etc.)
+    if vim.bo.buftype ~= "" then
+      return
+    end
+
+    -- Get last saved cursor position (" mark, persisted in shada)
+    local mark = vim.api.nvim_buf_get_mark(0, '"')
+    local line_num = mark[1]
+    local col_num = mark[2]
+
+    -- Validate line exists in current buffer
+    if line_num > 0 and line_num <= vim.api.nvim_buf_line_count(0) then
+      vim.api.nvim_win_set_cursor(0, { line_num, col_num })
+      vim.cmd.normal('zz')
+    end
+  end
+})
