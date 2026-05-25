@@ -150,13 +150,12 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 })
 
 -- Auto-jump to last cursor position when reopening files
-local lastplace_group = vim.api.nvim_create_augroup("LastPlace", { clear = true })
-
 vim.api.nvim_create_autocmd("BufReadPost", {
-  group = lastplace_group,
+  group = vim.api.nvim_create_augroup("LastPlace", { clear = true }),
   callback = function()
     -- Skip special buffers (help, terminal, quickfix, etc.)
-    if vim.bo.buftype ~= "" then
+    local filename = vim.api.nvim_buf_get_name(0):match("([^/]+)$")
+    if vim.bo.buftype ~= "" or filename == "COMMIT_EDITMSG" then
       return
     end
 
