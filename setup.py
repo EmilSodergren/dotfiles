@@ -207,12 +207,6 @@ parser.add_argument(
     help="Should ccls be skipped, only vaild if --online is defined",
 )
 parser.add_argument(
-    "-st",
-    "--skip_tmux",
-    action="store_true",
-    help="Should tmux be skipped, only vaild if --online is defined",
-)
-parser.add_argument(
     "-sr",
     "--skip-rust",
     action="store_true",
@@ -365,8 +359,6 @@ if args.online:
             install_program("neovim.py", args.clean)
         if not args.skip_ccls:
             install_program("ccls.py", args.clean)
-        if not args.skip_tmux:
-            install_program("tmux.py", args.clean)
 
     install_golang_tools()
 
@@ -393,6 +385,7 @@ if args.online:
     markdownlint_cli2.symlink_to(Path.home() / ".local" / "node_modules" / "markdownlint-cli2" / "markdownlint-cli2-bin.mjs")
 
     (Path.home() / local_bin).mkdir(exist_ok=True)
+
     # Download Marksman
     with GithubDownloader(url="artempyanykh/marksman", file_identifier="marksman-linux-x64") as f:
         move(f, marksman_bin)
@@ -430,6 +423,11 @@ if args.online:
     # Download Hack font zip file
     with GithubDownloader(url="ryanoasis/nerd-fonts", file_identifier="Hack.tar.xz") as f:
         copy2(f, "bin/")
+
+    # Download Tmux
+    with GithubDownloader(url="tmux/tmux-builds", file_identifier="linux-x86_64") as f:
+        run(["tar", "xf", f], cwd=f.parent, check=True)
+        move(f.parent / "tmux", host_local_bin)
 
     # Download bfg.jar
     BFG_URL = "https://repo1.maven.org/maven2/com/madgag/bfg/1.15.0/bfg-1.15.0.jar"
